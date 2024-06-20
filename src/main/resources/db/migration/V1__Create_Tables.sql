@@ -1,15 +1,15 @@
 CREATE TYPE SEXOENUM AS ENUM ('Masculino', 'Feminino', 'Outro');
 CREATE TYPE TIPOTELENUM AS ENUM ('RES', 'COM', 'CEL');
 
-CREATE TABLE Usuario (
-    id_usuario SERIAL PRIMARY KEY,
-    nome VARCHAR(30) NOT NULL,
-    sobrenome VARCHAR(30) NOT NULL,
-    email VARCHAR(50) NOT NULL,
-    senha VARCHAR(15) NOT NULL,
-    data_nascimento DATE NOT NULL,
-    sexo SEXOENUM NOT NULL,
-    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE USUARIO (
+        id_usuario SERIAL PRIMARY KEY,
+        nome VARCHAR(30) NOT NULL,
+        sobrenome VARCHAR(30) NOT NULL,
+        email VARCHAR(50) NOT NULL,
+        senha VARCHAR(15) NOT NULL,
+        data_nascimento DATE NOT NULL,
+        sexo SEXOENUM NOT NULL,
+        data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE ENDERECO (
@@ -21,7 +21,7 @@ CREATE TABLE ENDERECO (
     estado CHAR(2) NOT NULL,
     pais VARCHAR(30) NOT NULL,
     numero_casa VARCHAR(1000) NOT NULL,
-    id_usuario_FK INT,
+    id_usuario_FK INT UNIQUE,
     FOREIGN KEY (id_usuario_FK) REFERENCES Usuario(id_usuario)
 );
 
@@ -33,17 +33,4 @@ CREATE TABLE TELEFONE (
     FOREIGN KEY (id_usuario_fk) REFERENCES Usuario(id_usuario)
 );
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+CREATE TABLE 
