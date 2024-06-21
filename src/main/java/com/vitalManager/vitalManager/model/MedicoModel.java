@@ -12,9 +12,11 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MedicoModel extends UsuarioModel{
-    private BigDecimal Salario;
+public class MedicoModel {
+    private Integer idMedico;
+    private UsuarioModel usuario;
+    private BigDecimal salario;
     private String especialidade;
-    private String CRM;
-    private LocalDateTime data_contratacao;
+    private String crm;
+    private LocalDateTime dataContratacao;
 }

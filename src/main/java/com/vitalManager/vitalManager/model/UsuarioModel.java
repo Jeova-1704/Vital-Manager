@@ -10,13 +10,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UsuarioModel {
-    protected Integer idUsuario;
-    protected String nome;
-    protected String sobrenome;
-    protected String email;
-    protected String senha;
-    protected LocalDate dataNascimento;
-    protected String sexo;
-    protected LocalDateTime date;
-    protected char tipo;
+    private Integer idUsuario;
+    private String nome;
+    private String sobrenome;
+    private String email;
+    private String senha;
+    private LocalDate dataNascimento;
+    private String sexo;
+    private LocalDateTime date;
+    private char tipo;
 }

@@ -32,12 +32,12 @@ CREATE TABLE Telefone (
 );
 
 CREATE TABLE Medico (
-    id_medico SERIAL PRIMARY KEY,
-    id_usuario_fk INT UNIQUE,
-    salario NUMERIC(10, 2) NOT NULL,
-    especialidade VARCHAR(50) NOT NULL,
-    CRM VARCHAR(20) NOT NULL,
-    data_contratacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    id_medico INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario_fk INT,
+    salario DECIMAL(10, 2),
+    especialidade VARCHAR(255),
+    crm VARCHAR(50),
+    data_contratacao TIMESTAMP,
     FOREIGN KEY (id_usuario_fk) REFERENCES Usuario(id_usuario)
 );
 

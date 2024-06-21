@@ -3,7 +3,9 @@ package com.vitalManager.vitalManager.service;
 import com.vitalManager.vitalManager.DTO.MedicoDTO;
 import com.vitalManager.vitalManager.exception.ResourceNotFoundException;
 import com.vitalManager.vitalManager.model.MedicoModel;
+import com.vitalManager.vitalManager.model.UsuarioModel;
 import com.vitalManager.vitalManager.repository.MedicoRepository;
+import com.vitalManager.vitalManager.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,9 @@ public class MedicoService {
     @Autowired
     private MedicoRepository medicoRepository;
 
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
     public List<MedicoModel> getAllMedicos() {
         return medicoRepository.findAll();
     }
@@ -26,18 +31,16 @@ public class MedicoService {
     }
 
     public void createMedico(MedicoDTO medicoDTO) {
+        UsuarioModel usuario = usuarioRepository.findById(medicoDTO.idUsuario())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + medicoDTO.idUsuario()));
+
         MedicoModel medico = new MedicoModel();
-        medico.setNome(medicoDTO.nome());
-        medico.setSobrenome(medicoDTO.sobrenome());
-        medico.setEmail(medicoDTO.email());
-        medico.setSenha(medicoDTO.senha());
-        medico.setDataNascimento(medicoDTO.dataNascimento());
-        medico.setSexo(medicoDTO.sexo());
-        medico.setDate(LocalDateTime.now());
+        medico.setUsuario(usuario);
         medico.setSalario(medicoDTO.salario());
         medico.setEspecialidade(medicoDTO.especialidade());
-        medico.setCRM(medicoDTO.CRM());
-        medico.setData_contratacao(LocalDateTime.now());
+        medico.setCrm(medicoDTO.CRM());
+        medico.setDataContratacao(LocalDateTime.now());
+
         medicoRepository.save(medico);
     }
 
@@ -47,19 +50,13 @@ public class MedicoService {
         }
         MedicoModel medicoExistente = medicoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Medico not found with id " + id));
-        medicoExistente.setNome(medicoDTO.getNome());
-        medicoExistente.setSobrenome(medicoDTO.getSobrenome());
-        medicoExistente.setEmail(medicoDTO.getEmail());
-        medicoExistente.setSenha(medicoDTO.getSenha());
-        medicoExistente.setDataNascimento(medicoDTO.getDataNascimento());
-        medicoExistente.setSexo(medicoDTO.getSexo());
-        medicoExistente.setDate(LocalDateTime.now());
+
         medicoExistente.setSalario(medicoDTO.getSalario());
         medicoExistente.setEspecialidade(medicoDTO.getEspecialidade());
-        medicoExistente.setCRM(medicoDTO.getCRM());
-        medicoExistente.setData_contratacao(LocalDateTime.now());
+        medicoExistente.setCrm(medicoDTO.getCrm());
+        medicoExistente.setDataContratacao(LocalDateTime.now());
 
-        medicoRepository.save(medicoExistente);
+        medicoRepository.update(medicoExistente);
     }
 
     public void deleteMedicoById(int id) {

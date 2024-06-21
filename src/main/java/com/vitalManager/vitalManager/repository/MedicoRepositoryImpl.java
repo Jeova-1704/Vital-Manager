@@ -1,6 +1,7 @@
 package com.vitalManager.vitalManager.repository;
 
 import com.vitalManager.vitalManager.model.MedicoModel;
+import com.vitalManager.vitalManager.model.UsuarioModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -25,19 +26,24 @@ public class MedicoRepositoryImpl implements MedicoRepository {
     private RowMapper<MedicoModel> rowMapper = new RowMapper<MedicoModel>() {
         @Override
         public MedicoModel mapRow(ResultSet rs, int rowNum) throws SQLException {
+            UsuarioModel usuario = new UsuarioModel();
+            usuario.setIdUsuario(rs.getInt("id_usuario"));
+            usuario.setNome(rs.getString("nome"));
+            usuario.setSobrenome(rs.getString("sobrenome"));
+            usuario.setEmail(rs.getString("email"));
+            usuario.setSenha(rs.getString("senha"));
+            usuario.setDataNascimento(rs.getDate("data_nascimento").toLocalDate());
+            usuario.setSexo(rs.getString("sexo"));
+            usuario.setDate(rs.getTimestamp("data_criacao").toLocalDateTime());
+
             MedicoModel medico = new MedicoModel();
-            medico.setIdUsuario(rs.getInt("id_usuario_fk"));
-            medico.setNome(rs.getString("nome"));
-            medico.setSobrenome(rs.getString("sobrenome"));
-            medico.setEmail(rs.getString("email"));
-            medico.setSenha(rs.getString("senha"));
-            medico.setDataNascimento(rs.getDate("data_nascimento").toLocalDate());
-            medico.setSexo(rs.getString("sexo"));
-            medico.setDate(rs.getTimestamp("data_criacao").toLocalDateTime());
+            medico.setIdMedico(rs.getInt("id_medico"));
+            medico.setUsuario(usuario);
             medico.setSalario(rs.getBigDecimal("salario"));
             medico.setEspecialidade(rs.getString("especialidade"));
-            medico.setCRM(rs.getString("crm"));
-            medico.setData_contratacao(rs.getTimestamp("data_contratacao").toLocalDateTime());
+            medico.setCrm(rs.getString("crm"));
+            medico.setDataContratacao(rs.getTimestamp("data_contratacao").toLocalDateTime());
+
             return medico;
         }
     };
@@ -45,27 +51,12 @@ public class MedicoRepositoryImpl implements MedicoRepository {
     @Override
     public List<MedicoModel> findAll() {
         String sql = "SELECT u.*, m.* FROM usuario u JOIN medico m ON u.id_usuario = m.id_usuario_fk";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            MedicoModel medico = new MedicoModel();
-            medico.setIdUsuario(rs.getInt("id_usuario"));
-            medico.setNome(rs.getString("nome"));
-            medico.setSobrenome(rs.getString("sobrenome"));
-            medico.setEmail(rs.getString("email"));
-            medico.setSenha(rs.getString("senha"));
-            medico.setDataNascimento(rs.getDate("data_nascimento").toLocalDate());
-            medico.setSexo(rs.getString("sexo"));
-            medico.setDate(rs.getTimestamp("data_criacao").toLocalDateTime());
-            medico.setSalario(rs.getBigDecimal("salario"));
-            medico.setEspecialidade(rs.getString("especialidade"));
-            medico.setCRM(rs.getString("crm"));
-            medico.setData_contratacao(rs.getTimestamp("data_contratacao").toLocalDateTime());
-            return medico;
-        });
+        return jdbcTemplate.query(sql, rowMapper);
     }
 
     @Override
     public Optional<MedicoModel> findById(int id) {
-        String sql = "SELECT * FROM Medico WHERE id_usuario_fk = ?";
+        String sql = "SELECT u.*, m.* FROM usuario u JOIN medico m ON u.id_usuario = m.id_usuario_fk WHERE m.id_medico = ?";
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new Object[]{id}, rowMapper));
         } catch (Exception e) {
@@ -78,40 +69,33 @@ public class MedicoRepositoryImpl implements MedicoRepository {
         String sql = "INSERT INTO medico (id_usuario_fk, salario, especialidade, crm, data_contratacao) " +
                 "VALUES (?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql,
-                medico.getIdUsuario(),
+                medico.getUsuario().getIdUsuario(),
                 medico.getSalario(),
                 medico.getEspecialidade(),
-                medico.getCRM(),
-                medico.getData_contratacao());
+                medico.getCrm(),
+                medico.getDataContratacao());
     }
 
     @Override
     public int update(MedicoModel medico) {
-        String sql = "UPDATE Medico SET nome = ?, sobrenome = ?, email = ?, senha = ?, data_nascimento = ?, sexo = ?, data_criacao = ?, salario = ?, especialidade = ?, crm = ?, data_contratacao = ? WHERE id_usuario_fk = ?";
+        String sql = "UPDATE Medico SET salario = ?, especialidade = ?, crm = ?, data_contratacao = ? WHERE id_medico = ?";
         return jdbcTemplate.update(sql,
-                medico.getNome(),
-                medico.getSobrenome(),
-                medico.getEmail(),
-                medico.getSenha(),
-                medico.getDataNascimento(),
-                medico.getSexo(),
-                medico.getDate(),
                 medico.getSalario(),
                 medico.getEspecialidade(),
-                medico.getCRM(),
-                medico.getData_contratacao(),
-                medico.getIdUsuario());
+                medico.getCrm(),
+                medico.getDataContratacao(),
+                medico.getIdMedico());
     }
 
     @Override
     public int deleteById(int id) {
-        String sql = "DELETE FROM Medico WHERE id_usuario_fk = ?";
+        String sql = "DELETE FROM Medico WHERE id_medico = ?";
         return jdbcTemplate.update(sql, id);
     }
 
     @Override
     public boolean existsById(int id) {
-        String sql = "SELECT COUNT(*) FROM Medico WHERE id_usuario_fk = ?";
+        String sql = "SELECT COUNT(*) FROM Medico WHERE id_medico = ?";
         Integer count = jdbcTemplate.queryForObject(sql, new Object[]{id}, Integer.class);
         return count != null && count > 0;
     }
