@@ -34,7 +34,7 @@ public class MedicoService {
                 .orElseThrow(() -> new ResourceNotFoundException("Medico not found with id " + id));
     }
 
-    public void createMedico(MedicoDTO medicoDTO) {
+    public MedicoModel createMedico(MedicoDTO medicoDTO) {
         UsuarioModel usuario = usuarioRepository.findById(medicoDTO.idUsuario())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + medicoDTO.idUsuario()));
         if (usuario.getTipo().equals("M") || usuario.getTipo().equals("Medico")) {
@@ -44,14 +44,15 @@ public class MedicoService {
             medico.setEspecialidade(medicoDTO.especialidade());
             medico.setCrm(medicoDTO.CRM());
             medico.setDataContratacao(LocalDateTime.now());
-
             medicoRepository.save(medico);
+            return medico;
+
         } else {
             throw new NotTypeMedicoException("O usuário nao é do tipo médico.");
         }
     }
 
-    public void updateMedico(int id, MedicoModel medicoDTO) {
+    public MedicoModel updateMedico(int id, MedicoModel medicoDTO) {
         if (!medicoRepository.existsById(id)) {
             throw new ResourceNotFoundException("Medico not found with id " + id);
         }
@@ -64,6 +65,7 @@ public class MedicoService {
         medicoExistente.setDataContratacao(LocalDateTime.now());
 
         medicoRepository.update(medicoExistente);
+        return medicoExistente;
     }
 
     public void deleteMedicoById(int id) {

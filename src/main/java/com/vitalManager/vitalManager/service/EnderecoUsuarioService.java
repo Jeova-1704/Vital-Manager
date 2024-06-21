@@ -25,7 +25,7 @@ public class EnderecoUsuarioService {
                 .orElseThrow(() -> new ResourceNotFoundException("Adress not found with id " + id));
     }
 
-    public void createUsuarioAdress(EnderecoUsuarioDTO enderecoUsuarioDTO) {
+    public EnderecoUsuarioModel createUsuarioAdress(EnderecoUsuarioDTO enderecoUsuarioDTO) {
         EnderecoUsuarioModel enderecoUsuario = new EnderecoUsuarioModel();
         enderecoUsuario.setCep(enderecoUsuarioDTO.cep());
         enderecoUsuario.setRua(enderecoUsuarioDTO.rua());
@@ -36,6 +36,7 @@ public class EnderecoUsuarioService {
         enderecoUsuario.setNumeroCasa(enderecoUsuarioDTO.numeroCasa());
         enderecoUsuario.setIdUsuarioFK(enderecoUsuarioDTO.idUsuarioFK());
         enderecoUsuarioRepository.save(enderecoUsuario);
+        return enderecoUsuario;
     }
 
 
