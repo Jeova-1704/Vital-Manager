@@ -7,12 +7,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RestController
 public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
 
-    @GetMapping
+    @GetMapping("/")
     public List<UsuarioModel> getAllUsers() {
         return usuarioService.getAllUsuarios();
     }
@@ -22,7 +23,7 @@ public class UsuarioController {
         return usuarioService.getUserById(id);
     }
 
-    @PostMapping
+    @PostMapping("/")
     public void createUser(@RequestBody UsuarioModel userDTO) {
         usuarioService.createUser(userDTO);
     }

@@ -27,9 +27,7 @@ public class DataBaseConfig {
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         properties.setProperty("hibernate.show_sql", "true");
         properties.setProperty("hibernate.hbm2ddl.auto", "update");
-
         factoryBean.setJpaProperties(properties);
-
         return factoryBean;
     }
 
@@ -37,9 +35,9 @@ public class DataBaseConfig {
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/vitalManager"); // ajuste conforme o seu banco de dados
-        dataSource.setUsername("postgres"); // ajuste conforme o seu usuário
-        dataSource.setPassword("postgres"); // ajuste conforme a sua senha
+        dataSource.setUrl(System.getenv("BANCO_NAME"));
+        dataSource.setUsername(System.getenv("PASSWORD"));
+        dataSource.setPassword(System.getenv("USERNAME_BANCO"));
         return dataSource;
     }
 
