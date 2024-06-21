@@ -6,7 +6,8 @@ CREATE TABLE Usuario (
     senha VARCHAR(15) NOT NULL,
     data_nascimento DATE NOT NULL,
     sexo VARCHAR(10) NOT NULL,
-    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    tipo char(1) NOT NULL
 );
 
 CREATE TABLE EnderecoUsuario (
@@ -27,6 +28,16 @@ CREATE TABLE Telefone (
     tipo VARCHAR(10) NOT NULL,
     contato VARCHAR(10) NOT NULL,
     id_usuario_fk INT,
+    FOREIGN KEY (id_usuario_fk) REFERENCES Usuario(id_usuario)
+);
+
+CREATE TABLE Medico (
+    id_medico SERIAL PRIMARY KEY,
+    id_usuario_fk INT UNIQUE,
+    salario NUMERIC(10, 2) NOT NULL,
+    especialidade VARCHAR(50) NOT NULL,
+    CRM VARCHAR(20) NOT NULL,
+    data_contratacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_usuario_fk) REFERENCES Usuario(id_usuario)
 );
 
