@@ -34,6 +34,7 @@ public class UsuarioService {
         usuario.setSexo(usuarioDTO.sexo());
         usuario.setDate(LocalDateTime.now());
         usuarioRepository.save(usuario);
+
     }
 
     public void updateUser(int id, UsuarioModel usuarioDTO) {
@@ -49,7 +50,6 @@ public class UsuarioService {
         usuarioExistente.setDataNascimento(usuarioDTO.getDataNascimento());
         usuarioExistente.setSexo(usuarioDTO.getSexo());
         usuarioExistente.setDate(LocalDateTime.now());
-
         usuarioRepository.update(usuarioExistente);
     }
 

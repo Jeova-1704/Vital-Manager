@@ -18,5 +18,4 @@ public class UsuarioModel {
     private LocalDate dataNascimento;
     private String sexo;
     private LocalDateTime date;
-    private char tipo;
 }
