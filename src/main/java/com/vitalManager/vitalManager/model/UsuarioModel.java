@@ -1,6 +1,5 @@
 package com.vitalManager.vitalManager.model;
 
-import com.vitalManager.vitalManager.model.Enum.SexoEnum;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -17,6 +16,6 @@ public class UsuarioModel {
     private String email;
     private String senha;
     private LocalDate dataNascimento;
-    private SexoEnum sexo;
+    private String sexo;
     private LocalDateTime date;
 }

@@ -26,7 +26,7 @@ public class UsuarioController {
 
     @PostMapping("/")
     public void createUser(@RequestBody UsuarioDTO userDTO) {
-        usuarioService.createUser(userDTO);
+        usuarioService.createUsuario(userDTO);
     }
 
     @PutMapping("/{id}")

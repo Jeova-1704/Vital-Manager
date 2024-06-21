@@ -2,7 +2,6 @@ package com.vitalManager.vitalManager.service;
 
 import com.vitalManager.vitalManager.DTO.UsuarioDTO;
 import com.vitalManager.vitalManager.exception.ResourceNotFoundException;
-import com.vitalManager.vitalManager.model.Enum.SexoEnum;
 import com.vitalManager.vitalManager.model.UsuarioModel;
 import com.vitalManager.vitalManager.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,9 @@ import java.util.List;
 
 @Service
 public class UsuarioService {
+    private final String URL = "jdbc:postgresql://localhost:5432/vitalManager";
+    private final String USER = "postgres";
+    private final String PASSWORD = "postgres";
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -26,14 +28,14 @@ public class UsuarioService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + id));
     }
 
-    public void createUser(UsuarioDTO usuarioDTO) {
+    public void createUsuario(UsuarioDTO usuarioDTO) {
         UsuarioModel usuario = new UsuarioModel();
         usuario.setNome(usuarioDTO.nome());
         usuario.setSobrenome(usuarioDTO.sobrenome());
         usuario.setEmail(usuarioDTO.email());
         usuario.setSenha(usuarioDTO.senha());
         usuario.setDataNascimento(usuarioDTO.dataNascimento());
-        usuario.setSexo(SexoEnum.fromDescricao(String.valueOf(usuarioDTO.sexo())));
+        usuario.setSexo(usuarioDTO.sexo());
         usuario.setDate(LocalDateTime.now());
         usuarioRepository.save(usuario);
     }
@@ -49,7 +51,7 @@ public class UsuarioService {
         usuarioExistente.setEmail(usuarioDTO.getEmail());
         usuarioExistente.setSenha(usuarioDTO.getSenha());
         usuarioExistente.setDataNascimento(usuarioDTO.getDataNascimento());
-        usuarioExistente.setSexo(SexoEnum.fromDescricao(String.valueOf(usuarioDTO.getSexo())));
+        usuarioExistente.setSexo(usuarioDTO.getSexo());
         usuarioExistente.setDate(LocalDateTime.now());
 
         usuarioRepository.update(usuarioExistente);

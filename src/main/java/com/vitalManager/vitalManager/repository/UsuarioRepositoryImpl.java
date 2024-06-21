@@ -1,6 +1,5 @@
 package com.vitalManager.vitalManager.repository;
 
-import com.vitalManager.vitalManager.model.Enum.SexoEnum;
 import com.vitalManager.vitalManager.model.UsuarioModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,7 +14,7 @@ import java.util.Optional;
 @Repository
 public class UsuarioRepositoryImpl implements UsuarioRepository{
 
-
+    @Autowired
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -33,7 +32,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository{
             user.setEmail(rs.getString("email"));
             user.setSenha(rs.getString("senha"));
             user.setDataNascimento(rs.getDate("data_nascimento").toLocalDate());
-            user.setSexo(SexoEnum.fromDescricao(rs.getString("sexo")));
+            user.setSexo(rs.getString("sexo"));
             user.setDate(rs.getTimestamp("data_criacao").toLocalDateTime());
             return user;
         }
@@ -47,7 +46,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository{
 
     @Override
     public Optional<UsuarioModel> findById(int id) {
-        String sql = "SELECT * FROM Usuario WHERE id = ?";
+        String sql = "SELECT * FROM Usuario WHERE id_usuario = ?";
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new Object[]{id}, rowMapper));
         } catch (Exception e) {
@@ -55,11 +54,13 @@ public class UsuarioRepositoryImpl implements UsuarioRepository{
         }
     }
 
+
+    @Override
     public int save(UsuarioModel usuario) {
         String sql = "INSERT INTO Usuario (nome, sobrenome, email, senha, data_nascimento, sexo, data_criacao) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql, usuario.getNome(), usuario.getSobrenome(), usuario.getEmail(),
-                usuario.getSenha(), usuario.getDataNascimento(), usuario.getSexo().getDescricao(),
+                usuario.getSenha(), usuario.getDataNascimento(), usuario.getSexo(),
                 usuario.getDate());
     }
 
@@ -67,13 +68,13 @@ public class UsuarioRepositoryImpl implements UsuarioRepository{
     public int update(UsuarioModel usuario) {
         String sql = "UPDATE Usuario SET nome = ?, sobrenome = ?, email = ?, senha = ?, data_nascimento = ?, sexo = ?, data_criacao = ? WHERE id_usuario = ?";
         return jdbcTemplate.update(sql, usuario.getNome(), usuario.getSobrenome(), usuario.getEmail(),
-                usuario.getSenha(), usuario.getDataNascimento(), usuario.getSexo().getDescricao(),
+                usuario.getSenha(), usuario.getDataNascimento(), usuario.getSexo(),
                 usuario.getDate(), usuario.getIdUsuario());
     }
 
     @Override
     public int deleteById(int id) {
-        String sql = "DELETE FROM Usuario WHERE id = ?";
+        String sql = "DELETE FROM Usuario WHERE id_usuario = ?";
         return jdbcTemplate.update(sql, id);
     }
 
