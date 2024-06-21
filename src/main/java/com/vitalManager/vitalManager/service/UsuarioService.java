@@ -24,7 +24,7 @@ public class UsuarioService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + id));
     }
 
-    public void createUsuario(UsuarioDTO usuarioDTO) {
+    public UsuarioModel createUsuario(UsuarioDTO usuarioDTO) {
         UsuarioModel usuario = new UsuarioModel();
         usuario.setNome(usuarioDTO.nome());
         usuario.setSobrenome(usuarioDTO.sobrenome());
@@ -35,9 +35,10 @@ public class UsuarioService {
         usuario.setTipo(usuarioDTO.tipo());
         usuario.setDate(LocalDateTime.now());
         usuarioRepository.save(usuario);
+        return usuario;
     }
 
-    public void updateUser(int id, UsuarioModel usuarioDTO) {
+    public UsuarioModel updateUser(int id, UsuarioModel usuarioDTO) {
         if (!usuarioRepository.existsById(id)) {
             throw new ResourceNotFoundException("User not found with id " + id);
         }
@@ -52,6 +53,7 @@ public class UsuarioService {
         usuarioExistente.setTipo(usuarioDTO.getTipo());
         usuarioExistente.setDate(LocalDateTime.now());
         usuarioRepository.update(usuarioExistente);
+        return usuarioExistente;
     }
 
     public void deleteUserById(int id) {

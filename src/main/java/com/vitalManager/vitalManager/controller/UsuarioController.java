@@ -4,8 +4,11 @@ import com.vitalManager.vitalManager.DTO.UsuarioDTO;
 import com.vitalManager.vitalManager.model.UsuarioModel;
 import com.vitalManager.vitalManager.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -16,28 +19,33 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @GetMapping("/")
-    public List<UsuarioModel> getAllUsers() {
-        return usuarioService.getAllUsuarios();
+    public ResponseEntity<List<UsuarioModel>> getAllUsers() {
+        List<UsuarioModel> listaUsuario = usuarioService.getAllUsuarios();
+        return ResponseEntity.ok().body(listaUsuario);
     }
 
     @GetMapping("/{id}")
-    public UsuarioModel getUserById(@PathVariable int id) {
-        return usuarioService.getUserById(id);
+    public ResponseEntity<UsuarioModel> getUserById(@PathVariable int id) {
+        UsuarioModel user = usuarioService.getUserById(id);
+        return ResponseEntity.ok().body(user);
     }
 
     @PostMapping("/")
-    public void createUser(@RequestBody UsuarioDTO userDTO) {
-        System.out.println(userDTO.tipo());
-        usuarioService.createUsuario(userDTO);
+    public ResponseEntity<UsuarioModel> createUser(@RequestBody UsuarioDTO userDTO) {
+        UsuarioModel user = usuarioService.createUsuario(userDTO);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getIdUsuario()).toUri();
+        return ResponseEntity.created(uri).body(user);
     }
 
     @PutMapping("/{id}")
-    public void updateUser(@PathVariable int id, @RequestBody UsuarioModel userDTO) {
-        usuarioService.updateUser(id, userDTO);
+    public ResponseEntity<UsuarioModel> updateUser(@PathVariable int id, @RequestBody UsuarioModel userDTO) {
+        UsuarioModel usuario = usuarioService.updateUser(id, userDTO);
+        return ResponseEntity.ok().body(usuario);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUserById(@PathVariable int id) {
+    public ResponseEntity<Void> deleteUserById(@PathVariable int id) {
         usuarioService.deleteUserById(id);
+        return ResponseEntity.noContent().build();
     }
 }
