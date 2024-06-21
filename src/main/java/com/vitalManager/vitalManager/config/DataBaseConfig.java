@@ -37,9 +37,9 @@ public class DataBaseConfig {
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/vitalManager"); // ajuste conforme o seu banco de dados
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/postgres"); // ajuste conforme o seu banco de dados
         dataSource.setUsername("postgres"); // ajuste conforme o seu usuário
-        dataSource.setPassword("postgres"); // ajuste conforme a sua senha
+        dataSource.setPassword("405307"); // ajuste conforme a sua senha
         return dataSource;
     }
 
