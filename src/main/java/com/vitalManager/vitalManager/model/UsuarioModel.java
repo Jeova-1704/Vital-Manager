@@ -16,7 +16,7 @@ public class UsuarioModel {
     private String sobrenome;
     private String email;
     private String senha;
-    private LocalDate data_nascimento;
+    private LocalDate dataNascimento;
     private SexoEnum sexo;
     private LocalDateTime date;
 }

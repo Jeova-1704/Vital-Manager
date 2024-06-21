@@ -6,6 +6,7 @@ public enum SexoEnum {
     OUTRO("Outro");
 
     private final String descricao;
+
     SexoEnum(String descricao) {
         this.descricao = descricao;
     }

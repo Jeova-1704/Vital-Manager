@@ -1,5 +1,6 @@
 package com.vitalManager.vitalManager.service;
 
+import com.vitalManager.vitalManager.DTO.UsuarioDTO;
 import com.vitalManager.vitalManager.exception.ResourceNotFoundException;
 import com.vitalManager.vitalManager.model.Enum.SexoEnum;
 import com.vitalManager.vitalManager.model.UsuarioModel;
@@ -25,14 +26,14 @@ public class UsuarioService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + id));
     }
 
-    public void createUser(UsuarioModel usuarioDTO) {
+    public void createUser(UsuarioDTO usuarioDTO) {
         UsuarioModel usuario = new UsuarioModel();
-        usuario.setNome(usuarioDTO.getNome());
-        usuario.setSobrenome(usuarioDTO.getSobrenome());
-        usuario.setEmail(usuarioDTO.getEmail());
-        usuario.setSenha(usuarioDTO.getSenha());
-        usuario.setData_nascimento(usuarioDTO.getData_nascimento());
-        usuario.setSexo(SexoEnum.fromDescricao(String.valueOf(usuarioDTO.getSexo())));
+        usuario.setNome(usuarioDTO.nome());
+        usuario.setSobrenome(usuarioDTO.sobrenome());
+        usuario.setEmail(usuarioDTO.email());
+        usuario.setSenha(usuarioDTO.senha());
+        usuario.setDataNascimento(usuarioDTO.dataNascimento());
+        usuario.setSexo(SexoEnum.fromDescricao(String.valueOf(usuarioDTO.sexo())));
         usuario.setDate(LocalDateTime.now());
         usuarioRepository.save(usuario);
     }
@@ -47,7 +48,7 @@ public class UsuarioService {
         usuarioExistente.setSobrenome(usuarioDTO.getSobrenome());
         usuarioExistente.setEmail(usuarioDTO.getEmail());
         usuarioExistente.setSenha(usuarioDTO.getSenha());
-        usuarioExistente.setData_nascimento(usuarioDTO.getData_nascimento());
+        usuarioExistente.setDataNascimento(usuarioDTO.getDataNascimento());
         usuarioExistente.setSexo(SexoEnum.fromDescricao(String.valueOf(usuarioDTO.getSexo())));
         usuarioExistente.setDate(LocalDateTime.now());
 

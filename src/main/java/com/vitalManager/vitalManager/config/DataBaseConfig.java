@@ -36,8 +36,8 @@ public class DataBaseConfig {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(System.getenv("CLASS_NAME"));
         dataSource.setUrl(System.getenv("BANCO_NAME"));
-        dataSource.setUsername(System.getenv("PASSWORD"));
-        dataSource.setPassword(System.getenv("USERNAME_BANCO"));
+        dataSource.setUsername(System.getenv("USERNAME_BANCO"));
+        dataSource.setPassword(System.getenv("PASSWORD"));
         return dataSource;
     }
 

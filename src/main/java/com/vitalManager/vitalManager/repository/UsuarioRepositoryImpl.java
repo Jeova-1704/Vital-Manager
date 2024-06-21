@@ -32,7 +32,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository{
             user.setSobrenome(rs.getString("sobrenome"));
             user.setEmail(rs.getString("email"));
             user.setSenha(rs.getString("senha"));
-            user.setData_nascimento(rs.getDate("data_nascimento").toLocalDate());
+            user.setDataNascimento(rs.getDate("data_nascimento").toLocalDate());
             user.setSexo(SexoEnum.fromDescricao(rs.getString("sexo")));
             user.setDate(rs.getTimestamp("data_criacao").toLocalDateTime());
             return user;
@@ -55,12 +55,11 @@ public class UsuarioRepositoryImpl implements UsuarioRepository{
         }
     }
 
-    @Override
     public int save(UsuarioModel usuario) {
-                String sql = "INSERT INTO Usuario (nome, sobrenome, email, senha, data_nascimento, sexo, data_criacao) " +
+        String sql = "INSERT INTO Usuario (nome, sobrenome, email, senha, data_nascimento, sexo, data_criacao) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql, usuario.getNome(), usuario.getSobrenome(), usuario.getEmail(),
-                usuario.getSenha(), usuario.getData_nascimento(), usuario.getSexo().getDescricao(),
+                usuario.getSenha(), usuario.getDataNascimento(), usuario.getSexo().getDescricao(),
                 usuario.getDate());
     }
 
@@ -68,7 +67,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository{
     public int update(UsuarioModel usuario) {
         String sql = "UPDATE Usuario SET nome = ?, sobrenome = ?, email = ?, senha = ?, data_nascimento = ?, sexo = ?, data_criacao = ? WHERE id_usuario = ?";
         return jdbcTemplate.update(sql, usuario.getNome(), usuario.getSobrenome(), usuario.getEmail(),
-                usuario.getSenha(), usuario.getData_nascimento(), usuario.getSexo().getDescricao(),
+                usuario.getSenha(), usuario.getDataNascimento(), usuario.getSexo().getDescricao(),
                 usuario.getDate(), usuario.getIdUsuario());
     }
 

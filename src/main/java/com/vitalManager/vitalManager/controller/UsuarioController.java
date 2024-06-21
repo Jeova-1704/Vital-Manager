@@ -1,5 +1,6 @@
 package com.vitalManager.vitalManager.controller;
 
+import com.vitalManager.vitalManager.DTO.UsuarioDTO;
 import com.vitalManager.vitalManager.model.UsuarioModel;
 import com.vitalManager.vitalManager.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class UsuarioController {
     }
 
     @PostMapping("/")
-    public void createUser(@RequestBody UsuarioModel userDTO) {
+    public void createUser(@RequestBody UsuarioDTO userDTO) {
         usuarioService.createUser(userDTO);
     }
 
