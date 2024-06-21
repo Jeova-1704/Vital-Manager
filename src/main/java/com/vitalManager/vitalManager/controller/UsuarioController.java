@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/usuario")
 public class UsuarioController {
 
     @Autowired
@@ -26,6 +27,7 @@ public class UsuarioController {
 
     @PostMapping("/")
     public void createUser(@RequestBody UsuarioDTO userDTO) {
+        System.out.println(userDTO.tipo());
         usuarioService.createUsuario(userDTO);
     }
 

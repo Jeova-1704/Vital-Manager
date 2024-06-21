@@ -32,7 +32,7 @@ CREATE TABLE Telefone (
 );
 
 CREATE TABLE Medico (
-    id_medico INT AUTO_INCREMENT PRIMARY KEY,
+    id_medico SERIAL PRIMARY KEY,
     id_usuario_fk INT,
     salario DECIMAL(10, 2),
     especialidade VARCHAR(255),

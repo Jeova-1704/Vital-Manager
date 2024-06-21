@@ -33,6 +33,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository{
             user.setSenha(rs.getString("senha"));
             user.setDataNascimento(rs.getDate("data_nascimento").toLocalDate());
             user.setSexo(rs.getString("sexo"));
+            user.setTipo(rs.getString("tipo"));
             user.setDate(rs.getTimestamp("data_criacao").toLocalDateTime());
             return user;
         }
@@ -57,18 +58,18 @@ public class UsuarioRepositoryImpl implements UsuarioRepository{
 
     @Override
     public int save(UsuarioModel usuario) {
-        String sql = "INSERT INTO Usuario (nome, sobrenome, email, senha, data_nascimento, sexo, data_criacao) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Usuario (nome, sobrenome, email, senha, data_nascimento, sexo, tipo, data_criacao) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql, usuario.getNome(), usuario.getSobrenome(), usuario.getEmail(),
-                usuario.getSenha(), usuario.getDataNascimento(), usuario.getSexo(),
+                usuario.getSenha(), usuario.getDataNascimento(), usuario.getSexo(), usuario.getTipo(),
                 usuario.getDate());
     }
 
     @Override
     public int update(UsuarioModel usuario) {
-        String sql = "UPDATE Usuario SET nome = ?, sobrenome = ?, email = ?, senha = ?, data_nascimento = ?, sexo = ?, data_criacao = ? WHERE id_usuario = ?";
+        String sql = "UPDATE Usuario SET nome = ?, sobrenome = ?, email = ?, senha = ?, data_nascimento = ?, sexo = ?, tipo = ?, data_criacao = ? WHERE id_usuario = ?";
         return jdbcTemplate.update(sql, usuario.getNome(), usuario.getSobrenome(), usuario.getEmail(),
-                usuario.getSenha(), usuario.getDataNascimento(), usuario.getSexo(),
+                usuario.getSenha(), usuario.getDataNascimento(), usuario.getSexo(), usuario.getTipo(),
                 usuario.getDate(), usuario.getIdUsuario());
     }
 

@@ -1,6 +1,7 @@
 package com.vitalManager.vitalManager.service;
 
 import com.vitalManager.vitalManager.DTO.MedicoDTO;
+import com.vitalManager.vitalManager.exception.NotTypeMedicoException;
 import com.vitalManager.vitalManager.exception.ResourceNotFoundException;
 import com.vitalManager.vitalManager.model.MedicoModel;
 import com.vitalManager.vitalManager.model.UsuarioModel;
@@ -21,6 +22,9 @@ public class MedicoService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     public List<MedicoModel> getAllMedicos() {
         return medicoRepository.findAll();
     }
@@ -33,15 +37,18 @@ public class MedicoService {
     public void createMedico(MedicoDTO medicoDTO) {
         UsuarioModel usuario = usuarioRepository.findById(medicoDTO.idUsuario())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + medicoDTO.idUsuario()));
+        if (usuario.getTipo().equals("M") || usuario.getTipo().equals("Medico")) {
+            MedicoModel medico = new MedicoModel();
+            medico.setUsuario(usuario);
+            medico.setSalario(medicoDTO.salario());
+            medico.setEspecialidade(medicoDTO.especialidade());
+            medico.setCrm(medicoDTO.CRM());
+            medico.setDataContratacao(LocalDateTime.now());
 
-        MedicoModel medico = new MedicoModel();
-        medico.setUsuario(usuario);
-        medico.setSalario(medicoDTO.salario());
-        medico.setEspecialidade(medicoDTO.especialidade());
-        medico.setCrm(medicoDTO.CRM());
-        medico.setDataContratacao(LocalDateTime.now());
-
-        medicoRepository.save(medico);
+            medicoRepository.save(medico);
+        } else {
+            throw new NotTypeMedicoException("O usuário nao é do tipo médico.");
+        }
     }
 
     public void updateMedico(int id, MedicoModel medicoDTO) {

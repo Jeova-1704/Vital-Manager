@@ -17,5 +17,6 @@ public class UsuarioModel {
     private String senha;
     private LocalDate dataNascimento;
     private String sexo;
+    private String tipo;
     private LocalDateTime date;
 }

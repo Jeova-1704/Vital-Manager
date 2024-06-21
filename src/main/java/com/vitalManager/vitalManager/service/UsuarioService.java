@@ -32,9 +32,9 @@ public class UsuarioService {
         usuario.setSenha(usuarioDTO.senha());
         usuario.setDataNascimento(usuarioDTO.dataNascimento());
         usuario.setSexo(usuarioDTO.sexo());
+        usuario.setTipo(usuarioDTO.tipo());
         usuario.setDate(LocalDateTime.now());
         usuarioRepository.save(usuario);
-
     }
 
     public void updateUser(int id, UsuarioModel usuarioDTO) {
@@ -49,6 +49,7 @@ public class UsuarioService {
         usuarioExistente.setSenha(usuarioDTO.getSenha());
         usuarioExistente.setDataNascimento(usuarioDTO.getDataNascimento());
         usuarioExistente.setSexo(usuarioDTO.getSexo());
+        usuarioExistente.setTipo(usuarioDTO.getTipo());
         usuarioExistente.setDate(LocalDateTime.now());
         usuarioRepository.update(usuarioExistente);
     }

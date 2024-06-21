@@ -1,5 +1,6 @@
 package com.vitalManager.vitalManager.handler;
 
+import com.vitalManager.vitalManager.exception.NotTypeMedicoException;
 import com.vitalManager.vitalManager.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,11 @@ public class HandlerException {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NotTypeMedicoException.class)
+    public ResponseEntity<String> handleNotTypeMedicoException(NotTypeMedicoException ex){
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
