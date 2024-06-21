@@ -12,10 +12,6 @@ import java.util.List;
 
 @Service
 public class UsuarioService {
-    private final String URL = "jdbc:postgresql://localhost:5432/vitalManager";
-    private final String USER = "postgres";
-    private final String PASSWORD = "postgres";
-
     @Autowired
     private UsuarioRepository usuarioRepository;
 
