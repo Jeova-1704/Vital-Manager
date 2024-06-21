@@ -1,7 +1,7 @@
 CREATE TYPE SEXOENUM AS ENUM ('Masculino', 'Feminino', 'Outro');
 CREATE TYPE TIPOTELENUM AS ENUM ('RES', 'COM', 'CEL');
 
-CREATE TABLE Usuargit io (
+CREATE TABLE Usuario (
         id_usuario SERIAL PRIMARY KEY,
         nome VARCHAR(30) NOT NULL,
         sobrenome VARCHAR(30) NOT NULL,
