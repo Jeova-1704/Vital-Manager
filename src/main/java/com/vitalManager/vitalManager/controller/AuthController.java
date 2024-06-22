@@ -38,26 +38,16 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody UsuarioDTO body) {
         Optional<UsuarioModel> usuarioModel = this.repository.findByEmail(body.email());
-        System.out.println("*********************** MODEL ******************");
-        System.out.println(usuarioModel);
+
         if (usuarioModel.isEmpty()) {
             UsuarioModel user = new UsuarioModel();
-            System.out.println("*********************** AQUI ******************");
             user.setNome(body.nome());
-            System.out.println(body.nome());
             user.setSobrenome(body.sobrenome());
-            System.out.println(body.sobrenome());
             user.setEmail(body.email());
-            System.out.println(body.email());
             user.setSenha(passwordEncoder.encode(body.senha()));
-            System.out.println(passwordEncoder.encode(body.senha()));
-            System.out.println(body.senha());
             user.setDataNascimento(body.dataNascimento());
-            System.out.println(body.dataNascimento());
             user.setSexo(body.sexo());
-            System.out.println(body.sexo());
             user.setTipo(body.tipo());
-            System.out.println(body.tipo());
             user.setDate(LocalDateTime.now());
 
             this.repository.save(user);
