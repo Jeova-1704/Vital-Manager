@@ -1,10 +1,10 @@
 package com.vitalManager.vitalManager.controller;
 
 import com.vitalManager.vitalManager.DTO.LoginDTO;
-import com.vitalManager.vitalManager.DTO.RegisterRequestDTO;
 import com.vitalManager.vitalManager.DTO.ResponseDTO;
 import com.vitalManager.vitalManager.DTO.UsuarioDTO;
 import com.vitalManager.vitalManager.controller.encapsulationDocumentation.AuthDocsController;
+import com.vitalManager.vitalManager.exception.EmailNotFoundException;
 import com.vitalManager.vitalManager.infra.security.TokenService;
 import com.vitalManager.vitalManager.model.UsuarioModel;
 import com.vitalManager.vitalManager.repository.UsuarioRepository;
@@ -30,7 +30,7 @@ public class AuthController implements AuthDocsController {
     @Override
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginDTO body) {
-        UsuarioModel usuarioModel = this.repository.findByEmail(body.email()).orElseThrow(() -> new RuntimeException("User not found"));
+        UsuarioModel usuarioModel = this.repository.findByEmail(body.email()).orElseThrow(() -> new EmailNotFoundException("Email not found"));
         if (passwordEncoder.matches(body.senha(), usuarioModel.getSenha())) {
             String token = this.tokenService.generateToken(usuarioModel);
             return ResponseEntity.ok(new ResponseDTO(usuarioModel.getNome(), token));
@@ -42,26 +42,16 @@ public class AuthController implements AuthDocsController {
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody UsuarioDTO body) {
         Optional<UsuarioModel> usuarioModel = this.repository.findByEmail(body.email());
-        System.out.println("*********************** MODEL ******************");
-        System.out.println(usuarioModel);
+
         if (usuarioModel.isEmpty()) {
             UsuarioModel user = new UsuarioModel();
-            System.out.println("*********************** AQUI ******************");
             user.setNome(body.nome());
-            System.out.println(body.nome());
             user.setSobrenome(body.sobrenome());
-            System.out.println(body.sobrenome());
             user.setEmail(body.email());
-            System.out.println(body.email());
             user.setSenha(passwordEncoder.encode(body.senha()));
-            System.out.println(passwordEncoder.encode(body.senha()));
-            System.out.println(body.senha());
             user.setDataNascimento(body.dataNascimento());
-            System.out.println(body.dataNascimento());
             user.setSexo(body.sexo());
-            System.out.println(body.sexo());
             user.setTipo(body.tipo());
-            System.out.println(body.tipo());
             user.setDate(LocalDateTime.now());
 
             this.repository.save(user);

@@ -1,5 +1,6 @@
 package com.vitalManager.vitalManager.infra.security;
 
+import com.vitalManager.vitalManager.exception.EmailNotFoundException;
 import com.vitalManager.vitalManager.model.UsuarioModel;
 import com.vitalManager.vitalManager.repository.UsuarioRepository;
 import jakarta.servlet.FilterChain;
@@ -33,7 +34,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         var login = tokenService.validateToken(token);
 
         if (login != null) {
-            UsuarioModel user = usuarioRepository.findByEmail(login).orElseThrow(() -> new RuntimeException("User not found"));
+            UsuarioModel user = usuarioRepository.findByEmail(login).orElseThrow(() -> new EmailNotFoundException("Email not found"));
             var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
             var authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);
