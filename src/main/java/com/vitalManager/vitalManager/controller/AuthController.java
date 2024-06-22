@@ -4,6 +4,7 @@ import com.vitalManager.vitalManager.DTO.LoginDTO;
 import com.vitalManager.vitalManager.DTO.RegisterRequestDTO;
 import com.vitalManager.vitalManager.DTO.ResponseDTO;
 import com.vitalManager.vitalManager.DTO.UsuarioDTO;
+import com.vitalManager.vitalManager.controller.encapsulationDocumentation.AuthDocsController;
 import com.vitalManager.vitalManager.infra.security.TokenService;
 import com.vitalManager.vitalManager.model.UsuarioModel;
 import com.vitalManager.vitalManager.repository.UsuarioRepository;
@@ -21,11 +22,12 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-public class AuthController {
+public class AuthController implements AuthDocsController {
     private final UsuarioRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
 
+    @Override
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginDTO body) {
         UsuarioModel usuarioModel = this.repository.findByEmail(body.email()).orElseThrow(() -> new RuntimeException("User not found"));
@@ -36,6 +38,7 @@ public class AuthController {
         return  ResponseEntity.badRequest().build();
     }
 
+    @Override
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody UsuarioDTO body) {
         Optional<UsuarioModel> usuarioModel = this.repository.findByEmail(body.email());
