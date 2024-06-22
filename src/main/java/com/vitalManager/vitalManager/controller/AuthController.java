@@ -3,6 +3,7 @@ package com.vitalManager.vitalManager.controller;
 import com.vitalManager.vitalManager.DTO.LoginDTO;
 import com.vitalManager.vitalManager.DTO.ResponseDTO;
 import com.vitalManager.vitalManager.DTO.UsuarioDTO;
+import com.vitalManager.vitalManager.exception.EmailNotFoundException;
 import com.vitalManager.vitalManager.infra.security.TokenService;
 import com.vitalManager.vitalManager.model.UsuarioModel;
 import com.vitalManager.vitalManager.repository.UsuarioRepository;
@@ -27,7 +28,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginDTO body) {
-        UsuarioModel usuarioModel = this.repository.findByEmail(body.email()).orElseThrow(() -> new RuntimeException("User not found"));
+        UsuarioModel usuarioModel = this.repository.findByEmail(body.email()).orElseThrow(() -> new EmailNotFoundException("Email not found"));
         if (passwordEncoder.matches(body.senha(), usuarioModel.getSenha())) {
             String token = this.tokenService.generateToken(usuarioModel);
             return ResponseEntity.ok(new ResponseDTO(usuarioModel.getNome(), token));
