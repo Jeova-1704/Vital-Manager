@@ -33,9 +33,7 @@ public class AuthController {
             String token = this.tokenService.generateToken(usuarioModel);
             return ResponseEntity.ok(new ResponseDTO(usuarioModel.getNome(), token));
         }
-
         return  ResponseEntity.badRequest().build();
-
     }
 
     @PostMapping("/register")

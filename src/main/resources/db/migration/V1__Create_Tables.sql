@@ -3,7 +3,7 @@ CREATE TABLE Usuario (
     nome VARCHAR(30) NOT NULL,
     sobrenome VARCHAR(30) NOT NULL,
     email VARCHAR(50) NOT NULL,
-    senha VARCHAR(15) NOT NULL,
+    senha VARCHAR(255) NOT NULL,
     data_nascimento DATE NOT NULL,
     sexo VARCHAR(10) NOT NULL,
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
