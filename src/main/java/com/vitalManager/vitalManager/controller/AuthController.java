@@ -1,7 +1,6 @@
 package com.vitalManager.vitalManager.controller;
 
 import com.vitalManager.vitalManager.DTO.LoginDTO;
-import com.vitalManager.vitalManager.DTO.RegisterRequestDTO;
 import com.vitalManager.vitalManager.DTO.ResponseDTO;
 import com.vitalManager.vitalManager.DTO.UsuarioDTO;
 import com.vitalManager.vitalManager.infra.security.TokenService;
