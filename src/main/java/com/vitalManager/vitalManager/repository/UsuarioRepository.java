@@ -12,4 +12,5 @@ public interface UsuarioRepository {
     int update(UsuarioModel usuario);
     int deleteById(int id);
     boolean existsById(int id);
+    Optional<UsuarioModel> findByEmail(String email);
 }

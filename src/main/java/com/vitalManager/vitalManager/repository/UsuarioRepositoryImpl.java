@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class UsuarioRepositoryImpl implements UsuarioRepository{
+public class UsuarioRepositoryImpl implements UsuarioRepository {
 
     @Autowired
     private final JdbcTemplate jdbcTemplate;
@@ -84,5 +84,15 @@ public class UsuarioRepositoryImpl implements UsuarioRepository{
         String sql = "SELECT COUNT(*) FROM Usuario WHERE id_usuario = ?";
         Integer count = jdbcTemplate.queryForObject(sql, new Object[]{id}, Integer.class);
         return count != null && count > 0;
+    }
+
+    @Override
+    public Optional<UsuarioModel> findByEmail(String email) {
+        String sql = "SELECT * from usuario WHERE email = ?";
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new Object[]{email}, rowMapper));
+        } catch (Exception e) {
+            return Optional.empty();
+        }
     }
 }
