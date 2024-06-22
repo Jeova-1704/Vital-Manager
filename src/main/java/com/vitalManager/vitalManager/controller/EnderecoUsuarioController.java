@@ -4,6 +4,7 @@ import com.vitalManager.vitalManager.DTO.EnderecoUsuarioDTO;
 import com.vitalManager.vitalManager.controller.encapsulationDocumentation.EnderecoUsuarioDocsController;
 import com.vitalManager.vitalManager.model.EnderecoUsuarioModel;
 import com.vitalManager.vitalManager.service.EnderecoUsuarioService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,11 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/enderecos")
 public class EnderecoUsuarioController implements EnderecoUsuarioDocsController {
 
-    @Autowired
-    private EnderecoUsuarioService enderecoUsuarioService;
+    private final EnderecoUsuarioService enderecoUsuarioService;
 
     @Override
     @GetMapping("/")

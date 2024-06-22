@@ -4,6 +4,7 @@ import com.vitalManager.vitalManager.DTO.UsuarioDTO;
 import com.vitalManager.vitalManager.controller.encapsulationDocumentation.UsuarioDocsController;
 import com.vitalManager.vitalManager.model.UsuarioModel;
 import com.vitalManager.vitalManager.service.UsuarioService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +14,12 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/usuario")
 public class UsuarioController implements UsuarioDocsController {
+
+    private final UsuarioService usuarioService;
+
 
     @Override
     @GetMapping("/")
@@ -22,9 +27,6 @@ public class UsuarioController implements UsuarioDocsController {
         List<UsuarioModel> listaUsuario = usuarioService.getAllUsuarios();
         return ResponseEntity.ok().body(listaUsuario);
     }
-
-    @Autowired
-    private UsuarioService usuarioService;
 
     @Override
     @GetMapping("/{id}")
