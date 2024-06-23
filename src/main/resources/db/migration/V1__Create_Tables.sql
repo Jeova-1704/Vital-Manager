@@ -41,4 +41,12 @@ CREATE TABLE Medico (
     FOREIGN KEY (id_usuario_fk) REFERENCES Usuario(id_usuario)
 );
 
+CREATE TABLE Paciente (
+  id_paciente SERIAL PRIMARY KEY,
+  id_usuario_fk INT,
+  numero_prontuario VARCHAR(255),
+  FOREIGN KEY (id_usuario_fk) REFERENCES Usuario(id_usuario)
+);
+
+
 
