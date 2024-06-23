@@ -33,8 +33,8 @@ public class EnderecoUsuarioService {
         enderecoUsuario.setCidade(enderecoUsuarioDTO.cidade());
         enderecoUsuario.setEstado(enderecoUsuarioDTO.estado());
         enderecoUsuario.setPais(enderecoUsuarioDTO.pais());
-        enderecoUsuario.setNumeroCasa(enderecoUsuarioDTO.numeroCasa());
-        enderecoUsuario.setIdUsuarioFK(enderecoUsuarioDTO.idUsuarioFK());
+        enderecoUsuario.setNumeroCasa(enderecoUsuarioDTO.numero_casa());
+        enderecoUsuario.setIdUsuarioFK(enderecoUsuarioDTO.id_usuario_fk());
         enderecoUsuarioRepository.save(enderecoUsuario);
         return enderecoUsuario;
     }
