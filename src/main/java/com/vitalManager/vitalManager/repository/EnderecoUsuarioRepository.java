@@ -10,6 +10,6 @@ public interface EnderecoUsuarioRepository {
     Optional<EnderecoUsuarioModel> findById(int id);
     int save(EnderecoUsuarioModel enderecoUsuarioModel);
     int update(EnderecoUsuarioModel enderecoUsuarioModel);
-    int deleteById(int id);
+    int deleteAdressByUserId(int id);
     boolean existsById(int id);
 }

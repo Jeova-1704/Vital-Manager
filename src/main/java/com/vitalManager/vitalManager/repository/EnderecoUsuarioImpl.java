@@ -67,14 +67,14 @@ public class EnderecoUsuarioImpl implements EnderecoUsuarioRepository{
     }
 
     @Override
-    public int deleteById(int id) {
-        String sql = "DELETE FROM enderecousuario WHERE id_usuario = ?";
+    public int deleteAdressByUserId(int id) {
+        String sql = "DELETE FROM enderecousuario WHERE id_usuario_fk = ?";
         return jdbcTemplate.update(sql, id);
     }
 
     @Override
     public boolean existsById(int id) {
-        String sql = "SELECT COUNT(*) FROM enderecousuario WHERE id_usuario = ?";
+        String sql = "SELECT COUNT(*) FROM enderecousuario WHERE id_usuario_fk = ?";
         Integer count = jdbcTemplate.queryForObject(sql, new Object[]{id}, Integer.class);
         return count != null && count > 0;
     }

@@ -5,6 +5,7 @@ import com.vitalManager.vitalManager.exception.ResourceNotFoundException;
 import com.vitalManager.vitalManager.model.EnderecoUsuarioModel;
 import com.vitalManager.vitalManager.repository.EnderecoUsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,6 +38,13 @@ public class EnderecoUsuarioService {
         enderecoUsuario.setIdUsuarioFK(enderecoUsuarioDTO.id_usuario_fk());
         enderecoUsuarioRepository.save(enderecoUsuario);
         return enderecoUsuario;
+    }
+
+    public void deleteAdressByUserId(int id){
+        if (! enderecoUsuarioRepository.existsById(id)){
+            throw new ResourceNotFoundException("Adress not found with User Id " + id);
+        }
+        enderecoUsuarioRepository.deleteAdressByUserId(id);
     }
 
 

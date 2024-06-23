@@ -41,16 +41,9 @@ public class EnderecoUsuarioController implements EnderecoUsuarioDocsController 
         return ResponseEntity.created(uri).body(enderecoUsuarioModel);
     }
 
-//    @PutMapping("/{id}")
-//    public void updateUser(@PathVariable int id, @RequestBody EnderecoUsuarioModel userDTO) {
-//        enderecoUsuarioService.updateEnderecoUsuario(id, userDTO);
-//    }
-//
-//          Implemente o ResponseEntity por favor
-//
-//    @DeleteMapping("/{id}")
-//    public void deleteUserById(@PathVariable int id) {
-//        enderecoUsuarioService.deleteUserById(id);
-//    }
+    @DeleteMapping("/{id}")
+    public void deleteUserById(@PathVariable int id) {
+        enderecoUsuarioService.deleteAdressByUserId(id);
+    }
 
 }
