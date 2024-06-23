@@ -23,7 +23,7 @@ public class EnderecoUsuarioService {
 
     public EnderecoUsuarioModel getAdressByIdUser(int id) {
         return enderecoUsuarioRepository.findByUserId(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Adress not found with id " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Nenhum endereço atribuido ao usuario de id " + id));
     }
 
     public EnderecoUsuarioModel createUsuarioAdress(EnderecoUsuarioDTO enderecoUsuarioDTO) {
@@ -41,10 +41,10 @@ public class EnderecoUsuarioService {
     }
 
     public void deleteAdressByUserId(int id){
-        if (! enderecoUsuarioRepository.existsById(id)){
-            throw new ResourceNotFoundException("Adress not found with User Id " + id);
+        if (! enderecoUsuarioRepository.existsByUserId(id)){
+            throw new ResourceNotFoundException("Nenhum endereço atribuido ao usuario de id " + id);
         }
-        enderecoUsuarioRepository.deleteAdressByUserId(id);
+        enderecoUsuarioRepository.deleteByUserId(id);
     }
 
 
