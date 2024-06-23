@@ -40,8 +40,8 @@ public class EnderecoUsuarioImpl implements EnderecoUsuarioRepository{
     }
 
     @Override
-    public Optional<EnderecoUsuarioModel> findById(int id) {
-        String sql = "SELECT * FROM enderecousuario WHERE id_usuario = ?";
+    public Optional<EnderecoUsuarioModel> findByUserId(int id) {
+        String sql = "SELECT * FROM enderecousuario WHERE id_usuario_fk = ?";
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new Object[]{id}, rowMapper));
         } catch (Exception e) {

@@ -22,7 +22,7 @@ public class EnderecoUsuarioService {
     }
 
     public EnderecoUsuarioModel getAdressByIdUser(int id) {
-        return enderecoUsuarioRepository.findById(id)
+        return enderecoUsuarioRepository.findByUserId(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Adress not found with id " + id));
     }
 

@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface EnderecoUsuarioRepository {
     List<EnderecoUsuarioModel> findAll();
-    Optional<EnderecoUsuarioModel> findById(int id);
+    Optional<EnderecoUsuarioModel> findByUserId(int id);
     int save(EnderecoUsuarioModel enderecoUsuarioModel);
     int update(EnderecoUsuarioModel enderecoUsuarioModel);
     int deleteAdressByUserId(int id);
