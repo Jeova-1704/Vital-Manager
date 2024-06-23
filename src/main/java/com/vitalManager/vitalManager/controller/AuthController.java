@@ -8,6 +8,7 @@ import com.vitalManager.vitalManager.exception.EmailRegisteredSystemException;
 import com.vitalManager.vitalManager.infra.security.TokenService;
 import com.vitalManager.vitalManager.model.UsuarioModel;
 import com.vitalManager.vitalManager.repository.UsuarioRepository;
+import com.vitalManager.vitalManager.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -24,6 +27,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthController {
     private final UsuarioRepository repository;
+    private final UsuarioService usuarioService;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
 
@@ -40,20 +44,9 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody UsuarioDTO body) {
         Optional<UsuarioModel> usuarioModel = this.repository.findByEmail(body.email());
-
         if (usuarioModel.isEmpty()) {
-            UsuarioModel user = new UsuarioModel();
-            user.setNome(body.nome());
-            user.setSobrenome(body.sobrenome());
-            user.setEmail(body.email());
-            user.setSenha(passwordEncoder.encode(body.senha()));
-            user.setDataNascimento(body.dataNascimento());
-            user.setSexo(body.sexo());
-            user.setTipo(body.tipo());
-            user.setDate(LocalDateTime.now());
-
+            UsuarioModel user = usuarioService.convertDtoToModel(body);
             this.repository.save(user);
-
             String token = this.tokenService.generateToken(user);
             return ResponseEntity.ok(new ResponseDTO(user.getNome(), token));
         } else {

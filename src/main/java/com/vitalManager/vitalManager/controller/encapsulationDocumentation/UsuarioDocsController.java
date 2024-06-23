@@ -55,7 +55,7 @@ public interface UsuarioDocsController {
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
                     @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
                     @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),})
-    ResponseEntity<UsuarioModel> updateUser(@PathVariable int id, @RequestBody UsuarioModel userDTO);
+    ResponseEntity<UsuarioModel> updateUser(@PathVariable int id, @RequestBody UsuarioDTO userDTO);
 
     @Operation(summary = "Deletes a User", description = "Deletes a User by ID",
             tags = {"UsuarioController"},

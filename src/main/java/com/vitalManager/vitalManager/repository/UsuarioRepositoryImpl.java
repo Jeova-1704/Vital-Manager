@@ -2,6 +2,7 @@ package com.vitalManager.vitalManager.repository;
 
 import com.vitalManager.vitalManager.model.UsuarioModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -50,7 +51,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
         String sql = "SELECT * FROM Usuario WHERE id_usuario = ?";
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new Object[]{id}, rowMapper));
-        } catch (Exception e) {
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
