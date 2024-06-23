@@ -22,9 +22,6 @@ public class MedicoService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    @Autowired
-    private UsuarioService usuarioService;
-
     public List<MedicoModel> getAllMedicos() {
         return medicoRepository.findAll();
     }
