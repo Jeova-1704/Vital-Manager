@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class PacienteService {
@@ -32,12 +33,15 @@ public class PacienteService {
     public PacienteModel createPaciente(PacienteDTO pacienteDTO) {
         UsuarioModel usuario = usuarioRepository.findById(pacienteDTO.idUsuario())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + pacienteDTO.idUsuario()));
-
-        PacienteModel paciente = new PacienteModel();
-        paciente.setUsuario(usuario);
-        paciente.setNumeroProntuario(pacienteDTO.numeroProntuario());
-        pacienteRepository.save(paciente);
-        return paciente;
+        if (Objects.equals(usuario.getTipo(), "P") || Objects.equals(usuario.getTipo(), "Paciente")) {
+            PacienteModel paciente = new PacienteModel();
+            paciente.setUsuario(usuario);
+            paciente.setNumeroProntuario(pacienteDTO.numeroProntuario());
+            pacienteRepository.save(paciente);
+            return paciente;
+        } else {
+            throw new RuntimeException("Não é do tipo paciente");
+        }
     }
 
     public PacienteModel updatePaciente(int id, PacienteModel pacienteDTO) {
