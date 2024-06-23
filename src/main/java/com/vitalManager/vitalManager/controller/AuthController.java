@@ -4,6 +4,7 @@ import com.vitalManager.vitalManager.DTO.LoginDTO;
 import com.vitalManager.vitalManager.DTO.ResponseDTO;
 import com.vitalManager.vitalManager.DTO.UsuarioDTO;
 import com.vitalManager.vitalManager.exception.EmailNotFoundException;
+import com.vitalManager.vitalManager.exception.EmailRegisteredSystemException;
 import com.vitalManager.vitalManager.infra.security.TokenService;
 import com.vitalManager.vitalManager.model.UsuarioModel;
 import com.vitalManager.vitalManager.repository.UsuarioRepository;
@@ -56,7 +57,7 @@ public class AuthController {
             String token = this.tokenService.generateToken(user);
             return ResponseEntity.ok(new ResponseDTO(user.getNome(), token));
         }
-        return  ResponseEntity.badRequest().build();
+        throw new EmailRegisteredSystemException("O email já esta cadastrado no sistema.");
 
     }
 }

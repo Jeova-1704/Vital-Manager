@@ -1,9 +1,6 @@
 package com.vitalManager.vitalManager.handler;
 
-import com.vitalManager.vitalManager.exception.EmailNotFoundException;
-import com.vitalManager.vitalManager.exception.ExceptionResponse;
-import com.vitalManager.vitalManager.exception.NotTypeMedicoException;
-import com.vitalManager.vitalManager.exception.ResourceNotFoundException;
+import com.vitalManager.vitalManager.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -34,7 +31,14 @@ public class HandlerException {
     }
 
     @ExceptionHandler(EmailNotFoundException.class)
-    public ResponseEntity<String> handleUserNotFoundException(EmailNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    public ResponseEntity<ExceptionResponse> handleEmailNotFoundException(Exception ex, WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(EmailRegisteredSystemException.class)
+    public ResponseEntity<ExceptionResponse> handleEmailRegisteredSystemException(Exception ex, WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.UNAUTHORIZED);
     }
 }
