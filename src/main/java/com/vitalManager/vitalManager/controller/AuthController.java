@@ -56,8 +56,8 @@ public class AuthController {
 
             String token = this.tokenService.generateToken(user);
             return ResponseEntity.ok(new ResponseDTO(user.getNome(), token));
+        } else {
+            throw new EmailRegisteredSystemException("O email já esta cadastrado no sistema.");
         }
-        throw new EmailRegisteredSystemException("O email já esta cadastrado no sistema.");
-
     }
 }
