@@ -48,5 +48,12 @@ CREATE TABLE Paciente (
   FOREIGN KEY (id_usuario_fk) REFERENCES Usuario(id_usuario)
 );
 
+CREATE TABLE Admin (
+    id_admin SERIAL PRIMARY KEY,
+    id_usuario_fk INT,
+    permissao VARCHAR(20),
+    FOREIGN KEY (id_usuario_fk) REFERENCES Usuario(id_usuario)
+);
+
 
 
