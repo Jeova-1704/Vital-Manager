@@ -34,6 +34,7 @@ public class PacienteController {
     public ResponseEntity<PacienteModel> createPaciente(@RequestBody PacienteDTO pacienteDTO) {
         PacienteModel paciente = pacienteService.createPaciente(pacienteDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(paciente.getIdPaciente()).toUri();
+        System.out.println(paciente.getIdPaciente());
         return ResponseEntity.created(uri).body(paciente);
     }
 

@@ -53,7 +53,7 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 
     @Override
     public Optional<PacienteModel> findById(int id) {
-        String sql = "SELECT u.*, p.* FROM usuario u JOIN paciente p ON u.id_usuario = p.id_usuario_fk WHERE p.id_paciente = ?";
+        String sql = "SELECT u.*, p.* FROM usuario u LEFT JOIN paciente p ON u.id_usuario = p.id_usuario_fk WHERE p.id_paciente = ?";
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new Object[]{id}, rowMapper));
         } catch (Exception e) {
