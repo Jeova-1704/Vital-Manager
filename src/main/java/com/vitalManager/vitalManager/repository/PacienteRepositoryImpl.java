@@ -34,6 +34,7 @@ public class PacienteRepositoryImpl implements PacienteRepository {
             usuario.setSenha(rs.getString("senha"));
             usuario.setDataNascimento(rs.getDate("data_nascimento").toLocalDate());
             usuario.setSexo(rs.getString("sexo"));
+            usuario.setTipo(rs.getString("tipo"));
             usuario.setDate(rs.getTimestamp("data_criacao").toLocalDateTime());
 
             PacienteModel paciente = new PacienteModel();
