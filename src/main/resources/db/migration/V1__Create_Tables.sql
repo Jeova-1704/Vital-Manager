@@ -27,7 +27,7 @@ CREATE TABLE Prontuario (
     Temperatura FLOAT,
     presao VARCHAR(10),
     Descricao VARCHAR(255),
-    Data_criacao DATE
+    Data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 );
 
 CREATE TABLE Paciente (
