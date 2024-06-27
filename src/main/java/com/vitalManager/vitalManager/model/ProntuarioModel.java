@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,7 +19,8 @@ public class ProntuarioModel {
     private Float altura;
     private Float peso;
     private Float temperatura;
-    private String presao;
+    private String pressao;
     private String descricao;
     private LocalDateTime dataCriacao;
+    private List<ConsultaModel> consultas;
 }

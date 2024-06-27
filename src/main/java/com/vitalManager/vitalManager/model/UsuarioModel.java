@@ -2,8 +2,8 @@ package com.vitalManager.vitalManager.model;
 
 import lombok.*;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Setter
@@ -19,7 +19,7 @@ public class UsuarioModel {
     private String senha;
     private LocalDate dataNascimento;
     private String sexo;
-    private Timestamp dataCriacao;
+    private LocalDateTime dataCriacao;
     private String tipo;
     private EnderecoUsuarioModel enderecoUsuario;
     private List<TelefoneModel> telefoneUsuario;

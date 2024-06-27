@@ -7,14 +7,13 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PacienteModel {
-    private Integer idPaciente;
-    private UsuarioModel usuario;
-    private String numeroProntuario;
-    private ProntuarioModel prontuario;
-    private List<ExameModel> exames;
+public class PrescricaoModel {
+    private Integer idPrescricao;
+    private ConsultaModel consulta;
+    private String instrucoes;
+    private List<ItensHospitalaresModel> itensHospitalareModels;
 }
