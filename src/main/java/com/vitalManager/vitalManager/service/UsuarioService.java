@@ -63,7 +63,7 @@ public class UsuarioService {
         user.setDataNascimento(body.dataNascimento());
         user.setSexo(body.sexo());
         user.setTipo(body.tipo());
-        user.setDate(LocalDateTime.now());
+        user.setDataCriacao(LocalDateTime.now());
         return user;
     }
 

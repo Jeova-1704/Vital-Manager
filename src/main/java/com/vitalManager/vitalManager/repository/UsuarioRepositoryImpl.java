@@ -35,7 +35,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
             user.setDataNascimento(rs.getDate("data_nascimento").toLocalDate());
             user.setSexo(rs.getString("sexo"));
             user.setTipo(rs.getString("tipo"));
-            user.setDate(rs.getTimestamp("data_criacao").toLocalDateTime());
+            user.setDataCriacao(rs.getTimestamp("data_criacao").toLocalDateTime());
             return user;
         }
     };
@@ -63,7 +63,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql, usuario.getNome(), usuario.getSobrenome(), usuario.getEmail(),
                 usuario.getSenha(), usuario.getDataNascimento(), usuario.getSexo(), usuario.getTipo(),
-                usuario.getDate());
+                usuario.getDataCriacao());
     }
 
     @Override
@@ -71,7 +71,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
         String sql = "UPDATE Usuario SET nome = ?, sobrenome = ?, email = ?, senha = ?, data_nascimento = ?, sexo = ?, tipo = ?, data_criacao = ? WHERE id_usuario = ?";
         return jdbcTemplate.update(sql, usuario.getNome(), usuario.getSobrenome(), usuario.getEmail(),
                 usuario.getSenha(), usuario.getDataNascimento(), usuario.getSexo(), usuario.getTipo(),
-                usuario.getDate(), usuario.getIdUsuario());
+                usuario.getDataCriacao(), usuario.getIdUsuario());
     }
 
     @Override

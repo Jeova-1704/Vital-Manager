@@ -35,7 +35,7 @@ public class AdminRepositoryImpl implements AdminRepository {
             usuario.setDataNascimento(rs.getDate("data_nascimento").toLocalDate());
             usuario.setSexo(rs.getString("sexo"));
             usuario.setTipo(rs.getString("tipo"));
-            usuario.setDate(rs.getTimestamp("data_criacao").toLocalDateTime());
+            usuario.setDataCriacao(rs.getTimestamp("data_criacao").toLocalDateTime());
 
             AdminModel admin = new AdminModel();
             admin.setIdAdmin(rs.getInt("id_admin"));
