@@ -58,6 +58,7 @@ public class UsuarioService {
         UsuarioModel user = new UsuarioModel();
         user.setNome(body.nome());
         user.setSobrenome(body.sobrenome());
+        user.setCpf(body.CPF());
         user.setEmail(body.email());
         user.setSenha(passwordEncoder.encode(body.senha()));
         user.setDataNascimento(body.dataNascimento());

@@ -23,4 +23,22 @@ public class UsuarioModel {
     private String tipo;
     private EnderecoUsuarioModel enderecoUsuario;
     private List<TelefoneModel> telefoneUsuario;
+
+    @Override
+    public String toString() {
+        return "UsuarioModel{" +
+                "idUsuario=" + idUsuario +
+                ", nome='" + nome + '\'' +
+                ", sobrenome='" + sobrenome + '\'' +
+                ", cpf='" + cpf + '\'' +
+                ", email='" + email + '\'' +
+                ", senha='" + senha + '\'' +
+                ", dataNascimento=" + dataNascimento +
+                ", sexo='" + sexo + '\'' +
+                ", dataCriacao=" + dataCriacao +
+                ", tipo='" + tipo + '\'' +
+                ", enderecoUsuario=" + enderecoUsuario +
+                ", telefoneUsuario=" + telefoneUsuario +
+                '}';
+    }
 }

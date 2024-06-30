@@ -30,6 +30,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
             user.setIdUsuario(rs.getInt("id_usuario"));
             user.setNome(rs.getString("nome"));
             user.setSobrenome(rs.getString("sobrenome"));
+            user.setCpf(rs.getString("CPF"));
             user.setEmail(rs.getString("email"));
             user.setSenha(rs.getString("senha"));
             user.setDataNascimento(rs.getDate("data_nascimento").toLocalDate());
@@ -59,17 +60,17 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
 
     @Override
     public int save(UsuarioModel usuario) {
-        String sql = "INSERT INTO Usuario (nome, sobrenome, email, senha, data_nascimento, sexo, tipo, data_criacao) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, usuario.getNome(), usuario.getSobrenome(), usuario.getEmail(),
+        String sql = "INSERT INTO Usuario (nome, sobrenome, CPF, email, senha, data_nascimento, sexo, tipo, data_criacao) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, usuario.getNome(), usuario.getSobrenome(), usuario.getCpf(), usuario.getEmail(),
                 usuario.getSenha(), usuario.getDataNascimento(), usuario.getSexo(), usuario.getTipo(),
                 usuario.getDataCriacao());
     }
 
     @Override
     public int update(UsuarioModel usuario) {
-        String sql = "UPDATE Usuario SET nome = ?, sobrenome = ?, email = ?, senha = ?, data_nascimento = ?, sexo = ?, tipo = ?, data_criacao = ? WHERE id_usuario = ?";
-        return jdbcTemplate.update(sql, usuario.getNome(), usuario.getSobrenome(), usuario.getEmail(),
+        String sql = "UPDATE Usuario SET nome = ?, sobrenome = ?, CPF = ?, email = ?, senha = ?, data_nascimento = ?, sexo = ?, tipo = ?, data_criacao = ? WHERE id_usuario = ?";
+        return jdbcTemplate.update(sql, usuario.getNome(), usuario.getSobrenome(), usuario.getCpf(), usuario.getEmail(),
                 usuario.getSenha(), usuario.getDataNascimento(), usuario.getSexo(), usuario.getTipo(),
                 usuario.getDataCriacao(), usuario.getIdUsuario());
     }

@@ -30,6 +30,7 @@ public class MedicoRepositoryImpl implements MedicoRepository {
             usuario.setIdUsuario(rs.getInt("id_usuario"));
             usuario.setNome(rs.getString("nome"));
             usuario.setSobrenome(rs.getString("sobrenome"));
+            usuario.setCpf(rs.getString("CPF"));
             usuario.setEmail(rs.getString("email"));
             usuario.setSenha(rs.getString("senha"));
             usuario.setDataNascimento(rs.getDate("data_nascimento").toLocalDate());
