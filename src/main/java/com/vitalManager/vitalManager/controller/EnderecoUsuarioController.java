@@ -1,10 +1,14 @@
 package com.vitalManager.vitalManager.controller;
 
 import com.vitalManager.vitalManager.DTO.EnderecoUsuarioDTO;
+import com.vitalManager.vitalManager.DTO.UsuarioDTO;
 import com.vitalManager.vitalManager.controller.encapsulationDocumentation.EnderecoUsuarioDocsController;
+import com.vitalManager.vitalManager.exception.ResourceNotFoundException;
 import com.vitalManager.vitalManager.model.EnderecoUsuarioModel;
+import com.vitalManager.vitalManager.model.UsuarioModel;
 import com.vitalManager.vitalManager.service.EnderecoUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -24,6 +28,13 @@ public class EnderecoUsuarioController implements EnderecoUsuarioDocsController 
     public ResponseEntity<List<EnderecoUsuarioModel>> getAllAdress() {
         List<EnderecoUsuarioModel> enderecoUsuarioModels = enderecoUsuarioService.getAllAdress();
         return ResponseEntity.ok().body(enderecoUsuarioModels);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<EnderecoUsuarioModel> updateUserAdress(@PathVariable int id,@RequestBody EnderecoUsuarioDTO enderecoUsuarioDTO) {
+        EnderecoUsuarioModel enderecoUsuarioModel = enderecoUsuarioService.updateUserAdress(id,enderecoUsuarioDTO);
+        System.out.println(enderecoUsuarioModel);
+        return ResponseEntity.ok().body(enderecoUsuarioModel);
     }
 
     @Override
