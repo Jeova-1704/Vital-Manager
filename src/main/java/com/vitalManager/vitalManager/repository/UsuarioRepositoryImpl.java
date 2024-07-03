@@ -2,6 +2,7 @@ package com.vitalManager.vitalManager.repository;
 
 import com.vitalManager.vitalManager.model.UsuarioModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -29,12 +30,13 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
             user.setIdUsuario(rs.getInt("id_usuario"));
             user.setNome(rs.getString("nome"));
             user.setSobrenome(rs.getString("sobrenome"));
+            user.setCpf(rs.getString("CPF"));
             user.setEmail(rs.getString("email"));
             user.setSenha(rs.getString("senha"));
             user.setDataNascimento(rs.getDate("data_nascimento").toLocalDate());
             user.setSexo(rs.getString("sexo"));
             user.setTipo(rs.getString("tipo"));
-            user.setDate(rs.getTimestamp("data_criacao").toLocalDateTime());
+            user.setDataCriacao(rs.getTimestamp("data_criacao").toLocalDateTime());
             return user;
         }
     };
@@ -50,7 +52,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
         String sql = "SELECT * FROM Usuario WHERE id_usuario = ?";
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new Object[]{id}, rowMapper));
-        } catch (Exception e) {
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
@@ -58,19 +60,19 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
 
     @Override
     public int save(UsuarioModel usuario) {
-        String sql = "INSERT INTO Usuario (nome, sobrenome, email, senha, data_nascimento, sexo, tipo, data_criacao) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, usuario.getNome(), usuario.getSobrenome(), usuario.getEmail(),
+        String sql = "INSERT INTO Usuario (nome, sobrenome, CPF, email, senha, data_nascimento, sexo, tipo, data_criacao) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, usuario.getNome(), usuario.getSobrenome(), usuario.getCpf(), usuario.getEmail(),
                 usuario.getSenha(), usuario.getDataNascimento(), usuario.getSexo(), usuario.getTipo(),
-                usuario.getDate());
+                usuario.getDataCriacao());
     }
 
     @Override
     public int update(UsuarioModel usuario) {
-        String sql = "UPDATE Usuario SET nome = ?, sobrenome = ?, email = ?, senha = ?, data_nascimento = ?, sexo = ?, tipo = ?, data_criacao = ? WHERE id_usuario = ?";
-        return jdbcTemplate.update(sql, usuario.getNome(), usuario.getSobrenome(), usuario.getEmail(),
+        String sql = "UPDATE Usuario SET nome = ?, sobrenome = ?, CPF = ?, email = ?, senha = ?, data_nascimento = ?, sexo = ?, tipo = ?, data_criacao = ? WHERE id_usuario = ?";
+        return jdbcTemplate.update(sql, usuario.getNome(), usuario.getSobrenome(), usuario.getCpf(), usuario.getEmail(),
                 usuario.getSenha(), usuario.getDataNascimento(), usuario.getSexo(), usuario.getTipo(),
-                usuario.getDate(), usuario.getIdUsuario());
+                usuario.getDataCriacao(), usuario.getIdUsuario());
     }
 
     @Override

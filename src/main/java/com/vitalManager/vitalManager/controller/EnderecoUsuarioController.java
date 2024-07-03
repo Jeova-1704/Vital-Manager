@@ -8,7 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -33,22 +35,16 @@ public class EnderecoUsuarioController implements EnderecoUsuarioDocsController 
     }
 
     @Override
-    @PostMapping("/criarEndereco")
-    public ResponseEntity<EnderecoUsuarioModel> createUser(@RequestBody EnderecoUsuarioDTO userDTO) {
-        EnderecoUsuarioModel enderecoUsuariomodel = enderecoUsuarioService.createUsuarioAdress(userDTO);
-        return ResponseEntity.ok().body(enderecoUsuariomodel);
+    @PostMapping("/criar")
+    public ResponseEntity<EnderecoUsuarioModel> createUser(@RequestBody EnderecoUsuarioDTO adressDTO) {
+        EnderecoUsuarioModel enderecoUsuarioModel = enderecoUsuarioService.createUsuarioAdress(adressDTO);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(enderecoUsuarioModel.getIdEnderecoUsuario()).toUri();
+        return ResponseEntity.created(uri).body(enderecoUsuarioModel);
     }
 
-//    @PutMapping("/{id}")
-//    public void updateUser(@PathVariable int id, @RequestBody EnderecoUsuarioModel userDTO) {
-//        enderecoUsuarioService.updateEnderecoUsuario(id, userDTO);
-//    }
-//
-//          Implemente o ResponseEntity por favor
-//
-//    @DeleteMapping("/{id}")
-//    public void deleteUserById(@PathVariable int id) {
-//        enderecoUsuarioService.deleteUserById(id);
-//    }
+    @DeleteMapping("/{id}")
+    public void deleteUserById(@PathVariable int id) {
+        enderecoUsuarioService.deleteAdressByUserId(id);
+    }
 
 }

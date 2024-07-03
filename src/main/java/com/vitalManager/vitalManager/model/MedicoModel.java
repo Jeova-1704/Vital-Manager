@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Setter
 @Getter
@@ -19,4 +20,5 @@ public class MedicoModel {
     private String especialidade;
     private String crm;
     private LocalDateTime dataContratacao;
+    private List<ConsultaModel> consultas;
 }

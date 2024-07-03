@@ -21,26 +21,27 @@ public class EnderecoUsuarioImpl implements EnderecoUsuarioRepository{
         @Override
         public EnderecoUsuarioModel mapRow(ResultSet rs, int rowNum) throws SQLException {
             EnderecoUsuarioModel userAdress = new EnderecoUsuarioModel();
+            userAdress.setIdUsuarioFK(rs.getInt("id_usuario_fk"));
             userAdress.setCep(rs.getString("cep"));
             userAdress.setRua(rs.getString("rua"));
             userAdress.setBairro(rs.getString("bairro"));
             userAdress.setCidade(rs.getString("cidade"));
             userAdress.setEstado(rs.getString("estado"));
             userAdress.setPais(rs.getString("pais"));
-            userAdress.setNumeroCasa(rs.getString("numeroCasa"));
+            userAdress.setNumeroCasa(rs.getString("numero_casa"));
             return userAdress;
         }
     };
 
     @Override
     public List<EnderecoUsuarioModel> findAll() {
-        String sql = "SELECT * FROM EnderecoUsuario";
+        String sql = "SELECT * FROM enderecousuario";
         return jdbcTemplate.query(sql, rowMapper);
     }
 
     @Override
-    public Optional<EnderecoUsuarioModel> findById(int id) {
-        String sql = "SELECT * FROM EnderecoUsuario WHERE id_usuario = ?";
+    public Optional<EnderecoUsuarioModel> findByUserId(int id) {
+        String sql = "SELECT * FROM enderecousuario WHERE id_usuario_fk = ?";
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new Object[]{id}, rowMapper));
         } catch (Exception e) {
@@ -50,30 +51,30 @@ public class EnderecoUsuarioImpl implements EnderecoUsuarioRepository{
 
     @Override
     public int save(EnderecoUsuarioModel enderecoUsuarioModel) {
-        String sql = "INSERT INTO Usuario (cep, rua, bairro, cidade, estado, pais,numeroCasa) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO enderecousuario (cep, rua, bairro, cidade, estado, pais,numero_casa,id_usuario_fk) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql, enderecoUsuarioModel.getCep(), enderecoUsuarioModel.getRua(), enderecoUsuarioModel.getBairro(),
                 enderecoUsuarioModel.getCidade(), enderecoUsuarioModel.getEstado(), enderecoUsuarioModel.getPais(),
-                enderecoUsuarioModel.getNumeroCasa());
+                enderecoUsuarioModel.getNumeroCasa(),enderecoUsuarioModel.getIdUsuarioFK());
     }
 
     @Override
     public int update(EnderecoUsuarioModel enderecoUsuarioModel) {
-        String sql = "UPDATE Usuario SET cep = ?, rua = ?, bairro = ?, cidade = ?, estado = ?, pais = ?, numeroCasa = ? WHERE id_usuario = ?";
+        String sql = "UPDATE enderecousuario SET cep = ?, rua = ?, bairro = ?, cidade = ?, estado = ?, pais = ?, numeroCasa = ? WHERE id_usuario = ?";
         return jdbcTemplate.update(sql, enderecoUsuarioModel.getCep(), enderecoUsuarioModel.getRua(), enderecoUsuarioModel.getBairro(),
                 enderecoUsuarioModel.getCidade(), enderecoUsuarioModel.getEstado(), enderecoUsuarioModel.getPais(),
                 enderecoUsuarioModel.getNumeroCasa());
     }
 
     @Override
-    public int deleteById(int id) {
-        String sql = "DELETE FROM EnderecoUsuario WHERE id_usuario = ?";
+    public int deleteByUserId(int id) {
+        String sql = "DELETE FROM enderecousuario WHERE id_usuario_fk = ?";
         return jdbcTemplate.update(sql, id);
     }
 
     @Override
-    public boolean existsById(int id) {
-        String sql = "SELECT COUNT(*) FROM EnderecoUsuario WHERE id_usuario = ?";
+    public boolean existsByUserId(int id) {
+        String sql = "SELECT COUNT(*) FROM enderecousuario WHERE id_usuario_fk = ?";
         Integer count = jdbcTemplate.queryForObject(sql, new Object[]{id}, Integer.class);
         return count != null && count > 0;
     }

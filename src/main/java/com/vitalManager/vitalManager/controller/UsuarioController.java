@@ -2,10 +2,12 @@ package com.vitalManager.vitalManager.controller;
 
 import com.vitalManager.vitalManager.DTO.UsuarioDTO;
 import com.vitalManager.vitalManager.controller.encapsulationDocumentation.UsuarioDocsController;
+import com.vitalManager.vitalManager.exception.ResourceNotFoundException;
 import com.vitalManager.vitalManager.model.UsuarioModel;
 import com.vitalManager.vitalManager.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -45,9 +47,16 @@ public class UsuarioController implements UsuarioDocsController {
 
     @Override
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioModel> updateUser(@PathVariable int id, @RequestBody UsuarioModel userDTO) {
-        UsuarioModel usuario = usuarioService.updateUser(id, userDTO);
-        return ResponseEntity.ok().body(usuario);
+    public ResponseEntity<UsuarioModel> updateUser(@PathVariable int id, @RequestBody UsuarioDTO userDTO) {
+        try {
+            UsuarioModel usuario = usuarioService.updateUser(id, userDTO);
+            System.out.println(usuario);
+            return ResponseEntity.ok().body(usuario);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @Override

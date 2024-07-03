@@ -5,6 +5,7 @@ import com.vitalManager.vitalManager.exception.ResourceNotFoundException;
 import com.vitalManager.vitalManager.model.EnderecoUsuarioModel;
 import com.vitalManager.vitalManager.repository.EnderecoUsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,8 +22,8 @@ public class EnderecoUsuarioService {
     }
 
     public EnderecoUsuarioModel getAdressByIdUser(int id) {
-        return enderecoUsuarioRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Adress not found with id " + id));
+        return enderecoUsuarioRepository.findByUserId(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Nenhum endereço atribuido ao usuario de id " + id));
     }
 
     public EnderecoUsuarioModel createUsuarioAdress(EnderecoUsuarioDTO enderecoUsuarioDTO) {
@@ -33,10 +34,17 @@ public class EnderecoUsuarioService {
         enderecoUsuario.setCidade(enderecoUsuarioDTO.cidade());
         enderecoUsuario.setEstado(enderecoUsuarioDTO.estado());
         enderecoUsuario.setPais(enderecoUsuarioDTO.pais());
-        enderecoUsuario.setNumeroCasa(enderecoUsuarioDTO.numeroCasa());
-        enderecoUsuario.setIdUsuarioFK(enderecoUsuarioDTO.idUsuarioFK());
+        enderecoUsuario.setNumeroCasa(enderecoUsuarioDTO.numero_casa());
+        enderecoUsuario.setIdUsuarioFK(enderecoUsuarioDTO.id_usuario_fk());
         enderecoUsuarioRepository.save(enderecoUsuario);
         return enderecoUsuario;
+    }
+
+    public void deleteAdressByUserId(int id){
+        if (! enderecoUsuarioRepository.existsByUserId(id)){
+            throw new ResourceNotFoundException("Nenhum endereço atribuido ao usuario de id " + id);
+        }
+        enderecoUsuarioRepository.deleteByUserId(id);
     }
 
 
