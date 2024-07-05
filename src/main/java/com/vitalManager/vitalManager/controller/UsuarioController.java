@@ -5,6 +5,7 @@ import com.vitalManager.vitalManager.controller.encapsulationDocumentation.Usuar
 import com.vitalManager.vitalManager.exception.ResourceNotFoundException;
 import com.vitalManager.vitalManager.model.UsuarioModel;
 import com.vitalManager.vitalManager.service.UsuarioService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +16,11 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequiredArgsConstructor
+@RequestMapping("/usuario")
 public class UsuarioController implements UsuarioDocsController {
 
-    @Autowired
-    private UsuarioService usuarioService;
+    private final UsuarioService usuarioService;
 
     @Override
     @GetMapping("/")

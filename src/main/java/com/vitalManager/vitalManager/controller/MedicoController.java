@@ -5,6 +5,7 @@ import com.vitalManager.vitalManager.controller.encapsulationDocumentation.Medic
 import com.vitalManager.vitalManager.model.MedicoModel;
 import com.vitalManager.vitalManager.model.UsuarioModel;
 import com.vitalManager.vitalManager.service.MedicoService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,11 +15,11 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/medicos")
 public class MedicoController implements MedicoDocsController {
 
-    @Autowired
-    private MedicoService medicoService;
+    private final MedicoService medicoService;
 
     @Override
     @GetMapping("/")
