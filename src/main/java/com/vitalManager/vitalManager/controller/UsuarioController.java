@@ -15,8 +15,11 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/usuario")
+@RequestMapping("/usuarios")
 public class UsuarioController implements UsuarioDocsController {
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     @Override
     @GetMapping("/")
@@ -24,9 +27,6 @@ public class UsuarioController implements UsuarioDocsController {
         List<UsuarioModel> listaUsuario = usuarioService.getAllUsuarios();
         return ResponseEntity.ok().body(listaUsuario);
     }
-
-    @Autowired
-    private UsuarioService usuarioService;
 
     @Override
     @GetMapping("/{id}")
