@@ -21,6 +21,7 @@ public class EnderecoUsuarioImpl implements EnderecoUsuarioRepository{
         @Override
         public EnderecoUsuarioModel mapRow(ResultSet rs, int rowNum) throws SQLException {
             EnderecoUsuarioModel userAdress = new EnderecoUsuarioModel();
+            userAdress.setIdEnderecoUsuario(rs.getInt("id_endereco_usuario"));
             userAdress.setIdUsuarioFK(rs.getInt("id_usuario_fk"));
             userAdress.setCep(rs.getString("cep"));
             userAdress.setRua(rs.getString("rua"));
@@ -59,11 +60,19 @@ public class EnderecoUsuarioImpl implements EnderecoUsuarioRepository{
     }
 
     @Override
+<<<<<<< HEAD
     public int update(EnderecoUsuarioModel endereco) {
         String sql = "UPDATE EnderecoUsuario SET cep = ?, rua = ?, bairro = ?, cidade = ?, estado = ?, pais = ?, numero_casa = ?, id_usuario_fk = ? WHERE id_endereco_usuario = ?";
         return jdbcTemplate.update(sql,
                 endereco.getCep(),endereco.getRua(),endereco.getBairro(),endereco.getCidade(),endereco.getEstado(),
                 endereco.getPais(),endereco.getNumeroCasa(),endereco.getIdUsuarioFK(), endereco.getIdEnderecoUsuario());
+=======
+    public int update(EnderecoUsuarioModel enderecoUsuarioModel) {
+        String sql = "UPDATE enderecousuario SET cep = ?, rua = ?, bairro = ?, cidade = ?, estado = ?, pais = ?, numero_casa = ? WHERE id_endereco_usuario = ?";
+        return jdbcTemplate.update(sql, enderecoUsuarioModel.getCep(), enderecoUsuarioModel.getRua(), enderecoUsuarioModel.getBairro(),
+                enderecoUsuarioModel.getCidade(), enderecoUsuarioModel.getEstado(), enderecoUsuarioModel.getPais(),
+                enderecoUsuarioModel.getNumeroCasa(),enderecoUsuarioModel.getIdEnderecoUsuario());
+>>>>>>> e72f4fea0908b8a5b57187ac40a98345af28e779
     }
 
     @Override
