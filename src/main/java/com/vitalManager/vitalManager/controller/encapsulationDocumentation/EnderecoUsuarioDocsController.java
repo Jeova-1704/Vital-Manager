@@ -56,7 +56,7 @@ public interface EnderecoUsuarioDocsController {
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
                     @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
                     @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),})
-    ResponseEntity<EnderecoUsuarioModel> updateEndereco(@PathVariable int id, @RequestBody EnderecoUsuarioDTO userDTO);
+    ResponseEntity<EnderecoUsuarioModel> updateUserAdress(@PathVariable int id, @RequestBody EnderecoUsuarioDTO userDTO);
 
     @Operation(summary = "Deletes an Address", description = "Deletes an Address by ID",
             tags = {"EnderecoUsuarioController"},
