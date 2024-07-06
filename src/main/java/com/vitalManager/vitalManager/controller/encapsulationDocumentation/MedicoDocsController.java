@@ -57,7 +57,7 @@ public interface MedicoDocsController {
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
                     @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
                     @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),})
-    ResponseEntity<MedicoModel> updateMedico(@PathVariable int id, @RequestBody MedicoModel medicoDTO);
+    ResponseEntity<MedicoModel> updateMedico(@PathVariable int id, @RequestBody MedicoDTO medicoDTO);
 
     @Operation(summary = "Deletes a Medico", description = "Deletes a Medico by ID",
             tags = {"MedicoController"},

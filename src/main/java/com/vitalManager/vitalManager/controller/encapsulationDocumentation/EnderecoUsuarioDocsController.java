@@ -46,24 +46,24 @@ public interface EnderecoUsuarioDocsController {
                             content = @Content(schema = @Schema(implementation = EnderecoUsuarioModel.class))),
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
                     @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),})
-    ResponseEntity<EnderecoUsuarioModel> createUser(@RequestBody EnderecoUsuarioDTO userDTO);
+    ResponseEntity<EnderecoUsuarioModel> createEndereco(@RequestBody EnderecoUsuarioDTO userDTO);
 
-//    @Operation(summary = "Updates an Address", description = "Updates an Address by passing in a JSON representation of the address",
-//            tags = {"EnderecoUsuarioController"},
-//            responses = {
-//                    @ApiResponse(description = "Updated", responseCode = "200",
-//                            content = @Content(schema = @Schema(implementation = EnderecoUsuarioModel.class))),
-//                    @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
-//                    @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
-//                    @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),})
-//    ResponseEntity<EnderecoUsuarioModel> updateUser(@PathVariable int id, @RequestBody EnderecoUsuarioModel userDTO);
-//
-//    @Operation(summary = "Deletes an Address", description = "Deletes an Address by ID",
-//            tags = {"EnderecoUsuarioController"},
-//            responses = {
-//                    @ApiResponse(description = "No Content", responseCode = "204", content = @Content),
-//                    @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
-//                    @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
-//                    @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),})
-//    ResponseEntity<Void> deleteUserById(@PathVariable int id);
+    @Operation(summary = "Updates an Address", description = "Updates an Address by passing in a JSON representation of the address",
+            tags = {"EnderecoUsuarioController"},
+            responses = {
+                    @ApiResponse(description = "Updated", responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = EnderecoUsuarioModel.class))),
+                    @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+                    @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
+                    @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),})
+    ResponseEntity<EnderecoUsuarioModel> updateEndereco(@PathVariable int id, @RequestBody EnderecoUsuarioDTO userDTO);
+
+    @Operation(summary = "Deletes an Address", description = "Deletes an Address by ID",
+            tags = {"EnderecoUsuarioController"},
+            responses = {
+                    @ApiResponse(description = "No Content", responseCode = "204", content = @Content),
+                    @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+                    @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
+                    @ApiResponse(description = "Internal Error", responseCode = "500", content = @Content),})
+    ResponseEntity<Void> deleteEndrecoById(@PathVariable int id);
 }

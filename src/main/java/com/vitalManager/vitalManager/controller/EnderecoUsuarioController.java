@@ -5,7 +5,6 @@ import com.vitalManager.vitalManager.controller.encapsulationDocumentation.Ender
 import com.vitalManager.vitalManager.model.EnderecoUsuarioModel;
 import com.vitalManager.vitalManager.service.EnderecoUsuarioService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -35,16 +34,24 @@ public class EnderecoUsuarioController implements EnderecoUsuarioDocsController 
     }
 
     @Override
-    @PostMapping("/criar")
-    public ResponseEntity<EnderecoUsuarioModel> createUser(@RequestBody EnderecoUsuarioDTO adressDTO) {
+    @PostMapping("/")
+    public ResponseEntity<EnderecoUsuarioModel> createEndereco(@RequestBody EnderecoUsuarioDTO adressDTO) {
         EnderecoUsuarioModel enderecoUsuarioModel = enderecoUsuarioService.createUsuarioAdress(adressDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(enderecoUsuarioModel.getIdEnderecoUsuario()).toUri();
         return ResponseEntity.created(uri).body(enderecoUsuarioModel);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteUserById(@PathVariable int id) {
-        enderecoUsuarioService.deleteAdressByUserId(id);
+    @Override
+    @PutMapping("/{id}")
+    public ResponseEntity<EnderecoUsuarioModel> updateEndereco(@PathVariable int id, @RequestBody EnderecoUsuarioDTO enderecoDTO) {
+        EnderecoUsuarioModel enderecoAtualizado = enderecoUsuarioService.updateEndereco(id, enderecoDTO);
+        return ResponseEntity.ok().body(enderecoAtualizado);
     }
 
+    @Override
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteEndrecoById(@PathVariable int id) {
+        enderecoUsuarioService.deleteAdressByUserId(id);
+        return ResponseEntity.noContent().build();
+    }
 }

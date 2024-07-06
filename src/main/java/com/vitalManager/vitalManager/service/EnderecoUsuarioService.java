@@ -40,6 +40,27 @@ public class EnderecoUsuarioService {
         return enderecoUsuario;
     }
 
+    public EnderecoUsuarioModel updateEndereco(int id, EnderecoUsuarioDTO enderecoDTO) {
+        if (!enderecoUsuarioRepository.existsByUserId(id)) {
+            throw new ResourceNotFoundException("Endereço não encontrado com id " + id);
+        }
+        EnderecoUsuarioModel enderecoExistente = enderecoUsuarioRepository.findByUserId(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Endereço não encontrado com id " + id));
+
+        enderecoExistente.setCep(enderecoDTO.cep());
+        enderecoExistente.setRua(enderecoDTO.rua());
+        enderecoExistente.setBairro(enderecoDTO.bairro());
+        enderecoExistente.setCidade(enderecoDTO.cidade());
+        enderecoExistente.setEstado(enderecoDTO.estado());
+        enderecoExistente.setPais(enderecoDTO.pais());
+        enderecoExistente.setNumeroCasa(enderecoDTO.numero_casa());
+        enderecoExistente.setIdUsuarioFK(enderecoDTO.id_usuario_fk());
+
+        enderecoUsuarioRepository.update(enderecoExistente);
+        return enderecoExistente;
+    }
+
+
     public void deleteAdressByUserId(int id){
         if (! enderecoUsuarioRepository.existsByUserId(id)){
             throw new ResourceNotFoundException("Nenhum endereço atribuido ao usuario de id " + id);

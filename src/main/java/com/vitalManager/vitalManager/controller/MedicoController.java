@@ -45,7 +45,7 @@ public class MedicoController implements MedicoDocsController {
 
     @Override
     @PutMapping("/{id}")
-    public ResponseEntity<MedicoModel> updateMedico(@PathVariable int id, @RequestBody MedicoModel medicoDTO) {
+    public ResponseEntity<MedicoModel> updateMedico(@PathVariable int id, @RequestBody MedicoDTO medicoDTO) {
         MedicoModel medico = medicoService.updateMedico(id, medicoDTO);
         return ResponseEntity.ok().body(medico);
     }

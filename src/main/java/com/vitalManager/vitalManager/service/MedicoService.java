@@ -49,16 +49,16 @@ public class MedicoService {
         }
     }
 
-    public MedicoModel updateMedico(int id, MedicoModel medicoDTO) {
+    public MedicoModel updateMedico(int id, MedicoDTO medicoDTO) {
         if (!medicoRepository.existsById(id)) {
             throw new ResourceNotFoundException("Medico not found with id " + id);
         }
         MedicoModel medicoExistente = medicoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Medico not found with id " + id));
 
-        medicoExistente.setSalario(medicoDTO.getSalario());
-        medicoExistente.setEspecialidade(medicoDTO.getEspecialidade());
-        medicoExistente.setCrm(medicoDTO.getCrm());
+        medicoExistente.setSalario(medicoDTO.salario());
+        medicoExistente.setEspecialidade(medicoDTO.especialidade());
+        medicoExistente.setCrm(medicoDTO.CRM());
         medicoExistente.setDataContratacao(LocalDateTime.now());
 
         medicoRepository.update(medicoExistente);

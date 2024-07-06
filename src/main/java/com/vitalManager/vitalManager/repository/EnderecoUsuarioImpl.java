@@ -59,11 +59,11 @@ public class EnderecoUsuarioImpl implements EnderecoUsuarioRepository{
     }
 
     @Override
-    public int update(EnderecoUsuarioModel enderecoUsuarioModel) {
-        String sql = "UPDATE enderecousuario SET cep = ?, rua = ?, bairro = ?, cidade = ?, estado = ?, pais = ?, numeroCasa = ? WHERE id_usuario = ?";
-        return jdbcTemplate.update(sql, enderecoUsuarioModel.getCep(), enderecoUsuarioModel.getRua(), enderecoUsuarioModel.getBairro(),
-                enderecoUsuarioModel.getCidade(), enderecoUsuarioModel.getEstado(), enderecoUsuarioModel.getPais(),
-                enderecoUsuarioModel.getNumeroCasa());
+    public int update(EnderecoUsuarioModel endereco) {
+        String sql = "UPDATE EnderecoUsuario SET cep = ?, rua = ?, bairro = ?, cidade = ?, estado = ?, pais = ?, numero_casa = ?, id_usuario_fk = ? WHERE id_endereco_usuario = ?";
+        return jdbcTemplate.update(sql,
+                endereco.getCep(),endereco.getRua(),endereco.getBairro(),endereco.getCidade(),endereco.getEstado(),
+                endereco.getPais(),endereco.getNumeroCasa(),endereco.getIdUsuarioFK(), endereco.getIdEnderecoUsuario());
     }
 
     @Override
