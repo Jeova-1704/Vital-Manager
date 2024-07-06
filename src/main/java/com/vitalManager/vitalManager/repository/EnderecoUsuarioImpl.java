@@ -36,13 +36,13 @@ public class EnderecoUsuarioImpl implements EnderecoUsuarioRepository{
 
     @Override
     public List<EnderecoUsuarioModel> findAll() {
-        String sql = "SELECT * FROM enderecousuario";
+        String sql = "SELECT * FROM endereco_usuario";
         return jdbcTemplate.query(sql, rowMapper);
     }
 
     @Override
     public Optional<EnderecoUsuarioModel> findByUserId(int id) {
-        String sql = "SELECT * FROM enderecousuario WHERE ID_Usuario_FK = ?";
+        String sql = "SELECT * FROM endereco_usuario WHERE ID_Usuario_FK = ?";
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new Object[]{id}, rowMapper));
         } catch (Exception e) {
@@ -52,7 +52,7 @@ public class EnderecoUsuarioImpl implements EnderecoUsuarioRepository{
 
     @Override
     public int save(EnderecoUsuarioModel enderecoUsuarioModel) {
-        String sql = "INSERT INTO enderecousuario (CEP, Rua, Bairro, Cidade, Estado, Pais,Numero_casa,ID_Usuario_FK) " +
+        String sql = "INSERT INTO endereco_usuario (CEP, Rua, Bairro, Cidade, Estado, Pais,Numero_casa,ID_Usuario_FK) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql, enderecoUsuarioModel.getCep(), enderecoUsuarioModel.getRua(), enderecoUsuarioModel.getBairro(),
                 enderecoUsuarioModel.getCidade(), enderecoUsuarioModel.getEstado(), enderecoUsuarioModel.getPais(),
@@ -61,7 +61,7 @@ public class EnderecoUsuarioImpl implements EnderecoUsuarioRepository{
 
     @Override
     public int update(EnderecoUsuarioModel enderecoUsuarioModel) {
-        String sql = "UPDATE enderecousuario SET CEP = ?, Rua = ?, Bairro = ?, Cidade = ?, Estado = ?, Pais = ?, Numero_casa = ? WHERE ID_Endereco_Usuario = ?";
+        String sql = "UPDATE endereco_usuario SET CEP = ?, Rua = ?, Bairro = ?, Cidade = ?, Estado = ?, Pais = ?, Numero_casa = ? WHERE ID_Endereco_Usuario = ?";
         return jdbcTemplate.update(sql, enderecoUsuarioModel.getCep(), enderecoUsuarioModel.getRua(), enderecoUsuarioModel.getBairro(),
                 enderecoUsuarioModel.getCidade(), enderecoUsuarioModel.getEstado(), enderecoUsuarioModel.getPais(),
                 enderecoUsuarioModel.getNumeroCasa(),enderecoUsuarioModel.getIdEnderecoUsuario());
@@ -69,13 +69,13 @@ public class EnderecoUsuarioImpl implements EnderecoUsuarioRepository{
 
     @Override
     public int deleteByUserId(int id) {
-        String sql = "DELETE FROM enderecousuario WHERE ID_Usuario_FK = ?";
+        String sql = "DELETE FROM endereco_usuario WHERE ID_Usuario_FK = ?";
         return jdbcTemplate.update(sql, id);
     }
 
     @Override
     public boolean existsByUserId(int id) {
-        String sql = "SELECT COUNT(*) FROM enderecousuario WHERE ID_Usuario_FK = ?";
+        String sql = "SELECT COUNT(*) FROM endereco_usuario WHERE ID_Usuario_FK = ?";
         Integer count = jdbcTemplate.queryForObject(sql, new Object[]{id}, Integer.class);
         return count != null && count > 0;
     }
