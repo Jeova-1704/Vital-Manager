@@ -1,6 +1,5 @@
 package com.vitalManager.vitalManager.repository;
 
-import com.vitalManager.vitalManager.model.EnderecoUsuarioModel;
 import com.vitalManager.vitalManager.model.TelefoneModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class TelefoneImpl implements TelefoneRepository{
+public class TelefoneRepositoryImpl implements TelefoneRepository{
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
