@@ -16,5 +16,5 @@ public class FornecedorModel {
     private String nome;
     private String cnpj;
     private EnderecoFornecedorModel enderecoFornecedorModel;
-    private List<TelefoneFornecedor> telefonesFornecedor;
+    private List<TelefoneFornecedorModel> telefonesFornecedor;
 }

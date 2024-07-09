@@ -1,12 +1,9 @@
 package com.vitalManager.vitalManager.controller;
 
-import com.vitalManager.vitalManager.DTO.EnderecoUsuarioDTO;
+
 import com.vitalManager.vitalManager.DTO.TelefoneDTO;
-import com.vitalManager.vitalManager.controller.encapsulationDocumentation.EnderecoUsuarioDocsController;
 import com.vitalManager.vitalManager.controller.encapsulationDocumentation.TelefoneDocsController;
-import com.vitalManager.vitalManager.model.EnderecoUsuarioModel;
 import com.vitalManager.vitalManager.model.TelefoneModel;
-import com.vitalManager.vitalManager.service.EnderecoUsuarioService;
 import com.vitalManager.vitalManager.service.TelefoneService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

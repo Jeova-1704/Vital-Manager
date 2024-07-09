@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TelefoneFornecedor {
+public class TelefoneFornecedorModel {
     private Integer idTelefoneFornecedor;
     private Integer idFornecedor;
     private String telefone;
