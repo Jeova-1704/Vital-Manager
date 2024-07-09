@@ -49,15 +49,15 @@ public class TelefoneFornecedorRepositoryImpl implements TelefoneFornecedorRepos
 
     @Override
     public int save(TelefoneFornecedorModel telefoneFornecedorModel) {
-        String sql = "INSERT INTO telefone_fornecedor (id_telefone_fornecedor,id_fornecedor_fk,telefone) " +
-                "VALUES (?, ?, ?)";
-        return jdbcTemplate.update(sql, telefoneFornecedorModel.getIdTelefoneFornecedor(),telefoneFornecedorModel.getIdFornecedor(), telefoneFornecedorModel.getTelefone());
+        String sql = "INSERT INTO telefone_fornecedor (id_fornecedor_fk,telefone) " +
+                "VALUES (?, ?)";
+        return jdbcTemplate.update(sql,telefoneFornecedorModel.getIdFornecedor(), telefoneFornecedorModel.getTelefone());
     }
 
     @Override
     public int update(TelefoneFornecedorModel telefoneFornecedorModel) {
-        String sql = "UPDATE telefone_usuario SET telefone = ?  WHERE id_fornecedor_fk = ?";
-        return jdbcTemplate.update(sql, telefoneFornecedorModel.getTelefone() );
+        String sql = "UPDATE telefone_fornecedor SET telefone = ?  WHERE id_fornecedor_fk = ?";
+        return jdbcTemplate.update(sql, telefoneFornecedorModel.getTelefone() ,telefoneFornecedorModel.getIdFornecedor());
     }
 
     @Override

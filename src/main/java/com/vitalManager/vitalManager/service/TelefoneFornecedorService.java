@@ -2,14 +2,14 @@ package com.vitalManager.vitalManager.service;
 
 import com.vitalManager.vitalManager.DTO.EnderecoUsuarioDTO;
 import com.vitalManager.vitalManager.DTO.TelefoneDTO;
+import com.vitalManager.vitalManager.DTO.TelefoneFornecedorDTO;
 import com.vitalManager.vitalManager.DTO.UsuarioDTO;
 import com.vitalManager.vitalManager.exception.ResourceNotFoundException;
 import com.vitalManager.vitalManager.model.EnderecoUsuarioModel;
+import com.vitalManager.vitalManager.model.TelefoneFornecedorModel;
 import com.vitalManager.vitalManager.model.TelefoneModel;
 import com.vitalManager.vitalManager.model.UsuarioModel;
-import com.vitalManager.vitalManager.repository.EnderecoUsuarioRepository;
-import com.vitalManager.vitalManager.repository.TelefoneRepository;
-import com.vitalManager.vitalManager.repository.UsuarioRepository;
+import com.vitalManager.vitalManager.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -24,56 +24,57 @@ public class TelefoneFornecedorService {
     private FornecedorRepository fornecedorRepository;
 
     @Autowired
-    private TelefoneRepository telefoneRepository;
+    private TelefoneFornecedorRepository telefoneFornecedorRepository;
 
-    public List<TelefoneModel> getAllPhones() {
-        return telefoneRepository.findAll();
+    public List<TelefoneFornecedorModel> getAllPhones() {
+        return telefoneFornecedorRepository.findAll();
     }
 
-    public TelefoneModel getPhoneByIdUser(int id) {
-        return telefoneRepository.findByUserId(id)
+    public TelefoneFornecedorModel getPhoneByIdUser(int id) {
+        return telefoneFornecedorRepository.findBySupplierId(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Nenhum endereço atribuido ao usuario de id " + id));
     }
 
-    public TelefoneModel createPhone(TelefoneDTO telefoneDTO) {
+    public TelefoneFornecedorModel createPhone(TelefoneFornecedorDTO telefoneFornecedorDTO) {
 
-        usuarioRepository.findById(telefoneDTO.id_usuario_fk())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + telefoneDTO.id_usuario_fk()));
+        fornecedorRepository.findById(telefoneFornecedorDTO.id_fornecedor_fk())
+                .orElseThrow(() -> new ResourceNotFoundException("Nenhum telefone atribuido ao fornecedor de id " + telefoneFornecedorDTO.id_fornecedor_fk()));
 
-        TelefoneModel telefoneModel = convertDtoToModel(telefoneDTO);
-        telefoneRepository.save(telefoneModel);
-        return telefoneModel;
+        TelefoneFornecedorModel telefoneFornecedorModel = convertDtoToModel(telefoneFornecedorDTO);
+        telefoneFornecedorRepository.save(telefoneFornecedorModel);
+        return telefoneFornecedorModel;
     }
 
 
-    public TelefoneModel convertDtoToModel(TelefoneDTO body) {
-        TelefoneModel telefone = new TelefoneModel();
-        telefone.setIdUsuarioFK(body.id_usuario_fk());
-        telefone.setTipo(body.tipo());
-        telefone.setContato(body.contato());
+    public TelefoneFornecedorModel convertDtoToModel(TelefoneFornecedorDTO body) {
+        TelefoneFornecedorModel telefone = new TelefoneFornecedorModel();
+
+        telefone.setIdFornecedor(body.id_fornecedor_fk());
+        telefone.setTelefone(body.telefone());
 
         return telefone;
     }
 
-    public TelefoneModel updatePhone(int id, TelefoneDTO telefoneDTO) {
-        if (!telefoneRepository.existsByUserId(id)) {
-            throw new ResourceNotFoundException("User not found with id " + id);
+    public TelefoneFornecedorModel updatePhone(int id, TelefoneFornecedorDTO telefoneFornecedorDTO) {
+        if (!telefoneFornecedorRepository.existsBySupplierId(id)) {
+            throw new ResourceNotFoundException("Nenhum telefone atribuido ao fornecedor de id " + id);
         }
 
-        TelefoneModel telefoneExistente = telefoneRepository.findByUserId(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User Adress not found with id " + id));
+        TelefoneFornecedorModel telefoneExistente = telefoneFornecedorRepository.findBySupplierId(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Nenhum telefone atribuido ao fornecedor de id " + id));
 
-        TelefoneModel telefoneAtualizar = convertDtoToModel(telefoneDTO);
-        telefoneAtualizar.setIdTelefone(telefoneExistente.getIdTelefone());
-        telefoneRepository.update(telefoneAtualizar);
+        TelefoneFornecedorModel telefoneAtualizar = convertDtoToModel(telefoneFornecedorDTO);
+        telefoneAtualizar.setIdTelefoneFornecedor(telefoneExistente.getIdTelefoneFornecedor());
+        telefoneAtualizar.setIdFornecedor(telefoneExistente.getIdFornecedor());
+        telefoneFornecedorRepository.update(telefoneAtualizar);
         return telefoneAtualizar;
     }
 
     public void deletePhoneByUserId(int id){
-        if (! telefoneRepository.existsByUserId(id)){
-            throw new ResourceNotFoundException("Nenhum telefone atribuido ao usuario de id " + id);
+        if (! telefoneFornecedorRepository.existsBySupplierId(id)){
+            throw new ResourceNotFoundException("Nenhum telefone atribuido ao fornecedor de id " + id);
         }
-        telefoneRepository.deleteByUserId(id);
+        telefoneFornecedorRepository.deleteBySupplierId(id);
     }
 
 
