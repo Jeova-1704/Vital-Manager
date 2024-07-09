@@ -16,10 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RestController
@@ -36,7 +33,7 @@ public class AuthController {
         UsuarioModel usuarioModel = this.repository.findByEmail(body.email()).orElseThrow(() -> new EmailNotFoundException("Email not found"));
         if (passwordEncoder.matches(body.senha(), usuarioModel.getSenha())) {
             String token = this.tokenService.generateToken(usuarioModel);
-            return ResponseEntity.ok(new ResponseDTO(usuarioModel.getNome(), token));
+            return ResponseEntity.ok(new ResponseDTO(usuarioModel.getNome(), usuarioModel.getTipo(),token));
         }
         return  ResponseEntity.badRequest().build();
     }
@@ -48,7 +45,7 @@ public class AuthController {
             UsuarioModel user = usuarioService.convertDtoToModel(body);
             this.repository.save(user);
             String token = this.tokenService.generateToken(user);
-            return ResponseEntity.ok(new ResponseDTO(user.getNome(), token));
+            return ResponseEntity.ok(new ResponseDTO(user.getNome(), user.getTipo(),token));
         } else {
             throw new EmailRegisteredSystemException("O email já esta cadastrado no sistema.");
         }
