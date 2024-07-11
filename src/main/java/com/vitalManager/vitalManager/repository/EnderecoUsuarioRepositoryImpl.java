@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class EnderecoUsuarioImpl implements EnderecoUsuarioRepository{
+public class EnderecoUsuarioRepositoryImpl implements EnderecoUsuarioRepository{
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
