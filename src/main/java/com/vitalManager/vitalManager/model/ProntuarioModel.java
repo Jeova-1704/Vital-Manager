@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ProntuarioModel {
     private Integer idProntuario;
+    private Integer idPacienteFK;
     private Integer idade;
     private String tipoSanguineo;
     private Float altura;

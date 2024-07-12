@@ -24,6 +24,7 @@ CREATE TABLE Admin (
 
 CREATE TABLE Prontuario (
     ID_Prontuario SERIAL PRIMARY KEY,
+    ID_Paciente_FK INT UNIQUE,
     Idade NUMERO_POSITIVO NOT NULL,
     tipo_sanguineo VARCHAR(3) NOT NULL,
     Altura VALOR_POSITIVO NOT NULL,
