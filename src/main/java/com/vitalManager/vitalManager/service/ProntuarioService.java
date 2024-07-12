@@ -33,7 +33,7 @@ public class ProntuarioService {
         UsuarioModel usuario = usuarioRepository.findById(prontuarioDTO.idPacienteFK())
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com ID: " + prontuarioDTO.idPacienteFK()));
 
-        if (usuario.getTipo().equals("M")) {
+        if (usuario.getTipo().equals("P")) {
             ProntuarioModel prontuario = convertDTOToModel(prontuarioDTO);
             prontuario.setDataCriacao(LocalDateTime.now());
             prontuarioRepository.save(prontuario);
