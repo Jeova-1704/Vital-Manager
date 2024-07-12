@@ -1,4 +1,12 @@
 package com.vitalManager.vitalManager.DTO;
 
-public record PacienteDTO(int idUsuario, String numeroProntuario) {
+import com.vitalManager.vitalManager.model.PacienteModel;
+
+import java.time.LocalDate;
+
+public record PacienteDTO(Integer idUsuario, Integer numeroProntuario) {
+
+    public PacienteDTO(PacienteModel pacienteModel) {
+        this(pacienteModel.getIdUsuarioFk(),pacienteModel.getNumeroProntuario());
+    }
 }
