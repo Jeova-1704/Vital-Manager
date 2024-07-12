@@ -7,6 +7,6 @@ import java.time.LocalDate;
 public record PacienteDTO(Integer idUsuario, Integer numeroProntuario) {
 
     public PacienteDTO(PacienteModel pacienteModel) {
-        this(pacienteModel.getIdUsuarioFk(),pacienteModel.getNumeroProntuario());
+        this(pacienteModel.getIdUsuarioFK(),pacienteModel.getNumeroProntuario());
     }
 }

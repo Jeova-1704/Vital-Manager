@@ -15,7 +15,7 @@ public class PacienteModel {
     private Integer idPaciente;
     private UsuarioModel usuario;
     private Integer idUsuarioFK;
-    private String numeroProntuario;
+    private Integer numeroProntuario;
     private ProntuarioModel prontuario;
     private List<ExameModel> exames;
 }
