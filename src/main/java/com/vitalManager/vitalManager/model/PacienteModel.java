@@ -14,8 +14,7 @@ import java.util.List;
 public class PacienteModel {
     private Integer idPaciente;
     private UsuarioModel usuario;
-    private Integer idUsuarioFk;
-    private Integer numeroProntuario;
+    private String numeroProntuario;
     private ProntuarioModel prontuario;
     private List<ExameModel> exames;
 }
