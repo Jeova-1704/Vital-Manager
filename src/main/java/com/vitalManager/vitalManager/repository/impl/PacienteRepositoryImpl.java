@@ -42,7 +42,7 @@ public class PacienteRepositoryImpl implements PacienteRepository {
             PacienteModel paciente = new PacienteModel();
             paciente.setIdPaciente(rs.getInt("id_paciente"));
             paciente.setUsuario(usuario);
-            paciente.setNumeroProntuario(rs.getString("numero_prontuario"));
+            paciente.setNumeroProntuario(rs.getInt("numero_prontuario"));
 
             return paciente;
         }
@@ -66,7 +66,7 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 
     @Override
     public int save(PacienteModel paciente) {
-        String sql = "INSERT INTO paciente (id_usuario_fk, numero_prontuario) VALUES (?, ?)";
+        String sql = "INSERT INTO paciente (id_usuario_fk, id_numero_prontuario_fk) VALUES (?, ?)";
         return jdbcTemplate.update(sql,
                 paciente.getUsuario().getIdUsuario(),
                 paciente.getNumeroProntuario());
