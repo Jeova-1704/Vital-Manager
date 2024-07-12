@@ -1,7 +1,5 @@
 package com.vitalManager.vitalManager.repository;
 
-import com.vitalManager.vitalManager.model.EnderecoUsuarioModel;
-import com.vitalManager.vitalManager.model.TelefoneModel;
 import com.vitalManager.vitalManager.model.UsuarioModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -14,10 +12,10 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+
 @Repository
 public class UsuarioRepositoryImpl implements UsuarioRepository {
 
-    @Autowired
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -43,52 +41,10 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
         }
     };
 
-    private EnderecoUsuarioModel getEnderecoByUsuarioId(int usuarioId) {
-        String sql = "SELECT * FROM Endereco_Usuario WHERE ID_Usuario_FK = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{usuarioId}, new RowMapper<EnderecoUsuarioModel>() {
-            @Override
-            public EnderecoUsuarioModel mapRow(ResultSet rs, int rowNum) throws SQLException {
-                EnderecoUsuarioModel endereco = new EnderecoUsuarioModel();
-                endereco.setIdUsuarioFK(rs.getInt("ID_Usuario_FK"));
-                endereco.setIdEnderecoUsuario(rs.getInt("id_endereco_usuario"));
-                endereco.setCep(rs.getString("cep"));
-                endereco.setRua(rs.getString("rua"));
-                endereco.setBairro(rs.getString("bairro"));
-                endereco.setCidade(rs.getString("cidade"));
-                endereco.setEstado(rs.getString("estado"));
-                endereco.setPais(rs.getString("pais"));
-                endereco.setNumeroCasa(rs.getString("numero_casa"));
-                return endereco;
-            }
-        });
-    }
-
-    private List<TelefoneModel> getTelefonesByUsuarioId(int usuarioId) {
-        String sql = "SELECT * FROM Telefone_Usuario WHERE ID_Usuario_FK = ?";
-        return jdbcTemplate.query(sql, new Object[]{usuarioId}, new RowMapper<TelefoneModel>() {
-            @Override
-            public TelefoneModel mapRow(ResultSet rs, int rowNum) throws SQLException {
-                TelefoneModel telefone = new TelefoneModel();
-                telefone.setIdUsuarioFK(rs.getInt("ID_Usuario_FK"));
-                telefone.setIdTelefone(rs.getInt("id_telefone"));
-                telefone.setContato(rs.getString("contato"));
-                telefone.setTipo(rs.getString("tipo"));
-                return telefone;
-            }
-        });
-    }
-
     @Override
     public List<UsuarioModel> findAll() {
         String sql = "SELECT * FROM Usuario";
-        List<UsuarioModel> usuarios = jdbcTemplate.query(sql, rowMapper);
-
-        for (UsuarioModel usuario : usuarios) {
-            usuario.setEnderecoUsuario(getEnderecoByUsuarioId(usuario.getIdUsuario()));
-            usuario.setTelefoneUsuario(getTelefonesByUsuarioId(usuario.getIdUsuario()));
-        }
-
-        return usuarios;
+        return jdbcTemplate.query(sql, rowMapper);
     }
 
     @Override
@@ -100,7 +56,6 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
             return Optional.empty();
         }
     }
-
 
     @Override
     public int save(UsuarioModel usuario) {

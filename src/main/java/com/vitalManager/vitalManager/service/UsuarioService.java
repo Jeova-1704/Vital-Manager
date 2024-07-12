@@ -19,7 +19,7 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
 
     private final PasswordEncoder passwordEncoder;
-
+    
     public List<UsuarioModel> getAllUsuarios() {
         return usuarioRepository.findAll();
     }
