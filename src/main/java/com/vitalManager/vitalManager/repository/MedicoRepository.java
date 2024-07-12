@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface MedicoRepository {
     List<MedicoModel> findAll();
     Optional<MedicoModel> findById(int id);
+    Optional<MedicoModel> findByUsuarioEmail(String email);
     int save(MedicoModel medico);
     int update(MedicoModel medico);
     int deleteById(int id);

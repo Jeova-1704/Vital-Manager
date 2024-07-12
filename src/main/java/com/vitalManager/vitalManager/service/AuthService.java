@@ -27,7 +27,7 @@ public class AuthService {
                 .orElseThrow(() -> new EmailNotFoundException("Email not found"));
         if (passwordEncoder.matches(body.senha(), usuarioModel.getSenha())) {
             String token = tokenService.generateToken(usuarioModel);
-            return new ResponseDTO(usuarioModel.getNome(), usuarioModel.getTipo(), token);
+            return new ResponseDTO(usuarioModel.getNome(), usuarioModel.getTipo(), usuarioModel.getIdUsuario(), token);
         }
         throw new EmailNotFoundException("Invalid password");
     }
@@ -35,10 +35,12 @@ public class AuthService {
     public ResponseDTO register(UsuarioDTO body) {
         Optional<UsuarioModel> usuarioModel = repository.findByEmail(body.email());
         if (usuarioModel.isEmpty()) {
-            UsuarioModel user = usuarioService.convertDtoToModel(body);
-            repository.save(user);
-            String token = tokenService.generateToken(user);
-            return new ResponseDTO(user.getNome(), user.getTipo(), token);
+            UsuarioModel usuario = usuarioService.convertDtoToModel(body);
+            repository.save(usuario);
+            usuario = repository.findByEmail(body.email())
+                    .orElseThrow(() -> new EmailNotFoundException("Email not found"));
+            String token = tokenService.generateToken(usuario);
+            return new ResponseDTO(usuario.getNome(), usuario.getTipo(), usuario.getIdUsuario(),  token);
         } else {
             throw new EmailRegisteredSystemException("O email já esta cadastrado no sistema.");
         }
