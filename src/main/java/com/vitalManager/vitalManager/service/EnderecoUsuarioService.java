@@ -1,17 +1,13 @@
 package com.vitalManager.vitalManager.service;
 
 import com.vitalManager.vitalManager.DTO.EnderecoUsuarioDTO;
-import com.vitalManager.vitalManager.DTO.UsuarioDTO;
 import com.vitalManager.vitalManager.exception.ResourceNotFoundException;
 import com.vitalManager.vitalManager.model.EnderecoUsuarioModel;
-import com.vitalManager.vitalManager.model.UsuarioModel;
 import com.vitalManager.vitalManager.repository.EnderecoUsuarioRepository;
 import com.vitalManager.vitalManager.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service

@@ -2,6 +2,15 @@ CREATE DOMAIN VALOR_POSITIVO AS FLOAT CHECK (VALUE >= 0);
 CREATE DOMAIN NUMERO_POSITIVO AS INT CHECK (VALUE >= 0);
 CREATE DOMAIN SALARIO_POSITIVO AS DECIMAL(10, 2) CHECK (VALUE >= 0);
 
+CREATE FUNCTION non_negative_numeric(value varchar) RETURNS boolean AS $$
+BEGIN
+RETURN value ~ '^\d+$';
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE DOMAIN NUMERO_CASA AS varchar(10)
+    CHECK (non_negative_numeric(VALUE)) NOT NULL;
+
 CREATE TABLE Usuario (
     ID_Usuario SERIAL PRIMARY KEY,
     Nome VARCHAR(30) NOT NULL,
@@ -62,7 +71,7 @@ CREATE TABLE Endereco_Usuario (
     Cidade VARCHAR(30) NOT NULL,
     Estado VARCHAR(2) NOT NULL,
     Pais VARCHAR(13) NOT NULL,
-    Numero_casa VARCHAR(10) NOT NULL,
+    Numero_casa NUMERO_CASA,
     FOREIGN KEY (ID_Usuario_FK) REFERENCES Usuario(ID_Usuario)
 );
 
@@ -125,7 +134,7 @@ CREATE TABLE Endereco_Fornecedor (
     Cidade VARCHAR(255) NOT NULL,
     Pais VARCHAR(50) NOT NULL,
     Estado VARCHAR(50) NOT NULL,
-    Numero VALOR_POSITIVO,
+    Numero NUMERO_CASA,
     FOREIGN KEY (ID_Fornecedor_FK) REFERENCES Fornecedor(ID_Fornecedor)
 );
 

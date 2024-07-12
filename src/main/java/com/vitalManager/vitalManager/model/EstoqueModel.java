@@ -17,6 +17,6 @@ public class EstoqueModel {
     private String nome;
     private LocalDate dataAtualizacao;
     private Integer quantidade;
-    private List<ItensHospitalaresModel> itensHospitalareModels;
+    private List<ItensHospitalaresModel> itensHospitalares;
 
 }

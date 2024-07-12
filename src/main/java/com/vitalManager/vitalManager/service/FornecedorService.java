@@ -1,5 +1,6 @@
 package com.vitalManager.vitalManager.service;
 
+import com.vitalManager.vitalManager.DTO.EstoqueDTO;
 import com.vitalManager.vitalManager.DTO.FornecedorDTO;
 import com.vitalManager.vitalManager.exception.ResourceNotFoundException;
 import com.vitalManager.vitalManager.model.FornecedorModel;
