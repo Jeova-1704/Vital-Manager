@@ -47,7 +47,7 @@ CREATE TABLE Prontuario (
 CREATE TABLE Paciente (
     ID_Paciente SERIAL PRIMARY KEY,
     ID_Usuario_FK INT UNIQUE NOT NULL,
-    ID_numero_Prontuario_FK INT NOT NULL UNIQUE,
+    ID_numero_Prontuario_FK INT UNIQUE,
     FOREIGN KEY (ID_Usuario_FK) REFERENCES Usuario(ID_Usuario),
     FOREIGN KEY (ID_numero_Prontuario_FK) REFERENCES Prontuario(ID_Prontuario)
 );
