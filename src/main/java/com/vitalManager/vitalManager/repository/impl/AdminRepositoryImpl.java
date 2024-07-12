@@ -1,7 +1,8 @@
-package com.vitalManager.vitalManager.repository;
+package com.vitalManager.vitalManager.repository.impl;
 
-import com.vitalManager.vitalManager.model.PacienteModel;
+import com.vitalManager.vitalManager.model.AdminModel;
 import com.vitalManager.vitalManager.model.UsuarioModel;
+import com.vitalManager.vitalManager.repository.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -13,24 +14,23 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class PacienteRepositoryImpl implements PacienteRepository {
+public class AdminRepositoryImpl implements AdminRepository {
 
     @Autowired
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public PacienteRepositoryImpl(JdbcTemplate jdbcTemplate) {
+    public AdminRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private RowMapper<PacienteModel> rowMapper = new RowMapper<PacienteModel>() {
+    private RowMapper<AdminModel> rowMapper = new RowMapper<AdminModel>() {
         @Override
-        public PacienteModel mapRow(ResultSet rs, int rowNum) throws SQLException {
+        public AdminModel mapRow(ResultSet rs, int rowNum) throws SQLException {
             UsuarioModel usuario = new UsuarioModel();
             usuario.setIdUsuario(rs.getInt("id_usuario"));
             usuario.setNome(rs.getString("nome"));
             usuario.setSobrenome(rs.getString("sobrenome"));
-            usuario.setCpf(rs.getString("CPF"));
             usuario.setEmail(rs.getString("email"));
             usuario.setSenha(rs.getString("senha"));
             usuario.setDataNascimento(rs.getDate("data_nascimento").toLocalDate());
@@ -38,24 +38,24 @@ public class PacienteRepositoryImpl implements PacienteRepository {
             usuario.setTipo(rs.getString("tipo"));
             usuario.setDataCriacao(rs.getTimestamp("data_criacao").toLocalDateTime());
 
-            PacienteModel paciente = new PacienteModel();
-            paciente.setIdPaciente(rs.getInt("id_paciente"));
-            paciente.setUsuario(usuario);
-            paciente.setNumeroProntuario(rs.getString("numero_prontuario"));
+            AdminModel admin = new AdminModel();
+            admin.setIdAdmin(rs.getInt("id_admin"));
+            admin.setUsuario(usuario);
+            admin.setPermissao(rs.getString("permissao"));
 
-            return paciente;
+            return admin;
         }
     };
 
     @Override
-    public List<PacienteModel> findAll() {
-        String sql = "SELECT u.*, p.* FROM usuario u JOIN paciente p ON u.id_usuario = p.id_usuario_fk";
+    public List<AdminModel> findAll() {
+        String sql = "SELECT u.*, a.* FROM usuario u JOIN admin a ON u.id_usuario = a.id_usuario_fk";
         return jdbcTemplate.query(sql, rowMapper);
     }
 
     @Override
-    public Optional<PacienteModel> findById(int id) {
-        String sql = "SELECT u.*, p.* FROM usuario u LEFT JOIN paciente p ON u.id_usuario = p.id_usuario_fk WHERE p.id_paciente = ?";
+    public Optional<AdminModel> findById(int id) {
+        String sql = "SELECT u.*, a.* FROM usuario u JOIN admin a ON u.id_usuario = a.id_usuario_fk WHERE a.id_admin = ?";
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new Object[]{id}, rowMapper));
         } catch (Exception e) {
@@ -64,30 +64,30 @@ public class PacienteRepositoryImpl implements PacienteRepository {
     }
 
     @Override
-    public int save(PacienteModel paciente) {
-        String sql = "INSERT INTO paciente (id_usuario_fk, numero_prontuario) VALUES (?, ?)";
+    public int save(AdminModel admin) {
+        String sql = "INSERT INTO admin (id_usuario_fk, permissao) VALUES (?, ?)";
         return jdbcTemplate.update(sql,
-                paciente.getUsuario().getIdUsuario(),
-                paciente.getNumeroProntuario());
+                admin.getUsuario().getIdUsuario(),
+                admin.getPermissao());
     }
 
     @Override
-    public int update(PacienteModel paciente) {
-        String sql = "UPDATE Paciente SET numero_prontuario = ? WHERE id_paciente = ?";
+    public int update(AdminModel admin) {
+        String sql = "UPDATE Admin SET permissao = ? WHERE id_admin = ?";
         return jdbcTemplate.update(sql,
-                paciente.getNumeroProntuario(),
-                paciente.getIdPaciente());
+                admin.getPermissao(),
+                admin.getIdAdmin());
     }
 
     @Override
     public int deleteById(int id) {
-        String sql = "DELETE FROM Paciente WHERE id_paciente = ?";
+        String sql = "DELETE FROM Admin WHERE id_admin = ?";
         return jdbcTemplate.update(sql, id);
     }
 
     @Override
     public boolean existsById(int id) {
-        String sql = "SELECT COUNT(*) FROM Paciente WHERE id_paciente = ?";
+        String sql = "SELECT COUNT(*) FROM Admin WHERE id_admin = ?";
         Integer count = jdbcTemplate.queryForObject(sql, new Object[]{id}, Integer.class);
         return count != null && count > 0;
     }

@@ -1,6 +1,7 @@
-package com.vitalManager.vitalManager.repository;
+package com.vitalManager.vitalManager.repository.impl;
 
 import com.vitalManager.vitalManager.model.EnderecoFornecedorModel;
+import com.vitalManager.vitalManager.repository.EnderecoFornecedorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

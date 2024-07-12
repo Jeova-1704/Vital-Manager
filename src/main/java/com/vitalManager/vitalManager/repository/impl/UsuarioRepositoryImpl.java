@@ -1,6 +1,7 @@
-package com.vitalManager.vitalManager.repository;
+package com.vitalManager.vitalManager.repository.impl;
 
 import com.vitalManager.vitalManager.model.UsuarioModel;
+import com.vitalManager.vitalManager.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;

@@ -1,8 +1,9 @@
-package com.vitalManager.vitalManager.repository;
+package com.vitalManager.vitalManager.repository.impl;
 
 import com.vitalManager.vitalManager.model.EnderecoFornecedorModel;
 import com.vitalManager.vitalManager.model.FornecedorModel;
 import com.vitalManager.vitalManager.model.TelefoneFornecedorModel;
+import com.vitalManager.vitalManager.repository.FornecedorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;

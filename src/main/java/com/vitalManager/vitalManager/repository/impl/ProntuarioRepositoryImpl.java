@@ -1,6 +1,7 @@
-package com.vitalManager.vitalManager.repository;
+package com.vitalManager.vitalManager.repository.impl;
 
 import com.vitalManager.vitalManager.model.ProntuarioModel;
+import com.vitalManager.vitalManager.repository.ProntuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

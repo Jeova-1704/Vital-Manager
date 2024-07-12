@@ -1,6 +1,7 @@
-package com.vitalManager.vitalManager.repository;
+package com.vitalManager.vitalManager.repository.impl;
 
 import com.vitalManager.vitalManager.model.EnderecoUsuarioModel;
+import com.vitalManager.vitalManager.repository.EnderecoUsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class EnderecoUsuarioRepositoryImpl implements EnderecoUsuarioRepository{
+public class EnderecoUsuarioRepositoryImpl implements EnderecoUsuarioRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
