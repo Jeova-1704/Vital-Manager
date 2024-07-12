@@ -101,4 +101,14 @@ public class MedicoRepositoryImpl implements MedicoRepository {
         Integer count = jdbcTemplate.queryForObject(sql, new Object[]{id}, Integer.class);
         return count != null && count > 0;
     }
+
+    @Override
+    public Optional<MedicoModel> findByUsuarioEmail(String email) {
+        String sql = "SELECT u.*, m.* FROM usuario u JOIN medico m ON u.id_usuario = m.id_usuario_fk WHERE u.email = ?";
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new Object[]{email}, rowMapper));
+        } catch (Exception e) {
+            return Optional.empty();
+        }
+    }
 }

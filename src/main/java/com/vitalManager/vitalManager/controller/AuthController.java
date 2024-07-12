@@ -8,6 +8,7 @@ import com.vitalManager.vitalManager.exception.EmailRegisteredSystemException;
 import com.vitalManager.vitalManager.infra.security.TokenService;
 import com.vitalManager.vitalManager.model.UsuarioModel;
 import com.vitalManager.vitalManager.repository.UsuarioRepository;
+import com.vitalManager.vitalManager.service.AuthService;
 import com.vitalManager.vitalManager.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,31 +24,25 @@ import java.util.Optional;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
-    private final UsuarioRepository repository;
-    private final UsuarioService usuarioService;
-    private final PasswordEncoder passwordEncoder;
-    private final TokenService tokenService;
+    private final AuthService service;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginDTO body) {
-        UsuarioModel usuarioModel = this.repository.findByEmail(body.email()).orElseThrow(() -> new EmailNotFoundException("Email not found"));
-        if (passwordEncoder.matches(body.senha(), usuarioModel.getSenha())) {
-            String token = this.tokenService.generateToken(usuarioModel);
-            return ResponseEntity.ok(new ResponseDTO(usuarioModel.getNome(), usuarioModel.getTipo(),token));
+        try {
+            ResponseDTO response = service.login(body);
+            return ResponseEntity.ok(response);
+        } catch (EmailNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return  ResponseEntity.badRequest().build();
     }
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody UsuarioDTO body) {
-        Optional<UsuarioModel> usuarioModel = this.repository.findByEmail(body.email());
-        if (usuarioModel.isEmpty()) {
-            UsuarioModel user = usuarioService.convertDtoToModel(body);
-            this.repository.save(user);
-            String token = this.tokenService.generateToken(user);
-            return ResponseEntity.ok(new ResponseDTO(user.getNome(), user.getTipo(),token));
-        } else {
-            throw new EmailRegisteredSystemException("O email já esta cadastrado no sistema.");
+        try {
+            ResponseDTO response = service.register(body);
+            return ResponseEntity.ok(response);
+        } catch (EmailRegisteredSystemException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }

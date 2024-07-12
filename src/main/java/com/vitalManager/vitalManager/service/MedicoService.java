@@ -42,6 +42,8 @@ public class MedicoService {
             medico.setCrm(medicoDTO.CRM());
             medico.setDataContratacao(LocalDateTime.now());
             medicoRepository.save(medico);
+            medico = medicoRepository.findByUsuarioEmail(usuario.getEmail())
+                    .orElseThrow(() -> new ResourceNotFoundException("erro ao salvar médico no sistema"));
             return medico;
 
         } else {
