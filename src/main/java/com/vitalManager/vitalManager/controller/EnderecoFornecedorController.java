@@ -1,6 +1,7 @@
 package com.vitalManager.vitalManager.controller;
 
 import com.vitalManager.vitalManager.DTO.EnderecoFornecedorDTO;
+import com.vitalManager.vitalManager.controller.encapsulationDocumentation.EnderecoFornecedorDocsController;
 import com.vitalManager.vitalManager.model.EnderecoFornecedorModel;
 import com.vitalManager.vitalManager.service.EnderecoFornecedorService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/enderecosFornecedor")
-public class EnderecoFornecedorController {
+public class EnderecoFornecedorController implements EnderecoFornecedorDocsController {
 
     @Autowired
     private EnderecoFornecedorService enderecoFornecedorService;
