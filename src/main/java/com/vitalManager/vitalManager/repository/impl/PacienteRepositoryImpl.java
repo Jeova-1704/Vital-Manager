@@ -118,4 +118,13 @@ public class PacienteRepositoryImpl implements PacienteRepository {
         Integer count = jdbcTemplate.queryForObject(sql, new Object[]{id}, Integer.class);
         return count != null && count > 0;
     }
+
+    public Integer findPacienteIdByUsuarioId(int usuarioId) {
+        String sql = "SELECT id_paciente FROM paciente WHERE id_usuario_fk = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{usuarioId}, Integer.class);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

@@ -13,4 +13,5 @@ public interface ProntuarioRepository {
     int update(ProntuarioModel prontuario);
     int deleteById(int id);
     boolean existsById(int id);
+    Integer findProntuarioIdByUsuarioId(int usuarioId);
 }
