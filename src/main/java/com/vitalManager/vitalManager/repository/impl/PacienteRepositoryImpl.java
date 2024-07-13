@@ -92,14 +92,4 @@ public class PacienteRepositoryImpl implements PacienteRepository {
         Integer count = jdbcTemplate.queryForObject(sql, new Object[]{id}, Integer.class);
         return count != null && count > 0;
     }
-
-    @Override
-    public Optional<PacienteModel> findByIdPacienteFromUsuarioId(int idUsuario) {
-        String sql = "SELECT u.*, p.* FROM usuario u LEFT JOIN paciente p ON u.id_usuario = p.id_usuario_fk WHERE u.id_usuario = ?";
-        try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new Object[]{idUsuario}, rowMapper));
-        } catch (Exception e) {
-            return Optional.empty();
-        }
-    }
 }
