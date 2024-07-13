@@ -42,6 +42,7 @@ public class PacienteRepositoryImpl implements PacienteRepository {
             PacienteModel paciente = new PacienteModel();
             paciente.setIdPaciente(rs.getInt("id_paciente"));
             paciente.setUsuario(usuario);
+            paciente.setIdUsuarioFK(rs.getInt("id_usuario_fk"));
             paciente.setNumeroProntuario(rs.getInt("numero_prontuario"));
 
             return paciente;
@@ -50,8 +51,33 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 
     @Override
     public List<PacienteModel> findAll() {
-        String sql = "SELECT u.*, p.* FROM usuario u JOIN paciente p ON u.id_usuario = p.id_usuario_fk";
-        return jdbcTemplate.query(sql, rowMapper);
+        String sql = "SELECT u.*, p.* FROM usuario u LEFT JOIN paciente p ON u.id_usuario = p.id_usuario_fk";
+        return jdbcTemplate.query(sql, new RowMapper<PacienteModel>() {
+            @Override
+            public PacienteModel mapRow(ResultSet rs, int rowNum) throws SQLException {
+                PacienteModel paciente = new PacienteModel();
+                UsuarioModel usuario = new UsuarioModel();
+
+                usuario.setIdUsuario(rs.getInt("id_usuario"));
+                usuario.setNome(rs.getString("nome"));
+                usuario.setSobrenome(rs.getString("sobrenome"));
+                usuario.setCpf(rs.getString("cpf"));
+                usuario.setEmail(rs.getString("email"));
+                usuario.setSenha(rs.getString("senha"));
+                usuario.setDataNascimento(rs.getDate("data_nascimento").toLocalDate());
+                usuario.setSexo(rs.getString("sexo"));
+                usuario.setTipo(rs.getString("tipo"));
+                usuario.setDataCriacao(rs.getTimestamp("data_criacao").toLocalDateTime());
+
+                paciente.setUsuario(usuario);
+
+                paciente.setIdPaciente(rs.getInt("id_paciente"));
+                paciente.setIdUsuarioFK(rs.getInt("id_usuario"));
+                paciente.setNumeroProntuario(rs.getInt("id_numero_prontuario_fk"));
+
+                return paciente;
+            }
+        });
     }
 
     @Override
