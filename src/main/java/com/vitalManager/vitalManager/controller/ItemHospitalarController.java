@@ -4,6 +4,7 @@ import com.vitalManager.vitalManager.DTO.ItemHospitalarDTO;
 import com.vitalManager.vitalManager.exception.ResourceNotFoundException;
 import com.vitalManager.vitalManager.model.ItensHospitalaresModel;
 import com.vitalManager.vitalManager.service.ItemHospitalarService;
+import com.vitalManager.vitalManager.controller.encapsulationDocumentation.ItemHospitalarDocsController;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,18 +18,20 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/item-hospitalar")
-public class ItemHospitalarController {
+public class ItemHospitalarController implements ItemHospitalarDocsController {
 
     private final ItemHospitalarService itemHospitalarService;
 
+    @Override
     @GetMapping("/")
-    public ResponseEntity<List<ItensHospitalaresModel>> getAllProntuario() {
-        List<ItensHospitalaresModel> LitaItemHospitalar = itemHospitalarService.getAllItemHospitalar();
-        return ResponseEntity.ok().body(LitaItemHospitalar);
+    public ResponseEntity<List<ItensHospitalaresModel>> getAllItensHospitalares() {
+        List<ItensHospitalaresModel> listaItemHospitalar = itemHospitalarService.getAllItemHospitalar();
+        return ResponseEntity.ok().body(listaItemHospitalar);
     }
 
+    @Override
     @GetMapping("/{id}")
-    public ResponseEntity<ItensHospitalaresModel> getProntuarioById(@PathVariable int id) {
+    public ResponseEntity<ItensHospitalaresModel> getItemHospitalarById(@PathVariable int id) {
         ItensHospitalaresModel itemHospitalar = itemHospitalarService.getItemHospitalarById(id);
         if (itemHospitalar != null) {
             return ResponseEntity.ok().body(itemHospitalar);
@@ -37,15 +40,17 @@ public class ItemHospitalarController {
         }
     }
 
+    @Override
     @PostMapping("/")
-    public ResponseEntity<ItensHospitalaresModel> createProntuario(@RequestBody ItemHospitalarDTO itemHospitalarDTO) {
+    public ResponseEntity<ItensHospitalaresModel> createItemHospitalar(@RequestBody ItemHospitalarDTO itemHospitalarDTO) {
         ItensHospitalaresModel itemHospitalar = itemHospitalarService.createItemHospitalar(itemHospitalarDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(itemHospitalar.getIdItensHospitalares()).toUri();
         return ResponseEntity.created(uri).body(itemHospitalar);
     }
 
+    @Override
     @PutMapping("/{id}")
-    public ResponseEntity<ItensHospitalaresModel> updateProntuario(@PathVariable int id, @Valid @RequestBody ItemHospitalarDTO itemHospitalarDTO) {
+    public ResponseEntity<ItensHospitalaresModel> updateItemHospitalar(@PathVariable int id, @Valid @RequestBody ItemHospitalarDTO itemHospitalarDTO) {
         try {
             ItensHospitalaresModel itemHospitalar = itemHospitalarService.updateItemHospitalar(id, itemHospitalarDTO);
             if (itemHospitalar != null) {
@@ -60,8 +65,9 @@ public class ItemHospitalarController {
         }
     }
 
+    @Override
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProntuarioById(@PathVariable int id) {
+    public ResponseEntity<Void> deleteItemHospitalarById(@PathVariable int id) {
         boolean deleted = itemHospitalarService.deleteItemHospitar(id);
         if (deleted) {
             return ResponseEntity.noContent().build();
@@ -69,5 +75,4 @@ public class ItemHospitalarController {
             return ResponseEntity.notFound().build();
         }
     }
-
 }

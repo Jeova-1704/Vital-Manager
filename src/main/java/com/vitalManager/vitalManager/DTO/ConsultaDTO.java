@@ -1,14 +1,14 @@
 package com.vitalManager.vitalManager.DTO;
 
-import javax.xml.crypto.Data;
 import java.math.BigDecimal;
 import java.sql.Time;
+import java.sql.Timestamp;
 
 public record ConsultaDTO(
         Integer idConsulta,
         Integer idProntuario,
         Integer idMedico,
-        Data data,
+        Timestamp data,
         BigDecimal valor,
         Time hora,
         String status,
