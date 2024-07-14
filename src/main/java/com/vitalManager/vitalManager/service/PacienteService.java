@@ -38,7 +38,17 @@ public class PacienteService {
             paciente.setUsuario(usuario);
             paciente.setNumeroProntuario(pacienteDTO.numeroProntuario());
             pacienteRepository.save(paciente);
+
+            // Recuperar o ID do paciente usando o ID do usuário
+            Integer pacienteId = pacienteRepository.findPacienteIdByUsuarioId(usuario.getIdUsuario());
+            if (pacienteId != null) {
+                paciente.setIdPaciente(pacienteId);
+            } else {
+                throw new RuntimeException("Failed to retrieve the patient ID after saving.");
+            }
+
             return paciente;
+
         } else {
             throw new RuntimeException("Não é do tipo paciente");
         }

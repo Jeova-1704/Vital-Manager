@@ -12,5 +12,5 @@ public interface PacienteRepository {
     int update(PacienteModel paciente);
     int deleteById(int id);
     boolean existsById(int id);
-    Optional<PacienteModel> findByIdPacienteFromUsuarioId(int idUsuario);
+    Integer findPacienteIdByUsuarioId(int idUsuario);
 }

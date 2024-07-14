@@ -83,4 +83,14 @@ public class ProntuarioRepositoryImpl implements ProntuarioRepository {
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class, id);
         return count != null && count > 0;
     }
+
+    @Override
+    public Integer findProntuarioIdByUsuarioId(int usuarioId) {
+        String sql = "SELECT ID_Prontuario FROM Prontuario WHERE ID_Paciente_FK = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{usuarioId}, Integer.class);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

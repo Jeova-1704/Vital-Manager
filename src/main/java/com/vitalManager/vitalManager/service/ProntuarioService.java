@@ -37,9 +37,16 @@ public class ProntuarioService {
             ProntuarioModel prontuario = convertDTOToModel(prontuarioDTO);
             prontuario.setDataCriacao(LocalDateTime.now());
             prontuarioRepository.save(prontuario);
+
+            Integer prontuarioId = prontuarioRepository.findProntuarioIdByUsuarioId(usuario.getIdUsuario());
+            if (prontuarioId != null) {
+                prontuario.setIdProntuario(prontuarioId);
+            } else {
+                throw new RuntimeException("Failed to retrieve the prontuario ID after saving.");
+            }
             return prontuario;
         } else {
-            throw new UserTypeNotValidException("O usuario não tem permição para criação do prontuario");
+            throw new UserTypeNotValidException("O usuario não tem permissão para criação do prontuário");
         }
     }
 

@@ -142,13 +142,12 @@ public class PacienteRepositoryImpl implements PacienteRepository {
         return count != null && count > 0;
     }
 
-    @Override
-    public Optional<PacienteModel> findByIdPacienteFromUsuarioId(int idUsuario) {
-        String sql = "SELECT u.*, p.* FROM usuario u LEFT JOIN paciente p ON u.id_usuario = p.id_usuario_fk WHERE u.id_usuario = ?";
+    public Integer findPacienteIdByUsuarioId(int usuarioId) {
+        String sql = "SELECT id_paciente FROM paciente WHERE id_usuario_fk = ?";
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new Object[]{idUsuario}, rowMapper));
+            return jdbcTemplate.queryForObject(sql, new Object[]{usuarioId}, Integer.class);
         } catch (Exception e) {
-            return Optional.empty();
+            return null;
         }
     }
 }
