@@ -40,10 +40,10 @@ public class PacienteRepositoryImpl implements PacienteRepository {
             usuario.setDataCriacao(rs.getTimestamp("data_criacao").toLocalDateTime());
 
             PacienteModel paciente = new PacienteModel();
-            paciente.setIdPaciente(rs.getInt("ID_Paciente"));
+            paciente.setIdPaciente(rs.getInt("id_paciente"));
             paciente.setUsuario(usuario);
             paciente.setIdUsuarioFK(rs.getInt("id_usuario_fk"));
-            paciente.setNumeroProntuario(rs.getInt("ID_numero_Prontuario_FK"));
+            paciente.setNumeroProntuario(rs.getInt("numero_prontuario"));
 
             return paciente;
         }
@@ -71,7 +71,7 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 
                 paciente.setUsuario(usuario);
 
-                paciente.setIdPaciente(rs.getInt("ID_Paciente"));
+                paciente.setIdPaciente(rs.getInt("id_paciente"));
                 paciente.setIdUsuarioFK(rs.getInt("id_usuario"));
                 paciente.setNumeroProntuario(rs.getInt("id_numero_prontuario_fk"));
 
@@ -82,9 +82,34 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 
     @Override
     public Optional<PacienteModel> findById(int id) {
-        String sql = "SELECT u.*, p.* FROM usuario u LEFT JOIN paciente p ON u.id_usuario = p.id_usuario_fk WHERE p.ID_Paciente = ?";
+        String sql = "SELECT u.*, p.* FROM usuario u LEFT JOIN paciente p ON u.id_usuario = p.id_usuario_fk WHERE p.id_paciente = ?";
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new Object[]{id}, rowMapper));
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new Object[]{id}, new RowMapper<PacienteModel>() {
+                @Override
+                public PacienteModel mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    PacienteModel paciente = new PacienteModel();
+                    UsuarioModel usuario = new UsuarioModel();
+
+                    usuario.setIdUsuario(rs.getInt("id_usuario"));
+                    usuario.setNome(rs.getString("nome"));
+                    usuario.setSobrenome(rs.getString("sobrenome"));
+                    usuario.setCpf(rs.getString("cpf"));
+                    usuario.setEmail(rs.getString("email"));
+                    usuario.setSenha(rs.getString("senha"));
+                    usuario.setDataNascimento(rs.getDate("data_nascimento").toLocalDate());
+                    usuario.setSexo(rs.getString("sexo"));
+                    usuario.setTipo(rs.getString("tipo"));
+                    usuario.setDataCriacao(rs.getTimestamp("data_criacao").toLocalDateTime());
+
+                    paciente.setUsuario(usuario);
+
+                    paciente.setIdPaciente(rs.getInt("id_paciente"));
+                    paciente.setIdUsuarioFK(rs.getInt("id_usuario"));
+                    paciente.setNumeroProntuario(rs.getInt("id_numero_prontuario_fk"));
+
+                    return paciente;
+                }
+            }));
         } catch (Exception e) {
             return Optional.empty();
         }
@@ -100,27 +125,25 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 
     @Override
     public int update(PacienteModel paciente) {
-        String sql = "UPDATE Paciente SET ID_numero_Prontuario_FK = ? WHERE ID_Paciente = ?";
-        return jdbcTemplate.update(sql,
-                paciente.getNumeroProntuario(),
-                paciente.getIdPaciente());
+        String sql = "UPDATE paciente SET id_numero_prontuario_fk = ? WHERE id_paciente = ?";
+        return jdbcTemplate.update(sql, paciente.getNumeroProntuario(), paciente.getIdPaciente());
     }
 
     @Override
     public int deleteById(int id) {
-        String sql = "DELETE FROM Paciente WHERE ID_Paciente = ?";
+        String sql = "DELETE FROM Paciente WHERE id_paciente = ?";
         return jdbcTemplate.update(sql, id);
     }
 
     @Override
     public boolean existsById(int id) {
-        String sql = "SELECT COUNT(*) FROM Paciente WHERE ID_Paciente = ?";
+        String sql = "SELECT COUNT(*) FROM Paciente WHERE id_paciente = ?";
         Integer count = jdbcTemplate.queryForObject(sql, new Object[]{id}, Integer.class);
         return count != null && count > 0;
     }
 
     public Integer findPacienteIdByUsuarioId(int usuarioId) {
-        String sql = "SELECT ID_Paciente FROM paciente WHERE id_usuario_fk = ?";
+        String sql = "SELECT id_paciente FROM paciente WHERE id_usuario_fk = ?";
         try {
             return jdbcTemplate.queryForObject(sql, new Object[]{usuarioId}, Integer.class);
         } catch (Exception e) {

@@ -1,9 +1,11 @@
 package com.vitalManager.vitalManager.controller;
 
 import com.vitalManager.vitalManager.DTO.PacienteDTO;
+import com.vitalManager.vitalManager.exception.ResourceNotFoundException;
 import com.vitalManager.vitalManager.model.PacienteModel;
 import com.vitalManager.vitalManager.service.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -40,8 +42,12 @@ public class PacienteController {
 
     @PutMapping("/{id}")
     public ResponseEntity<PacienteModel> updatePaciente(@PathVariable int id, @RequestBody PacienteModel pacienteDTO) {
-        PacienteModel paciente = pacienteService.updatePaciente(id, pacienteDTO);
-        return ResponseEntity.ok().body(paciente);
+        try {
+            PacienteModel paciente = pacienteService.updatePaciente(id, pacienteDTO);
+            return ResponseEntity.ok().body(paciente);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     @DeleteMapping("/{id}")
