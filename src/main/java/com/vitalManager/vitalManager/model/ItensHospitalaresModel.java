@@ -16,6 +16,7 @@ public class ItensHospitalaresModel {
     private Integer idItensHospitalares;
     private Integer idEstoque;
     private Integer idPrescricao;
+    private Integer IDFornecedorFK;
     private String nome;
     private BigDecimal preco;
     private String descricao;
