@@ -45,9 +45,6 @@ public class PacienteService {
     }
 
     public PacienteModel updatePaciente(int id, PacienteModel pacienteDTO) {
-        if (!pacienteRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Paciente not found with id " + id);
-        }
         PacienteModel pacienteExistente = pacienteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Paciente not found with id " + id));
 
