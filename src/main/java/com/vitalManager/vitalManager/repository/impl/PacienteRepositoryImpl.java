@@ -51,7 +51,7 @@ public class PacienteRepositoryImpl implements PacienteRepository {
 
     @Override
     public List<PacienteModel> findAll() {
-        String sql = "SELECT u.*, p.* FROM usuario u LEFT JOIN paciente p ON u.id_usuario = p.id_usuario_fk";
+        String sql = "SELECT u.*, p.* FROM usuario u LEFT JOIN paciente p ON u.id_usuario = p.id_usuario_fk WHERE p.id_paciente != 0";
         return jdbcTemplate.query(sql, new RowMapper<PacienteModel>() {
             @Override
             public PacienteModel mapRow(ResultSet rs, int rowNum) throws SQLException {
