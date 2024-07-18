@@ -128,7 +128,6 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
         deleteExameByPacienteId(id);
 
         // Passo 1: Excluir prontuários, removendo referências primeiro
-        removeProntuarioReferencesByUsuarioId(id);
         deleteProntuarioByUsuarioId(id);
 
         // Passo 2: Excluir pacientes
@@ -173,6 +172,8 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
             jdbcTemplate.update(sql, idUsuario);
         }
     }
+
+
    // ok
     private void deletePacienteByUsuarioId(int idUsuario) {
         String sqlCheck = "SELECT COUNT(*) FROM Paciente WHERE ID_Usuario_FK = ?";
