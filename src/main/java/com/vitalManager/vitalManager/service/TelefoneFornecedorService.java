@@ -31,8 +31,7 @@ public class TelefoneFornecedorService {
     }
 
     public TelefoneFornecedorModel getPhoneByIdUser(int id) {
-        return telefoneFornecedorRepository.findBySupplierId(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Nenhum endereço atribuido ao usuario de id " + id));
+        return telefoneFornecedorRepository.findByPhoneId(id).orElseThrow(() -> new ResourceNotFoundException("Nenhum telefone existe com esse Id"));
     }
 
     public TelefoneFornecedorModel createPhone(TelefoneFornecedorDTO telefoneFornecedorDTO) {
@@ -60,7 +59,7 @@ public class TelefoneFornecedorService {
             throw new ResourceNotFoundException("Nenhum telefone atribuido ao fornecedor de id " + id);
         }
 
-        TelefoneFornecedorModel telefoneExistente = telefoneFornecedorRepository.findBySupplierId(id)
+        TelefoneFornecedorModel telefoneExistente = telefoneFornecedorRepository.findByPhoneId(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Nenhum telefone atribuido ao fornecedor de id " + id));
 
         TelefoneFornecedorModel telefoneAtualizar = convertDtoToModel(telefoneFornecedorDTO);

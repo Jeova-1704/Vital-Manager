@@ -42,12 +42,12 @@ public class EnderecoFornecedorRepositoryImpl implements EnderecoFornecedorRepos
     }
 
     @Override
-    public Optional<EnderecoFornecedorModel> findBySupplierId(int id) {
+    public EnderecoFornecedorModel findBySupplierId(int id) {
         String sql = "SELECT * FROM endereco_fornecedor WHERE id_fornecedor_fk = ?";
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new Object[]{id}, rowMapper));
+            return jdbcTemplate.queryForObject(sql, new Object[]{id}, rowMapper);
         } catch (Exception e) {
-            return Optional.empty();
+            return null;
         }
     }
 

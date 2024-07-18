@@ -1,9 +1,7 @@
 package com.vitalManager.vitalManager.repository.impl;
 
-import com.vitalManager.vitalManager.model.EnderecoFornecedorModel;
-import com.vitalManager.vitalManager.model.FornecedorModel;
-import com.vitalManager.vitalManager.model.TelefoneFornecedorModel;
-import com.vitalManager.vitalManager.repository.FornecedorRepository;
+import com.vitalManager.vitalManager.model.*;
+import com.vitalManager.vitalManager.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +19,12 @@ public class FornecedorRepositoryImpl implements FornecedorRepository {
 
     @Autowired
     private final JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private TelefoneFornecedorRepository telefoneFornecedorRepository;
+
+    @Autowired
+    private EnderecoFornecedorRepository enderecoFornecedorRepository;
 
     @Autowired
     public FornecedorRepositoryImpl(JdbcTemplate jdbcTemplate) {
@@ -34,6 +39,19 @@ public class FornecedorRepositoryImpl implements FornecedorRepository {
             fornecedor.setNome(rs.getString("nome"));
             fornecedor.setCnpj(rs.getString("cnpj"));
 
+            List<TelefoneFornecedorModel> telefoneModels = new ArrayList<>();
+
+            for (Integer phoneId : telefoneFornecedorRepository.findBySupplierId(fornecedor.getIdFornecedor())){
+                TelefoneFornecedorModel telefoneModel = telefoneFornecedorRepository.findByPhoneId(phoneId)
+                        .orElseThrow();
+
+                telefoneModels.add(telefoneModel);
+            }
+
+            fornecedor.setTelefonesFornecedor(telefoneModels);
+
+            EnderecoFornecedorModel enderecoFornecedorModel = enderecoFornecedorRepository.findBySupplierId(fornecedor.getIdFornecedor());
+            fornecedor.setEnderecoFornecedorModel(enderecoFornecedorModel);
             return fornecedor;
         }
     };

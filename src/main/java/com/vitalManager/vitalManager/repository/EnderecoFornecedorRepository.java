@@ -8,7 +8,8 @@ import java.util.Optional;
 
 public interface EnderecoFornecedorRepository {
     List<EnderecoFornecedorModel> findAll();
-    Optional<EnderecoFornecedorModel> findBySupplierId(int id);
+    EnderecoFornecedorModel findBySupplierId(int id);
+
     int save(EnderecoFornecedorModel enderecoFornecedorModel);
     int update(EnderecoFornecedorModel enderecoFornecedorModel);
     int deleteBySupplierId(int id);

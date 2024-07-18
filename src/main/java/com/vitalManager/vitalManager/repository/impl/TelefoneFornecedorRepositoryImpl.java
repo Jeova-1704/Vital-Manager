@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,12 +40,22 @@ public class TelefoneFornecedorRepositoryImpl implements TelefoneFornecedorRepos
     }
 
     @Override
-    public Optional<TelefoneFornecedorModel> findBySupplierId(int id) {
-        String sql = "SELECT * FROM telefone_fornecedor WHERE id_fornecedor_fk = ?";
+    public Optional<TelefoneFornecedorModel> findByPhoneId(int id) {
+        String sql = "SELECT * FROM telefone_fornecedor WHERE id_telefone_fornecedor = ?";
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new Object[]{id}, rowMapper));
         } catch (Exception e) {
             return Optional.empty();
+        }
+    }
+
+    @Override
+    public List<Integer> findBySupplierId(int id) {
+        String sql = "SELECT id_telefone FROM telefone_fornecedor WHERE id_fornecedor_fk = ?";
+        try {
+            return jdbcTemplate.queryForList(sql, new Object[]{id}, Integer.class);
+        } catch (Exception e) {
+            return new ArrayList<>();
         }
     }
 
