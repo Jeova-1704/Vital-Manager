@@ -99,4 +99,14 @@ public class ProntuarioRepositoryImpl implements ProntuarioRepository {
             return null;
         }
     }
+
+    @Override
+    public Integer findByProntuarioProntuarioId(Integer idFk) {
+        String sql = "SELECT ID_Prontuario FROM Prontuario WHERE ID_Paciente_FK = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{idFk}, Integer.class);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
 }

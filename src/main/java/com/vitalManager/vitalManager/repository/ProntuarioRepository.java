@@ -14,4 +14,6 @@ public interface ProntuarioRepository {
     int deleteById(int id);
     boolean existsById(int id);
     Integer findProntuarioIdByUsuarioId(int usuarioId);
+
+    Integer findByProntuarioProntuarioId(Integer idFk);
 }

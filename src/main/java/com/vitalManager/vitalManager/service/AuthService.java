@@ -10,7 +10,9 @@ import com.vitalManager.vitalManager.infra.security.TokenService;
 import com.vitalManager.vitalManager.model.UsuarioModel;
 import com.vitalManager.vitalManager.repository.MedicoRepository;
 import com.vitalManager.vitalManager.repository.PacienteRepository;
+import com.vitalManager.vitalManager.repository.ProntuarioRepository;
 import com.vitalManager.vitalManager.repository.UsuarioRepository;
+import jakarta.validation.constraints.Null;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,14 +28,17 @@ public class AuthService {
     private final TokenService tokenService;
     private final PacienteRepository pacienteRepository;
     private final MedicoRepository medicoRepository;
+    private final ProntuarioRepository prontuarioRepository;
     Integer id_fk;
 
     public ResponseDTOLogin login(LoginDTO body) {
         UsuarioModel usuarioModel = repository.findByEmail(body.email())
                 .orElseThrow(() -> new EmailNotFoundException("Email not found"));
 
+        Integer prontuario_id = null;
         if (usuarioModel.getTipo().equals("P")) {
             id_fk = pacienteRepository.findPacienteIdByUsuarioId(usuarioModel.getIdUsuario());
+            prontuario_id = prontuarioRepository.findByProntuarioProntuarioId(id_fk);
         } else {
             id_fk = medicoRepository.findMedicoIdByUsuarioId(usuarioModel.getIdUsuario());
         }
@@ -44,7 +49,7 @@ public class AuthService {
                                         usuarioModel.getTipo(),
                                         usuarioModel.getIdUsuario(),
                                         token,
-                                        id_fk);
+                                        id_fk, prontuario_id);
         }
         throw new EmailNotFoundException("Invalid password");
     }
