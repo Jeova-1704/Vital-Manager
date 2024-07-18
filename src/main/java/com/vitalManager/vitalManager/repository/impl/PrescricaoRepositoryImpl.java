@@ -58,7 +58,7 @@ public class PrescricaoRepositoryImpl implements PrescricaoRepository {
     @Override
     public int update(PrescricaoModel prescricao) {
         String sql = "UPDATE prescricao SET id_consulta_Fk = ?, instrucoes = ? WHERE id_prescricao = ?";
-        return jdbcTemplate.update(sql, prescricao.getConsulta().getIdConsulta(), prescricao.getInstrucoes(), prescricao.getIdPrescricao());
+        return jdbcTemplate.update(sql, prescricao.getIdConsultaFk(), prescricao.getInstrucoes(), prescricao.getIdPrescricao());
     }
 
     @Override
