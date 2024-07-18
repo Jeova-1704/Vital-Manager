@@ -2,6 +2,7 @@ package com.vitalManager.vitalManager.repository.impl;
 
 import com.vitalManager.vitalManager.model.UsuarioModel;
 import com.vitalManager.vitalManager.repository.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -96,5 +97,57 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
         } catch (Exception e) {
             return Optional.empty();
         }
+    }
+
+    @Override
+    @Transactional
+    public void deleteUsuarioAndRelatedData(int id) {
+
+        deleteEnderecoUsuario(id);
+        deleteTelefoneUsuario(id);
+        deleteProntuarioByUsuarioId(id);
+        deleteConsultaByUsuarioId(id);
+        deleteExameByPacienteId(id);
+        deletePacienteByUsuarioId(id);
+        deletePrescricaoByConsultaId(id);
+
+
+        String sql = "DELETE FROM Usuario WHERE id_usuario = ?";
+        jdbcTemplate.update(sql, id);
+    }
+
+    private void deleteEnderecoUsuario(int idUsuario) {
+        String sql = "DELETE FROM Endereco_Usuario WHERE ID_Usuario_FK = ?";
+        jdbcTemplate.update(sql, idUsuario);
+    }
+
+    private void deleteTelefoneUsuario(int idUsuario) {
+        String sql = "DELETE FROM Telefone_Usuario WHERE ID_Usuario_FK = ?";
+        jdbcTemplate.update(sql, idUsuario);
+    }
+
+    private void deleteProntuarioByUsuarioId(int idUsuario) {
+        String sql = "DELETE FROM Prontuario WHERE ID_Paciente_FK IN (SELECT ID_Paciente FROM Paciente WHERE ID_Usuario_FK = ?)";
+        jdbcTemplate.update(sql, idUsuario);
+    }
+
+    private void deletePacienteByUsuarioId(int idUsuario) {
+        String sql = "DELETE FROM Paciente WHERE ID_Usuario_FK = ?";
+        jdbcTemplate.update(sql, idUsuario);
+    }
+
+    private void deleteConsultaByUsuarioId(int idUsuario) {
+        String sql = "DELETE FROM Consulta WHERE Medico_Id_FK IN (SELECT ID_Medico FROM Medico WHERE ID_Usuario_FK = ?)";
+        jdbcTemplate.update(sql, idUsuario);
+    }
+
+    private void deleteExameByPacienteId(int idPaciente) {
+        String sql = "DELETE FROM Exame WHERE ID_Paciente_FK = ?";
+        jdbcTemplate.update(sql, idPaciente);
+    }
+
+    private void deletePrescricaoByConsultaId(int idConsulta) {
+        String sql = "DELETE FROM Prescricao WHERE ID_Consulta_FK = ?";
+        jdbcTemplate.update(sql, idConsulta);
     }
 }

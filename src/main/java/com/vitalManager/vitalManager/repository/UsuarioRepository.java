@@ -13,4 +13,5 @@ public interface UsuarioRepository {
     int deleteById(int id);
     boolean existsById(int id);
     Optional<UsuarioModel> findByEmail(String email);
+    void deleteUsuarioAndRelatedData(int id);
 }

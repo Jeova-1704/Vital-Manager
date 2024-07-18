@@ -19,7 +19,7 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
 
     private final PasswordEncoder passwordEncoder;
-    
+
     public List<UsuarioModel> getAllUsuarios() {
         return usuarioRepository.findAll();
     }
@@ -51,8 +51,9 @@ public class UsuarioService {
         if (!usuarioRepository.existsById(id)) {
             throw new ResourceNotFoundException("User not found with id " + id);
         }
-        usuarioRepository.deleteById(id);
+        usuarioRepository.deleteUsuarioAndRelatedData(id);
     }
+
 
     public UsuarioModel convertDtoToModel(UsuarioDTO body) {
         UsuarioModel user = new UsuarioModel();
@@ -67,6 +68,8 @@ public class UsuarioService {
         user.setDataCriacao(LocalDateTime.now());
         return user;
     }
+
+
 
 
 }

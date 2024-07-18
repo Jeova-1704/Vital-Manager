@@ -29,6 +29,7 @@ public class AdminService {
                 .orElseThrow(() -> new ResourceNotFoundException("Admin not found with id " + id));
     }
 
+
     public AdminModel createAdmin(AdminDTO adminDTO) {
         UsuarioModel usuario = usuarioRepository.findById(adminDTO.idUsuario())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + adminDTO.idUsuario()));
@@ -64,4 +65,5 @@ public class AdminService {
         }
         adminRepository.deleteById(id);
     }
+
 }

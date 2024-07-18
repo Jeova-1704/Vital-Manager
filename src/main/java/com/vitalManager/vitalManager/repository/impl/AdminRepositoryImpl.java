@@ -81,7 +81,7 @@ public class AdminRepositoryImpl implements AdminRepository {
 
     @Override
     public int deleteById(int id) {
-        String sql = "DELETE FROM Admin WHERE id_admin = ?";
+        String sql = "DELETE FROM Admin WHERE id_usuario_fk = ?";
         return jdbcTemplate.update(sql, id);
     }
 
@@ -91,4 +91,6 @@ public class AdminRepositoryImpl implements AdminRepository {
         Integer count = jdbcTemplate.queryForObject(sql, new Object[]{id}, Integer.class);
         return count != null && count > 0;
     }
+
 }
+

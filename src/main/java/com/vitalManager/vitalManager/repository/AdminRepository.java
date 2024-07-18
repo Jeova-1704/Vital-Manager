@@ -12,4 +12,5 @@ public interface AdminRepository {
     int update(AdminModel admin);
     int deleteById(int id);
     boolean existsById(int id);
+
 }
