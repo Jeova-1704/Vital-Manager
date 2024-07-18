@@ -42,7 +42,6 @@ public class ConsultaService {
 
     private ConsultaDTO mapToDTO(ConsultaModel consultaModel) {
         return new ConsultaDTO(
-                consultaModel.getIdConsulta(),
                 consultaModel.getIdProntuario(),
                 consultaModel.getIdMedico(),
                 consultaModel.getData(),
@@ -54,15 +53,14 @@ public class ConsultaService {
     }
 
     private ConsultaModel mapToModel(ConsultaDTO consultaDTO) {
-        return new ConsultaModel(
-                consultaDTO.idConsulta(),
-                consultaDTO.idProntuario(),
-                consultaDTO.idMedico(),
-                consultaDTO.data(),
-                consultaDTO.valor(),
-                consultaDTO.hora(),
-                consultaDTO.status(),
-                consultaDTO.observacoes()
-        );
+        ConsultaModel consulta = new ConsultaModel();
+        consulta.setIdProntuario(consultaDTO.idProntuario());
+        consulta.setIdMedico(consultaDTO.idMedico());
+        consulta.setData(consultaDTO.data());
+        consulta.setValor(consultaDTO.valor());
+        consulta.setHora(consultaDTO.hora());
+        consulta.setStatus(consultaDTO.status());
+        consulta.setObservacoes(consultaDTO.observacoes());
+        return consulta;
     }
 }

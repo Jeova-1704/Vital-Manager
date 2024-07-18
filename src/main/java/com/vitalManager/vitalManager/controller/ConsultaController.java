@@ -13,30 +13,34 @@ import java.util.List;
 @RequestMapping("/consultas")
 @RequiredArgsConstructor
 public class ConsultaController implements ConsultaDocsController {
+
     private final ConsultaService consultaService;
 
     @Override
+    @GetMapping("/")
     public ResponseEntity<List<ConsultaDTO>> getAllConsultas() {
         List<ConsultaDTO> consultas = consultaService.findAll();
         return ResponseEntity.ok(consultas);
     }
 
     @Override
+    @GetMapping("/{id}")
     public ResponseEntity<ConsultaDTO> getConsultaById(@PathVariable int id) {
         ConsultaDTO consulta = consultaService.findById(id);
         return ResponseEntity.ok(consulta);
     }
 
     @Override
+    @PostMapping("/")
     public ResponseEntity<ConsultaDTO> createConsulta(@RequestBody ConsultaDTO consultaDTO) {
         consultaService.save(consultaDTO);
         return ResponseEntity.status(201).body(consultaDTO);
     }
 
     @Override
+    @PutMapping("/{id}")
     public ResponseEntity<ConsultaDTO> updateConsulta(@PathVariable int id, @RequestBody ConsultaDTO consultaDTO) {
         consultaDTO = new ConsultaDTO(
-                id,
                 consultaDTO.idProntuario(),
                 consultaDTO.idMedico(),
                 consultaDTO.data(),
@@ -50,6 +54,7 @@ public class ConsultaController implements ConsultaDocsController {
     }
 
     @Override
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteConsultaById(@PathVariable int id) {
         consultaService.delete(id);
         return ResponseEntity.noContent().build();

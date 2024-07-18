@@ -5,7 +5,6 @@ import java.sql.Time;
 import java.sql.Timestamp;
 
 public record ConsultaDTO(
-        Integer idConsulta,
         Integer idProntuario,
         Integer idMedico,
         Timestamp data,
