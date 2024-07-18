@@ -59,7 +59,7 @@ CREATE TABLE Medico (
     ID_Usuario_FK INT UNIQUE NOT NULL,
     Salario SALARIO_POSITIVO NOT NULL,
     Especialidade VARCHAR(50) NOT NULL,
-    CRM VARCHAR(30) NOT NULL,
+    CRM VARCHAR(30) UNIQUE NOT NULL,
     Data_Contratacao TIMESTAMP NOT NULL,
     FOREIGN KEY (ID_Usuario_FK) REFERENCES Usuario(ID_Usuario)
 );

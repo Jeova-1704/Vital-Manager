@@ -1,14 +1,14 @@
 package com.vitalManager.vitalManager.repository.impl;
 
-import com.vitalManager.vitalManager.exception.ResourceNotFoundException;
+import com.vitalManager.vitalManager.model.ConsultaModel;
 import com.vitalManager.vitalManager.model.EnderecoUsuarioModel;
 import com.vitalManager.vitalManager.model.MedicoModel;
 import com.vitalManager.vitalManager.model.TelefoneModel;
 import com.vitalManager.vitalManager.model.UsuarioModel;
+import com.vitalManager.vitalManager.repository.ConsultaRepository;
 import com.vitalManager.vitalManager.repository.EnderecoUsuarioRepository;
 import com.vitalManager.vitalManager.repository.MedicoRepository;
 import com.vitalManager.vitalManager.repository.TelefoneRepository;
-import com.vitalManager.vitalManager.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -25,10 +25,10 @@ public class MedicoRepositoryImpl implements MedicoRepository {
 
     @Autowired
     private final JdbcTemplate jdbcTemplate;
-
+    @Autowired
+    private ConsultaRepository consultaRepository;
     @Autowired
     private TelefoneRepository telefoneRepository;
-
     @Autowired
     private EnderecoUsuarioRepository enderecoUsuarioRepository;
 
@@ -73,6 +73,9 @@ public class MedicoRepositoryImpl implements MedicoRepository {
             medico.setEspecialidade(rs.getString("especialidade"));
             medico.setCrm(rs.getString("crm"));
             medico.setDataContratacao(rs.getTimestamp("data_contratacao").toLocalDateTime());
+
+            List<ConsultaModel> consultas = consultaRepository.getConsultasByMedicoId(medico.getIdMedico());
+            medico.setConsultas(consultas);
 
             return medico;
         }
