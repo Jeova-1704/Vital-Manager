@@ -14,6 +14,7 @@ import java.util.List;
 public class PrescricaoModel {
     private Integer idPrescricao;
     private ConsultaModel consulta;
+    private Integer idConsultaFk;
     private String instrucoes;
     private List<ItensHospitalaresModel> itensHospitalareModels;
 }
