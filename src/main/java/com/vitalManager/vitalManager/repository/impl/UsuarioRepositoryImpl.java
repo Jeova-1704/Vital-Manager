@@ -3,6 +3,8 @@ package com.vitalManager.vitalManager.repository.impl;
 import com.vitalManager.vitalManager.model.EnderecoUsuarioModel;
 import com.vitalManager.vitalManager.model.TelefoneModel;
 import com.vitalManager.vitalManager.model.UsuarioModel;
+import com.vitalManager.vitalManager.repository.EnderecoUsuarioRepository;
+import com.vitalManager.vitalManager.repository.TelefoneRepository;
 import com.vitalManager.vitalManager.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,12 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
+    private TelefoneRepository telefoneRepository;
+
+    @Autowired
+    private EnderecoUsuarioRepository enderecoUsuarioRepository;
+
+    @Autowired
     public UsuarioRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -43,89 +51,30 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
             user.setSexo(rs.getString("sexo"));
             user.setTipo(rs.getString("tipo"));
             user.setDataCriacao(rs.getTimestamp("data_criacao").toLocalDateTime());
+
+            List<TelefoneModel> telefones = telefoneRepository.getTelefonesByUserId(user.getIdUsuario());
+            user.setTelefoneUsuario(telefones);
+
+            EnderecoUsuarioModel enderecoUsuarioModel = enderecoUsuarioRepository.findByUserId(user.getIdUsuario());
+            user.setEnderecoUsuario(enderecoUsuarioModel);
+
             return user;
         }
     };
 
-    private RowMapper<EnderecoUsuarioModel> enderecoRowMapper = new RowMapper<EnderecoUsuarioModel>() {
-        @Override
-        public EnderecoUsuarioModel mapRow(ResultSet rs, int rowNum) throws SQLException {
-            EnderecoUsuarioModel endereco = new EnderecoUsuarioModel();
-            endereco.setIdEnderecoUsuario(rs.getInt("id_endereco_usuario"));
-            endereco.setIdUsuarioFK(rs.getInt("id_usuario_fk"));
-            endereco.setRua(rs.getString("rua"));
-            endereco.setBairro(rs.getString("bairro"));
-            endereco.setPais(rs.getString("pais"));
-            endereco.setCep(rs.getString("cep"));
-            endereco.setRua(rs.getString("rua"));
-            endereco.setNumeroCasa(rs.getString("numero_casa"));
-            endereco.setCidade(rs.getString("cidade"));
-            endereco.setEstado(rs.getString("estado"));
-            return endereco;
-        }
-    };
-
-    private RowMapper<TelefoneModel> telefoneRowMapper = (rs, rowNum) -> {
-        TelefoneModel telefone = new TelefoneModel();
-        telefone.setIdTelefone(rs.getInt("id_telefone"));
-        telefone.setIdUsuarioFK(rs.getInt("id_usuario_fk"));
-        telefone.setContato(rs.getString("contato"));
-        telefone.setTipo(rs.getString("tipo"));
-        return telefone;
-    };
-
     @Override
     public List<UsuarioModel> findAll() {
-        String usuarioSql = "SELECT * FROM usuario";
-        String enderecoSql = "SELECT * FROM endereco_usuario WHERE id_usuario_fk = ?";
-        String telefoneSql = "SELECT * FROM telefone_usuario WHERE id_usuario_fk = ?";
-
-        try {
-            List<UsuarioModel> usuarios = jdbcTemplate.query(usuarioSql, rowMapper);
-
-            for (UsuarioModel usuario : usuarios) {
-                try {
-                    EnderecoUsuarioModel endereco = jdbcTemplate.queryForObject(enderecoSql, new Object[]{usuario.getIdUsuario()}, enderecoRowMapper);
-                    usuario.setEnderecoUsuario(endereco);
-                } catch (EmptyResultDataAccessException e) {
-                    usuario.setEnderecoUsuario(null);
-                }
-
-                List<TelefoneModel> telefones = jdbcTemplate.query(telefoneSql, new Object[]{usuario.getIdUsuario()}, telefoneRowMapper);
-                usuario.setTelefoneUsuario(telefones);
-            }
-
-            return usuarios;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        String sql = "SELECT * FROM usuario";
+        return jdbcTemplate.query(sql, rowMapper);
     }
 
 
     @Override
     public Optional<UsuarioModel> findById(int id) {
-        String usuarioSql = "SELECT * FROM usuario WHERE id_usuario = ?";
-        String enderecoSql = "SELECT * FROM endereco_usuario WHERE id_usuario_fk = ?";
-        String telefoneSql = "SELECT * FROM telefone_usuario WHERE id_usuario_fk = ?";
-
+        String sql = "SELECT * FROM usuario WHERE id_usuario = ?";
         try {
-            UsuarioModel usuario = jdbcTemplate.queryForObject(usuarioSql, new Object[]{id}, rowMapper);
-
-            try {
-                EnderecoUsuarioModel endereco = jdbcTemplate.queryForObject(enderecoSql, new Object[]{id}, enderecoRowMapper);
-                usuario.setEnderecoUsuario(endereco);
-            } catch (EmptyResultDataAccessException e) {
-                usuario.setEnderecoUsuario(null);
-            }
-
-            List<TelefoneModel> telefones = jdbcTemplate.query(telefoneSql, new Object[]{id}, telefoneRowMapper);
-            usuario.setTelefoneUsuario(telefones);
-
-            return Optional.of(usuario);
-
-        } catch (EmptyResultDataAccessException e) {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new Object[]{id}, rowMapper));
+        } catch (Exception e) {
             return Optional.empty();
         }
     }
@@ -162,26 +111,11 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
 
     @Override
     public Optional<UsuarioModel> findByEmail(String email) {
-        String usuarioSql = "SELECT * FROM usuario WHERE email = ?";
-        String enderecoSql = "SELECT * FROM endereco_usuario WHERE id_usuario_fk = ?";
-        String telefoneSql = "SELECT * FROM telefone_usuario WHERE id_usuario_fk = ?";
+        String sql = "SELECT * FROM usuario WHERE email = ?";
 
         try {
-            UsuarioModel usuario = jdbcTemplate.queryForObject(usuarioSql, new Object[]{email}, rowMapper);
-
-            try {
-                EnderecoUsuarioModel endereco = jdbcTemplate.queryForObject(enderecoSql, new Object[]{usuario.getIdUsuario()}, enderecoRowMapper);
-                usuario.setEnderecoUsuario(endereco);
-            } catch (EmptyResultDataAccessException e) {
-                usuario.setEnderecoUsuario(null);
-            }
-
-            List<TelefoneModel> telefones = jdbcTemplate.query(telefoneSql, new Object[]{usuario.getIdUsuario()}, telefoneRowMapper);
-            usuario.setTelefoneUsuario(telefones);
-
-            return Optional.of(usuario);
-
-        } catch (EmptyResultDataAccessException e) {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new Object[]{email}, rowMapper));
+        } catch (Exception e) {
             return Optional.empty();
         }
     }
