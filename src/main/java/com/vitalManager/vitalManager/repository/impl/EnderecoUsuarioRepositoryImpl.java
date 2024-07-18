@@ -42,12 +42,12 @@ public class EnderecoUsuarioRepositoryImpl implements EnderecoUsuarioRepository 
     }
 
     @Override
-    public Optional<EnderecoUsuarioModel> findByUserId(int id) {
+    public EnderecoUsuarioModel findByUserId(int id) {
         String sql = "SELECT * FROM endereco_usuario WHERE ID_Usuario_FK = ?";
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new Object[]{id}, rowMapper));
+            return jdbcTemplate.queryForObject(sql, new Object[]{id}, rowMapper);
         } catch (Exception e) {
-            return Optional.empty();
+            return null;
         }
     }
 
