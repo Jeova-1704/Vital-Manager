@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface TelefoneFornecedorRepository {
     List<TelefoneFornecedorModel> findAll();
     Optional<TelefoneFornecedorModel> findByPhoneId(int id);
-    List<Integer> findBySupplierId(int id);
+    List<TelefoneFornecedorModel> getTelefonesBySupplierId(int id);
     int save(TelefoneFornecedorModel telefoneFornecedorModel);
     int update(TelefoneFornecedorModel telefoneFornecedorModel);
     int deleteBySupplierId(int id);

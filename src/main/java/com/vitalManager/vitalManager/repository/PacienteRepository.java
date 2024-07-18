@@ -1,5 +1,7 @@
 package com.vitalManager.vitalManager.repository;
 
+import com.vitalManager.vitalManager.model.ConsultaModel;
+import com.vitalManager.vitalManager.model.ExameModel;
 import com.vitalManager.vitalManager.model.PacienteModel;
 
 import java.util.List;
@@ -13,4 +15,5 @@ public interface PacienteRepository {
     int deleteById(int id);
     boolean existsById(int id);
     Integer findPacienteIdByUsuarioId(int idUsuario);
+
 }

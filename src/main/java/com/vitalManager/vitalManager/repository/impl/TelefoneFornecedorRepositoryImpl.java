@@ -50,16 +50,6 @@ public class TelefoneFornecedorRepositoryImpl implements TelefoneFornecedorRepos
     }
 
     @Override
-    public List<Integer> findBySupplierId(int id) {
-        String sql = "SELECT id_telefone FROM telefone_fornecedor WHERE id_fornecedor_fk = ?";
-        try {
-            return jdbcTemplate.queryForList(sql, new Object[]{id}, Integer.class);
-        } catch (Exception e) {
-            return new ArrayList<>();
-        }
-    }
-
-    @Override
     public int save(TelefoneFornecedorModel telefoneFornecedorModel) {
         String sql = "INSERT INTO telefone_fornecedor (id_fornecedor_fk,telefone) " +
                 "VALUES (?, ?)";
@@ -85,6 +75,11 @@ public class TelefoneFornecedorRepositoryImpl implements TelefoneFornecedorRepos
         return count != null && count > 0;
     }
 
+    @Override
+    public List<TelefoneFornecedorModel> getTelefonesBySupplierId(int id) {
+        String sql = "SELECT * FROM telefone_fornecedor WHERE id_fornecedor_fk = ?";
+        return jdbcTemplate.query(sql, new Object[]{id}, rowMapper);
+    }
 
 
 

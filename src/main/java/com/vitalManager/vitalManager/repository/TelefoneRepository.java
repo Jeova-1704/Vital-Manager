@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface TelefoneRepository {
     List<TelefoneModel> findAll();
     Optional<TelefoneModel> findByPhoneId(int id);
-    List<Integer> findByUserId(int id);
+    List<TelefoneModel> getTelefonesByUserId(int id);
     int save(TelefoneModel telefoneModel);
     int update(TelefoneModel telefoneModel);
     int deleteByUserId(int id);

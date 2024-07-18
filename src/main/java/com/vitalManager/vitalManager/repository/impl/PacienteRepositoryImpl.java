@@ -1,11 +1,7 @@
 package com.vitalManager.vitalManager.repository.impl;
 
-import com.vitalManager.vitalManager.model.PacienteModel;
-import com.vitalManager.vitalManager.model.TelefoneModel;
-import com.vitalManager.vitalManager.model.UsuarioModel;
-import com.vitalManager.vitalManager.repository.EnderecoUsuarioRepository;
-import com.vitalManager.vitalManager.repository.PacienteRepository;
-import com.vitalManager.vitalManager.repository.TelefoneRepository;
+import com.vitalManager.vitalManager.model.*;
+import com.vitalManager.vitalManager.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -30,6 +26,12 @@ public class PacienteRepositoryImpl implements PacienteRepository {
     private EnderecoUsuarioRepository enderecoUsuarioRepository;
 
     @Autowired
+    private ExameRepository exameRepository;
+
+    @Autowired
+    private ProntuarioRepository prontuarioRepository;
+
+    @Autowired
     public PacienteRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -39,6 +41,7 @@ public class PacienteRepositoryImpl implements PacienteRepository {
         public PacienteModel mapRow(ResultSet rs, int rowNum) throws SQLException {
             PacienteModel paciente = new PacienteModel();
             UsuarioModel usuario = new UsuarioModel();
+            ExameModel exameModel = new ExameModel();
 
             usuario.setIdUsuario(rs.getInt("id_usuario"));
             usuario.setNome(rs.getString("nome"));
@@ -51,22 +54,22 @@ public class PacienteRepositoryImpl implements PacienteRepository {
             usuario.setTipo(rs.getString("tipo"));
             usuario.setDataCriacao(rs.getTimestamp("data_criacao").toLocalDateTime());
 
-            List<TelefoneModel> telefoneModels = new ArrayList<>();
+            List<TelefoneModel> telefones = telefoneRepository.getTelefonesByUserId(usuario.getIdUsuario());
+            usuario.setTelefoneUsuario(telefones);
 
-            for (Integer phoneId : telefoneRepository.findByUserId(usuario.getIdUsuario())){
-                TelefoneModel telefoneModel = telefoneRepository.findByPhoneId(phoneId)
-                        .orElseThrow();
-
-                telefoneModels.add(telefoneModel);
-            }
-
-            usuario.setTelefoneUsuario(telefoneModels);
+            EnderecoUsuarioModel enderecoUsuarioModel = enderecoUsuarioRepository.findByUserId(usuario.getIdUsuario());
+            usuario.setEnderecoUsuario(enderecoUsuarioModel);
 
             paciente.setUsuario(usuario);
 
             paciente.setIdPaciente(rs.getInt("id_paciente"));
             paciente.setIdUsuarioFK(rs.getInt("id_usuario"));
             paciente.setNumeroProntuario(rs.getInt("id_numero_prontuario_fk"));
+
+            List<ExameModel> exames = exameRepository.getExamesByPacienteId(paciente.getIdPaciente());
+            paciente.setExames(exames);
+
+            paciente.setProntuario(prontuarioRepository.findProntuarioIdByPacienteId(paciente.getIdPaciente()));
 
             return paciente;
         }

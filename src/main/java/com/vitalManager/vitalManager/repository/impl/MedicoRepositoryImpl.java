@@ -52,16 +52,8 @@ public class MedicoRepositoryImpl implements MedicoRepository {
             usuario.setTipo(rs.getString("tipo"));
             usuario.setDataCriacao(rs.getTimestamp("data_criacao").toLocalDateTime());
 
-            List<TelefoneModel> telefoneModels = new ArrayList<>();
-
-            for (Integer phoneId : telefoneRepository.findByUserId(usuario.getIdUsuario())){
-                TelefoneModel telefoneModel = telefoneRepository.findByPhoneId(phoneId)
-                        .orElseThrow();
-
-                telefoneModels.add(telefoneModel);
-            }
-
-            usuario.setTelefoneUsuario(telefoneModels);
+            List<TelefoneModel> telefones = telefoneRepository.getTelefonesByUserId(usuario.getIdUsuario());
+            usuario.setTelefoneUsuario(telefones);
 
             EnderecoUsuarioModel enderecoUsuarioModel = enderecoUsuarioRepository.findByUserId(usuario.getIdUsuario());
             usuario.setEnderecoUsuario(enderecoUsuarioModel);

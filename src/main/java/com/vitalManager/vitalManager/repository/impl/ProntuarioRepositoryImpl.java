@@ -11,7 +11,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -96,6 +95,26 @@ public class ProntuarioRepositoryImpl implements ProntuarioRepository {
         try {
             return jdbcTemplate.queryForObject(sql, new Object[]{usuarioId}, Integer.class);
         } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    public ProntuarioModel findProntuarioIdByPacienteId(int pacienteId) {
+        String sql = "SELECT * FROM Prontuario WHERE ID_Paciente_FK = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{pacienteId}, rowMapper);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public Integer findByProntuarioProntuarioId(Integer idFk) {
+        String sql = "SELECT ID_Prontuario FROM Prontuario WHERE ID_Paciente_FK = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{idFk}, Integer.class);
+        } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }

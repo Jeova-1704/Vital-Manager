@@ -1,5 +1,6 @@
 package com.vitalManager.vitalManager.repository.impl;
 
+import com.vitalManager.vitalManager.model.ConsultaModel;
 import com.vitalManager.vitalManager.model.ExameModel;
 import com.vitalManager.vitalManager.repository.ExameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,5 +76,12 @@ public class ExameRepositoryImpl implements ExameRepository {
         String sql = "SELECT COUNT(*) FROM exame WHERE id_exame = ?";
         Integer count = jdbcTemplate.queryForObject(sql, new Object[]{id}, Integer.class);
         return count != null && count > 0;
+    }
+
+
+    @Override
+    public List<ExameModel> getExamesByPacienteId(int prontuarioId) {
+        String sql = "SELECT * FROM exame WHERE id_paciente_fk = ?";
+        return jdbcTemplate.query(sql, new Object[]{prontuarioId}, rowMapper);
     }
 }
