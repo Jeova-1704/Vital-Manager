@@ -84,4 +84,10 @@ public class ConsultaRepositoryImpl implements ConsultaRepository {
         String sql = "SELECT * FROM Consulta WHERE Prontuario_Id_FK = ?";
         return jdbcTemplate.query(sql, new Object[]{prontuarioId}, rowMapper);
     }
+
+    @Override
+    public List<ConsultaModel> getConsultasByMedicoId(int medicoId) {
+        String sql = "SELECT * FROM Consulta WHERE Medico_Id_FK = ?";
+        return jdbcTemplate.query(sql, new Object[]{medicoId}, rowMapper);
+    }
 }

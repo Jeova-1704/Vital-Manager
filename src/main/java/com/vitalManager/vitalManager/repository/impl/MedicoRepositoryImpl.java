@@ -1,7 +1,9 @@
 package com.vitalManager.vitalManager.repository.impl;
 
+import com.vitalManager.vitalManager.model.ConsultaModel;
 import com.vitalManager.vitalManager.model.MedicoModel;
 import com.vitalManager.vitalManager.model.UsuarioModel;
+import com.vitalManager.vitalManager.repository.ConsultaRepository;
 import com.vitalManager.vitalManager.repository.MedicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,6 +20,10 @@ public class MedicoRepositoryImpl implements MedicoRepository {
 
     @Autowired
     private final JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private ConsultaRepository consultaRepository;
+
 
     @Autowired
     public MedicoRepositoryImpl(JdbcTemplate jdbcTemplate) {
@@ -46,6 +52,9 @@ public class MedicoRepositoryImpl implements MedicoRepository {
             medico.setEspecialidade(rs.getString("especialidade"));
             medico.setCrm(rs.getString("crm"));
             medico.setDataContratacao(rs.getTimestamp("data_contratacao").toLocalDateTime());
+
+            List<ConsultaModel> consultas = consultaRepository.getConsultasByMedicoId(medico.getIdMedico());
+            medico.setConsultas(consultas);
 
             return medico;
         }
