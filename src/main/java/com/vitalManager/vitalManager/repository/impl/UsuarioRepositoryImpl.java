@@ -190,53 +190,80 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
     @Override
     @Transactional
     public void deleteUsuarioAndRelatedData(int id) {
-
+        // Excluir dados relacionados em outras tabelas antes do usuário principal
+        deleteConsultaByUsuarioId(id);
         deleteEnderecoUsuario(id);
         deleteTelefoneUsuario(id);
         deleteProntuarioByUsuarioId(id);
-        deleteConsultaByUsuarioId(id);
         deleteExameByPacienteId(id);
         deletePacienteByUsuarioId(id);
         deletePrescricaoByConsultaId(id);
 
-
+        // Excluir o próprio usuário
         String sql = "DELETE FROM Usuario WHERE id_usuario = ?";
         jdbcTemplate.update(sql, id);
     }
 
     private void deleteEnderecoUsuario(int idUsuario) {
-        String sql = "DELETE FROM Endereco_Usuario WHERE ID_Usuario_FK = ?";
-        jdbcTemplate.update(sql, idUsuario);
+        String sqlCheck = "SELECT COUNT(*) FROM Endereco_Usuario WHERE ID_Usuario_FK = ?";
+        Integer count = jdbcTemplate.queryForObject(sqlCheck, new Object[]{idUsuario}, Integer.class);
+        if (count != null && count > 0) {
+            String sqlDelete = "DELETE FROM Endereco_Usuario WHERE ID_Usuario_FK = ?";
+            jdbcTemplate.update(sqlDelete, idUsuario);
+        }
     }
 
     private void deleteTelefoneUsuario(int idUsuario) {
-        String sql = "DELETE FROM Telefone_Usuario WHERE ID_Usuario_FK = ?";
-        jdbcTemplate.update(sql, idUsuario);
+        String sqlCheck = "SELECT COUNT(*) FROM Telefone_Usuario WHERE ID_Usuario_FK = ?";
+        Integer count = jdbcTemplate.queryForObject(sqlCheck, new Object[]{idUsuario}, Integer.class);
+        if (count != null && count > 0) {
+            String sqlDelete = "DELETE FROM Telefone_Usuario WHERE ID_Usuario_FK = ?";
+            jdbcTemplate.update(sqlDelete, idUsuario);
+        }
     }
 
     private void deleteProntuarioByUsuarioId(int idUsuario) {
-        String sql = "DELETE FROM Prontuario WHERE ID_Paciente_FK IN (SELECT ID_Paciente FROM Paciente WHERE ID_Usuario_FK = ?)";
-        jdbcTemplate.update(sql, idUsuario);
+        String sqlCheck = "SELECT COUNT(*) FROM Prontuario WHERE ID_Paciente_FK IN (SELECT ID_Paciente FROM Paciente WHERE ID_Usuario_FK = ?)";
+        Integer count = jdbcTemplate.queryForObject(sqlCheck, new Object[]{idUsuario}, Integer.class);
+        if (count != null && count > 0) {
+            String sqlDelete = "DELETE FROM Prontuario WHERE ID_Paciente_FK IN (SELECT ID_Paciente FROM Paciente WHERE ID_Usuario_FK = ?)";
+            jdbcTemplate.update(sqlDelete, idUsuario);
+        }
     }
 
     private void deletePacienteByUsuarioId(int idUsuario) {
-        String sql = "DELETE FROM Paciente WHERE ID_Usuario_FK = ?";
-        jdbcTemplate.update(sql, idUsuario);
+        String sqlCheck = "SELECT COUNT(*) FROM Paciente WHERE ID_Usuario_FK = ?";
+        Integer count = jdbcTemplate.queryForObject(sqlCheck, new Object[]{idUsuario}, Integer.class);
+        if (count != null && count > 0) {
+            String sqlDelete = "DELETE FROM Paciente WHERE ID_Usuario_FK = ?";
+            jdbcTemplate.update(sqlDelete, idUsuario);
+        }
     }
 
     private void deleteConsultaByUsuarioId(int idUsuario) {
-        String sql = "DELETE FROM Consulta WHERE Medico_Id_FK IN (SELECT ID_Medico FROM Medico WHERE ID_Usuario_FK = ?)";
-        jdbcTemplate.update(sql, idUsuario);
+        String sqlCheck = "SELECT COUNT(*) FROM Consulta WHERE Medico_Id_FK IN (SELECT ID_Medico FROM Medico WHERE ID_Usuario_FK = ?)";
+        Integer count = jdbcTemplate.queryForObject(sqlCheck, new Object[]{idUsuario}, Integer.class);
+        if (count != null && count > 0) {
+            String sqlDelete = "DELETE FROM Consulta WHERE Medico_Id_FK IN (SELECT ID_Medico FROM Medico WHERE ID_Usuario_FK = ?)";
+            jdbcTemplate.update(sqlDelete, idUsuario);
+        }
     }
 
     private void deleteExameByPacienteId(int idPaciente) {
-        String sql = "DELETE FROM Exame WHERE ID_Paciente_FK = ?";
-        jdbcTemplate.update(sql, idPaciente);
+        String sqlCheck = "SELECT COUNT(*) FROM Exame WHERE ID_Paciente_FK = ?";
+        Integer count = jdbcTemplate.queryForObject(sqlCheck, new Object[]{idPaciente}, Integer.class);
+        if (count != null && count > 0) {
+            String sqlDelete = "DELETE FROM Exame WHERE ID_Paciente_FK = ?";
+            jdbcTemplate.update(sqlDelete, idPaciente);
+        }
     }
 
     private void deletePrescricaoByConsultaId(int idConsulta) {
-        String sql = "DELETE FROM Prescricao WHERE ID_Consulta_FK = ?";
-        jdbcTemplate.update(sql, idConsulta);
+        String sqlCheck = "SELECT COUNT(*) FROM Prescricao WHERE ID_Consulta_FK = ?";
+        Integer count = jdbcTemplate.queryForObject(sqlCheck, new Object[]{idConsulta}, Integer.class);
+        if (count != null && count > 0) {
+            String sqlDelete = "DELETE FROM Prescricao WHERE ID_Consulta_FK = ?";
+            jdbcTemplate.update(sqlDelete, idConsulta);
+        }
     }
-
 }

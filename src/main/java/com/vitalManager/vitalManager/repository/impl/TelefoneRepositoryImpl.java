@@ -1,5 +1,6 @@
 package com.vitalManager.vitalManager.repository.impl;
 
+import com.vitalManager.vitalManager.model.ConsultaModel;
 import com.vitalManager.vitalManager.model.TelefoneModel;
 import com.vitalManager.vitalManager.repository.TelefoneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,16 +51,6 @@ public class TelefoneRepositoryImpl implements TelefoneRepository {
     }
 
     @Override
-    public List<Integer> findByUserId(int id) {
-        String sql = "SELECT id_telefone FROM telefone_usuario WHERE id_usuario_fk = ?";
-        try {
-            return jdbcTemplate.queryForList(sql, new Object[]{id}, Integer.class);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    @Override
     public int save(TelefoneModel telefoneModel) {
         String sql = "INSERT INTO telefone_usuario (id_usuario_fk,contato,tipo) " +
                 "VALUES (?, ?, ?)";
@@ -83,6 +74,12 @@ public class TelefoneRepositoryImpl implements TelefoneRepository {
         String sql = "SELECT COUNT(*) FROM telefone_usuario WHERE id_usuario_fk = ?";
         Integer count = jdbcTemplate.queryForObject(sql, new Object[]{id}, Integer.class);
         return count != null && count > 0;
+    }
+
+    @Override
+    public List<TelefoneModel> getTelefonesByUserId(int id) {
+        String sql = "SELECT * FROM telefone_usuario WHERE id_usuario_fk = ?";
+        return jdbcTemplate.query(sql, new Object[]{id}, rowMapper);
     }
 
 

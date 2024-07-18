@@ -39,16 +39,8 @@ public class FornecedorRepositoryImpl implements FornecedorRepository {
             fornecedor.setNome(rs.getString("nome"));
             fornecedor.setCnpj(rs.getString("cnpj"));
 
-            List<TelefoneFornecedorModel> telefoneModels = new ArrayList<>();
-
-            for (Integer phoneId : telefoneFornecedorRepository.findBySupplierId(fornecedor.getIdFornecedor())){
-                TelefoneFornecedorModel telefoneModel = telefoneFornecedorRepository.findByPhoneId(phoneId)
-                        .orElseThrow();
-
-                telefoneModels.add(telefoneModel);
-            }
-
-            fornecedor.setTelefonesFornecedor(telefoneModels);
+            List<TelefoneFornecedorModel> telefones = telefoneFornecedorRepository.getTelefonesBySupplierId(fornecedor.getIdFornecedor());
+            fornecedor.setTelefonesFornecedor(telefones);
 
             EnderecoFornecedorModel enderecoFornecedorModel = enderecoFornecedorRepository.findBySupplierId(fornecedor.getIdFornecedor());
             fornecedor.setEnderecoFornecedorModel(enderecoFornecedorModel);

@@ -1,8 +1,6 @@
 package com.vitalManager.vitalManager.repository.impl;
 
-import com.vitalManager.vitalManager.model.PacienteModel;
-import com.vitalManager.vitalManager.model.TelefoneModel;
-import com.vitalManager.vitalManager.model.UsuarioModel;
+import com.vitalManager.vitalManager.model.*;
 import com.vitalManager.vitalManager.repository.EnderecoUsuarioRepository;
 import com.vitalManager.vitalManager.repository.PacienteRepository;
 import com.vitalManager.vitalManager.repository.TelefoneRepository;
@@ -51,16 +49,11 @@ public class PacienteRepositoryImpl implements PacienteRepository {
             usuario.setTipo(rs.getString("tipo"));
             usuario.setDataCriacao(rs.getTimestamp("data_criacao").toLocalDateTime());
 
-            List<TelefoneModel> telefoneModels = new ArrayList<>();
+            List<TelefoneModel> telefones = telefoneRepository.getTelefonesByUserId(usuario.getIdUsuario());
+            usuario.setTelefoneUsuario(telefones);
 
-            for (Integer phoneId : telefoneRepository.findByUserId(usuario.getIdUsuario())){
-                TelefoneModel telefoneModel = telefoneRepository.findByPhoneId(phoneId)
-                        .orElseThrow();
-
-                telefoneModels.add(telefoneModel);
-            }
-
-            usuario.setTelefoneUsuario(telefoneModels);
+            EnderecoUsuarioModel enderecoUsuarioModel = enderecoUsuarioRepository.findByUserId(usuario.getIdUsuario());
+            usuario.setEnderecoUsuario(enderecoUsuarioModel);
 
             paciente.setUsuario(usuario);
 
