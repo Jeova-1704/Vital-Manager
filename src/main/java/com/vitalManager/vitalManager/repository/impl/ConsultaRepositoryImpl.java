@@ -78,4 +78,10 @@ public class ConsultaRepositoryImpl implements ConsultaRepository {
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class, id);
         return count != null && count > 0;
     }
+
+    @Override
+    public List<ConsultaModel> getConsultasByProntuarioId(int prontuarioId) {
+        String sql = "SELECT * FROM Consulta WHERE Prontuario_Id_FK = ?";
+        return jdbcTemplate.query(sql, new Object[]{prontuarioId}, rowMapper);
+    }
 }

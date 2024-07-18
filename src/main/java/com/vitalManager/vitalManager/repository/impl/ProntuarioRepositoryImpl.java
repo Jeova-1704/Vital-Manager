@@ -1,8 +1,11 @@
 package com.vitalManager.vitalManager.repository.impl;
 
+import com.vitalManager.vitalManager.model.ConsultaModel;
 import com.vitalManager.vitalManager.model.ProntuarioModel;
+import com.vitalManager.vitalManager.repository.ConsultaRepository;
 import com.vitalManager.vitalManager.repository.ProntuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -15,12 +18,10 @@ import java.util.Optional;
 @Repository
 public class ProntuarioRepositoryImpl implements ProntuarioRepository {
 
-    private final JdbcTemplate jdbcTemplate;
-
     @Autowired
-    public ProntuarioRepositoryImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private ConsultaRepository consultaRepository;
 
     private RowMapper<ProntuarioModel> rowMapper = (rs, rowNum) -> {
         ProntuarioModel prontuario = new ProntuarioModel();
@@ -34,6 +35,10 @@ public class ProntuarioRepositoryImpl implements ProntuarioRepository {
         prontuario.setPressao(rs.getString("presao"));
         prontuario.setDescricao(rs.getString("Descricao"));
         prontuario.setDataCriacao(rs.getTimestamp("Data_criacao").toLocalDateTime());
+
+        List<ConsultaModel> consultas = consultaRepository.getConsultasByProntuarioId(prontuario.getIdProntuario());
+        prontuario.setConsultas(consultas);
+
         return prontuario;
     };
 
@@ -47,8 +52,9 @@ public class ProntuarioRepositoryImpl implements ProntuarioRepository {
     public Optional<ProntuarioModel> findById(int id) {
         String sql = "SELECT * FROM Prontuario WHERE ID_Prontuario = ?";
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new Object[]{id}, rowMapper));
-        } catch (Exception e) {
+            ProntuarioModel prontuario = jdbcTemplate.queryForObject(sql, new Object[]{id}, rowMapper);
+            return Optional.ofNullable(prontuario);
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
