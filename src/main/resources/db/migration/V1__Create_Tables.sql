@@ -11,6 +11,8 @@ $$ LANGUAGE plpgsql;
 CREATE DOMAIN NUMERO_CASA AS varchar(10)
     CHECK (non_negative_numeric(VALUE)) NOT NULL;
 
+
+
 CREATE TABLE Usuario (
     ID_Usuario SERIAL PRIMARY KEY,
     Nome VARCHAR(30) NOT NULL,
