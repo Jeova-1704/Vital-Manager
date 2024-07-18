@@ -24,8 +24,7 @@ public class EnderecoFornecedorService {
     }
 
     public EnderecoFornecedorModel getAddressBySupplierId(int id) {
-        return enderecoFornecedorRepository.findBySupplierId(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Nenhum endereço atribuido ao fornecedor de id " + id));
+        return enderecoFornecedorRepository.findBySupplierId(id);
     }
 
     public EnderecoFornecedorModel createSupplierAddress(EnderecoFornecedorDTO enderecoFornecedorDTO) {
@@ -43,8 +42,7 @@ public class EnderecoFornecedorService {
             throw new ResourceNotFoundException("Fornecedor não encontrado com id " + id);
         }
 
-        EnderecoFornecedorModel enderecoExistente = enderecoFornecedorRepository.findBySupplierId(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Endereço do fornecedor não encontrado com id " + id));
+        EnderecoFornecedorModel enderecoExistente = enderecoFornecedorRepository.findBySupplierId(id);
 
         EnderecoFornecedorModel enderecoAtualizar = convertDtoToModel(enderecoFornecedorDTO);
         enderecoAtualizar.setIdEnderecoFornecedor(enderecoExistente.getIdEnderecoFornecedor());
