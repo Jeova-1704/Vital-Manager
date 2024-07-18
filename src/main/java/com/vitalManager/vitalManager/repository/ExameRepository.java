@@ -12,4 +12,5 @@ public interface ExameRepository {
     int update(ExameModel exame);
     int deleteById(int id);
     boolean existsById(int id);
+    List<ExameModel> getExamesByPacienteId(int id);
 }
