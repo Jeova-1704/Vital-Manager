@@ -36,6 +36,16 @@ public class UsuarioController implements UsuarioDocsController {
         return ResponseEntity.ok().body(user);
     }
 
+    @GetMapping("/email/{email}")
+    public ResponseEntity<UsuarioModel> getUserByEmail(@PathVariable String email) {
+        UsuarioModel user = usuarioService.getUserByEmail(email);
+        if (user != null) {
+            return ResponseEntity.ok().body(user);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @Override
     @PostMapping("/")
     public ResponseEntity<UsuarioModel> createUser(@RequestBody UsuarioDTO userDTO) {

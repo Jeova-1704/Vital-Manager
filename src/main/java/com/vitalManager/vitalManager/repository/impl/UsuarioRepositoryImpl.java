@@ -103,8 +103,6 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
     }
 
 
-
-
     @Override
     public Optional<UsuarioModel> findById(int id) {
         String usuarioSql = "SELECT * FROM usuario WHERE id_usuario = ?";

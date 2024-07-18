@@ -1,8 +1,14 @@
 package com.vitalManager.vitalManager.repository.impl;
 
+import com.vitalManager.vitalManager.exception.ResourceNotFoundException;
+import com.vitalManager.vitalManager.model.EnderecoUsuarioModel;
 import com.vitalManager.vitalManager.model.MedicoModel;
+import com.vitalManager.vitalManager.model.TelefoneModel;
 import com.vitalManager.vitalManager.model.UsuarioModel;
+import com.vitalManager.vitalManager.repository.EnderecoUsuarioRepository;
 import com.vitalManager.vitalManager.repository.MedicoRepository;
+import com.vitalManager.vitalManager.repository.TelefoneRepository;
+import com.vitalManager.vitalManager.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -10,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +25,12 @@ public class MedicoRepositoryImpl implements MedicoRepository {
 
     @Autowired
     private final JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private TelefoneRepository telefoneRepository;
+
+    @Autowired
+    private EnderecoUsuarioRepository enderecoUsuarioRepository;
 
     @Autowired
     public MedicoRepositoryImpl(JdbcTemplate jdbcTemplate) {
@@ -38,6 +51,20 @@ public class MedicoRepositoryImpl implements MedicoRepository {
             usuario.setSexo(rs.getString("sexo"));
             usuario.setTipo(rs.getString("tipo"));
             usuario.setDataCriacao(rs.getTimestamp("data_criacao").toLocalDateTime());
+
+            List<TelefoneModel> telefoneModels = new ArrayList<>();
+
+            for (Integer phoneId : telefoneRepository.findByUserId(usuario.getIdUsuario())){
+                TelefoneModel telefoneModel = telefoneRepository.findByPhoneId(phoneId)
+                        .orElseThrow();
+
+                telefoneModels.add(telefoneModel);
+            }
+
+            usuario.setTelefoneUsuario(telefoneModels);
+
+            EnderecoUsuarioModel enderecoUsuarioModel = enderecoUsuarioRepository.findByUserId(usuario.getIdUsuario());
+            usuario.setEnderecoUsuario(enderecoUsuarioModel);
 
             MedicoModel medico = new MedicoModel();
             medico.setIdMedico(rs.getInt("id_medico"));

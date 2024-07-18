@@ -38,13 +38,24 @@ public class TelefoneRepositoryImpl implements TelefoneRepository {
         return jdbcTemplate.query(sql, rowMapper);
     }
 
+
     @Override
-    public Optional<TelefoneModel> findByUserId(int id) {
-        String sql = "SELECT * FROM telefone_usuario WHERE id_usuario_fk = ?";
+    public Optional<TelefoneModel> findByPhoneId(int id) {
+        String sql = "SELECT * FROM telefone_usuario WHERE id_telefone = ?";
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new Object[]{id}, rowMapper));
         } catch (Exception e) {
             return Optional.empty();
+        }
+    }
+
+    @Override
+    public List<Integer> findByUserId(int id) {
+        String sql = "SELECT id_telefone FROM telefone_usuario WHERE id_usuario_fk = ?";
+        try {
+            return jdbcTemplate.queryForList(sql, new Object[]{id}, Integer.class);
+        } catch (Exception e) {
+            return null;
         }
     }
 
