@@ -33,22 +33,19 @@ public class ProntuarioService {
         UsuarioModel usuario = usuarioRepository.findById(prontuarioDTO.idPacienteFK())
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com ID: " + prontuarioDTO.idPacienteFK()));
 
-        if (usuario.getTipo().equals("P")) {
-            ProntuarioModel prontuario = convertDTOToModel(prontuarioDTO);
-            prontuario.setDataCriacao(LocalDateTime.now());
-            prontuarioRepository.save(prontuario);
+        ProntuarioModel prontuario = convertDTOToModel(prontuarioDTO);
+        prontuario.setDataCriacao(LocalDateTime.now());
+        prontuarioRepository.save(prontuario);
 
-            Integer prontuarioId = prontuarioRepository.findProntuarioIdByUsuarioId(usuario.getIdUsuario());
-            if (prontuarioId != null) {
-                prontuario.setIdProntuario(prontuarioId);
-            } else {
-                throw new RuntimeException("Failed to retrieve the prontuario ID after saving.");
-            }
-            return prontuario;
+        Integer prontuarioId = prontuarioRepository.findProntuarioIdByUsuarioId(usuario.getIdUsuario());
+        if (prontuarioId != null) {
+            prontuario.setIdProntuario(prontuarioId);
         } else {
-            throw new UserTypeNotValidException("O usuario não tem permissão para criação do prontuário");
+            throw new RuntimeException("Failed to retrieve the prontuario ID after saving.");
         }
-    }
+        return prontuario;
+
+        }
 
     public ProntuarioModel updateProntuario(int id, ProntuarioDTO prontuarioDTO) {
         if (!prontuarioRepository.existsById(id)) {
