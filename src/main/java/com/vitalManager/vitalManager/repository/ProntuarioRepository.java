@@ -14,6 +14,7 @@ public interface ProntuarioRepository {
     int deleteById(int id);
     boolean existsById(int id);
     Integer findProntuarioIdByUsuarioId(int usuarioId);
-
+    ProntuarioModel findProntuarioIdByPacienteId(int pacienteId);
     Integer findByProntuarioProntuarioId(Integer idFk);
+
 }
