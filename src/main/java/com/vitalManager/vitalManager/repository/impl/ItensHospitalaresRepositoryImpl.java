@@ -69,4 +69,10 @@ public class ItensHospitalaresRepositoryImpl implements ItensHospitalaresReposit
         String sql = "DELETE FROM Itens_Hospitalares WHERE ID_Itens_Hospitalares = ?";
         jdbcTemplate.update(sql, id);
     }
+
+    @Override
+    public List<ItensHospitalaresModel> getItensHospitalaresByEstoqueId(Integer idEstoque) {
+        String sql = "SELECT * FROM Itens_Hospitalares WHERE ID_Estoque = ?";
+        return jdbcTemplate.query(sql, new Object[]{idEstoque}, rowMapper);
+    }
 }

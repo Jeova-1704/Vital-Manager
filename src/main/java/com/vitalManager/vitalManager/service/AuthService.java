@@ -2,11 +2,14 @@ package com.vitalManager.vitalManager.service;
 
 import com.vitalManager.vitalManager.DTO.LoginDTO;
 import com.vitalManager.vitalManager.DTO.ResponseDTO;
+import com.vitalManager.vitalManager.DTO.ResponseDTOLogin;
 import com.vitalManager.vitalManager.DTO.UsuarioDTO;
 import com.vitalManager.vitalManager.exception.EmailNotFoundException;
 import com.vitalManager.vitalManager.exception.EmailRegisteredSystemException;
 import com.vitalManager.vitalManager.infra.security.TokenService;
 import com.vitalManager.vitalManager.model.UsuarioModel;
+import com.vitalManager.vitalManager.repository.MedicoRepository;
+import com.vitalManager.vitalManager.repository.PacienteRepository;
 import com.vitalManager.vitalManager.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,13 +24,27 @@ public class AuthService {
     private final UsuarioService usuarioService;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
+    private final PacienteRepository pacienteRepository;
+    private final MedicoRepository medicoRepository;
+    Integer id_fk;
 
-    public ResponseDTO login(LoginDTO body) {
+    public ResponseDTOLogin login(LoginDTO body) {
         UsuarioModel usuarioModel = repository.findByEmail(body.email())
                 .orElseThrow(() -> new EmailNotFoundException("Email not found"));
+
+        if (usuarioModel.getTipo().equals("P")) {
+            id_fk = pacienteRepository.findPacienteIdByUsuarioId(usuarioModel.getIdUsuario());
+        } else {
+            id_fk = medicoRepository.findMedicoIdByUsuarioId(usuarioModel.getIdUsuario());
+        }
+
         if (passwordEncoder.matches(body.senha(), usuarioModel.getSenha())) {
             String token = tokenService.generateToken(usuarioModel);
-            return new ResponseDTO(usuarioModel.getNome(), usuarioModel.getTipo(), usuarioModel.getIdUsuario(), token);
+            return new ResponseDTOLogin(usuarioModel.getNome(),
+                                        usuarioModel.getTipo(),
+                                        usuarioModel.getIdUsuario(),
+                                        token,
+                                        id_fk);
         }
         throw new EmailNotFoundException("Invalid password");
     }
@@ -40,7 +57,7 @@ public class AuthService {
             usuario = repository.findByEmail(body.email())
                     .orElseThrow(() -> new EmailNotFoundException("Email not found"));
             String token = tokenService.generateToken(usuario);
-            return new ResponseDTO(usuario.getNome(), usuario.getTipo(), usuario.getIdUsuario(),  token);
+            return new ResponseDTO(usuario.getNome(), usuario.getTipo(), usuario.getIdUsuario(), token);
         } else {
             throw new EmailRegisteredSystemException("O email já esta cadastrado no sistema.");
         }

@@ -11,4 +11,5 @@ public interface ItensHospitalaresRepository {
     List<ItensHospitalaresModel> findAll();
     ItensHospitalaresModel update(ItensHospitalaresModel item);
     void deleteById(Integer id);
+    List<ItensHospitalaresModel> getItensHospitalaresByEstoqueId(Integer idEstoque);
 }

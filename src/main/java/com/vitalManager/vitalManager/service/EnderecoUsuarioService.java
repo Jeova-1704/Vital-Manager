@@ -24,8 +24,7 @@ public class EnderecoUsuarioService {
     }
 
     public EnderecoUsuarioModel getAdressByIdUser(int id) {
-        return enderecoUsuarioRepository.findByUserId(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Nenhum endereço atribuido ao usuario de id " + id));
+        return enderecoUsuarioRepository.findByUserId(id);
     }
 
     public EnderecoUsuarioModel createUsuarioAdress(EnderecoUsuarioDTO enderecoUsuarioDTO) {
@@ -43,12 +42,10 @@ public class EnderecoUsuarioService {
             throw new ResourceNotFoundException("User not found with id " + id);
         }
 
-        EnderecoUsuarioModel enderecoExistente = enderecoUsuarioRepository.findByUserId(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User Adress not found with id " + id));
+        EnderecoUsuarioModel enderecoExistente = enderecoUsuarioRepository.findByUserId(id);
 
         EnderecoUsuarioModel enderecoAtualizar = convertDtoToModel(enderecoUsuarioDTO);
         enderecoAtualizar.setIdEnderecoUsuario(enderecoExistente.getIdEnderecoUsuario());
-        System.out.println(enderecoAtualizar.getIdEnderecoUsuario());
         enderecoUsuarioRepository.update(enderecoAtualizar);
         return enderecoAtualizar;
     }

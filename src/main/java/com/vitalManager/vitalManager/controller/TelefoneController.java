@@ -28,6 +28,11 @@ public class TelefoneController implements TelefoneDocsController {
         return ResponseEntity.ok().body(enderecoUsuarioModels);
     }
 
+    @Override
+    public ResponseEntity<TelefoneModel> getPhoneByUserId(int id) {
+        return null;
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<TelefoneModel> updateUserPhone(@PathVariable int id,@RequestBody TelefoneDTO enderecoUsuarioDTO) {
         TelefoneModel telefoneModel =  telefoneService.updatePhone(id,enderecoUsuarioDTO);
@@ -35,8 +40,8 @@ public class TelefoneController implements TelefoneDocsController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TelefoneModel> getPhoneByUserId(@PathVariable int id) {
-        TelefoneModel telefoneModel = telefoneService.getPhoneByIdUser(id);
+    public ResponseEntity<TelefoneModel> getPhoneById(@PathVariable int id) {
+        TelefoneModel telefoneModel = telefoneService.getPhoneById(id).orElseThrow();
         return ResponseEntity.ok().body(telefoneModel);
     }
 

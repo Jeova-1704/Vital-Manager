@@ -1,7 +1,10 @@
 package com.vitalManager.vitalManager.repository.impl;
 
+import com.vitalManager.vitalManager.model.ConsultaModel;
 import com.vitalManager.vitalManager.model.EstoqueModel;
+import com.vitalManager.vitalManager.model.ItensHospitalaresModel;
 import com.vitalManager.vitalManager.repository.EstoqueRepository;
+import com.vitalManager.vitalManager.repository.ItensHospitalaresRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,6 +22,9 @@ public class EstoqueRepositoryImpl implements EstoqueRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
+    private ItensHospitalaresRepository repository;
+
+    @Autowired
     public EstoqueRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -31,6 +37,9 @@ public class EstoqueRepositoryImpl implements EstoqueRepository {
             estoque.setNome(rs.getString("nome"));
             estoque.setDataAtualizacao(rs.getDate("data_atualizacao").toLocalDate());
             estoque.setQuantidade(rs.getInt("quantidade"));
+
+            List<ItensHospitalaresModel> itensHospitalares = repository.getItensHospitalaresByEstoqueId(estoque.getIdEstoque());
+            estoque.setItensHospitalares(itensHospitalares);
 
             return estoque;
         }

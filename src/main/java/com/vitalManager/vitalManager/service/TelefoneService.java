@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TelefoneService {
@@ -30,9 +31,8 @@ public class TelefoneService {
         return telefoneRepository.findAll();
     }
 
-    public TelefoneModel getPhoneByIdUser(int id) {
-        return telefoneRepository.findByUserId(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Nenhum endereço atribuido ao usuario de id " + id));
+    public Optional<TelefoneModel> getPhoneById(int id) {
+        return telefoneRepository.findByPhoneId(id);
     }
 
     public TelefoneModel createPhone(TelefoneDTO telefoneDTO) {
@@ -60,8 +60,13 @@ public class TelefoneService {
             throw new ResourceNotFoundException("User not found with id " + id);
         }
 
-        TelefoneModel telefoneExistente = telefoneRepository.findByUserId(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User Adress not found with id " + id));
+
+        if (telefoneRepository.findByPhoneId(id).isEmpty()){
+            throw new ResourceNotFoundException("Phone not found with id " + id);
+        }
+
+        TelefoneModel telefoneExistente = telefoneRepository.findByPhoneId(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Telefone não encontrado com ID:" + id));
 
         TelefoneModel telefoneAtualizar = convertDtoToModel(telefoneDTO);
         telefoneAtualizar.setIdTelefone(telefoneExistente.getIdTelefone());
