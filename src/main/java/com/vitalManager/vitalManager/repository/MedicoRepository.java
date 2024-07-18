@@ -13,4 +13,5 @@ public interface MedicoRepository {
     int update(MedicoModel medico);
     int deleteById(int id);
     boolean existsById(int id);
+    Integer findMedicoIdByUsuarioId(int idUsuario);
 }

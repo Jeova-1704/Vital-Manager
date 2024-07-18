@@ -139,4 +139,13 @@ public class MedicoRepositoryImpl implements MedicoRepository {
             return Optional.empty();
         }
     }
+    @Override
+    public Integer findMedicoIdByUsuarioId(int usuarioId) {
+        String sql = "SELECT id_medico FROM medico WHERE id_usuario_fk = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{usuarioId}, Integer.class);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }
