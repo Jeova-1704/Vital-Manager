@@ -37,11 +37,13 @@ public class PacienteRepositoryImpl implements PacienteRepository {
     private RowMapper<PacienteModel> rowMapper = new RowMapper<PacienteModel>() {
         @Override
         public PacienteModel mapRow(ResultSet rs, int rowNum) throws SQLException {
+            PacienteModel paciente = new PacienteModel();
             UsuarioModel usuario = new UsuarioModel();
+
             usuario.setIdUsuario(rs.getInt("id_usuario"));
             usuario.setNome(rs.getString("nome"));
             usuario.setSobrenome(rs.getString("sobrenome"));
-            usuario.setCpf(rs.getString("CPF"));
+            usuario.setCpf(rs.getString("cpf"));
             usuario.setEmail(rs.getString("email"));
             usuario.setSenha(rs.getString("senha"));
             usuario.setDataNascimento(rs.getDate("data_nascimento").toLocalDate());
@@ -49,11 +51,22 @@ public class PacienteRepositoryImpl implements PacienteRepository {
             usuario.setTipo(rs.getString("tipo"));
             usuario.setDataCriacao(rs.getTimestamp("data_criacao").toLocalDateTime());
 
-            PacienteModel paciente = new PacienteModel();
-            paciente.setIdPaciente(rs.getInt("id_paciente"));
+            List<TelefoneModel> telefoneModels = new ArrayList<>();
+
+            for (Integer phoneId : telefoneRepository.findByUserId(usuario.getIdUsuario())){
+                TelefoneModel telefoneModel = telefoneRepository.findByPhoneId(phoneId)
+                        .orElseThrow();
+
+                telefoneModels.add(telefoneModel);
+            }
+
+            usuario.setTelefoneUsuario(telefoneModels);
+
             paciente.setUsuario(usuario);
-            paciente.setIdUsuarioFK(rs.getInt("id_usuario_fk"));
-            paciente.setNumeroProntuario(rs.getInt("numero_prontuario"));
+
+            paciente.setIdPaciente(rs.getInt("id_paciente"));
+            paciente.setIdUsuarioFK(rs.getInt("id_usuario"));
+            paciente.setNumeroProntuario(rs.getInt("id_numero_prontuario_fk"));
 
             return paciente;
         }
@@ -62,86 +75,14 @@ public class PacienteRepositoryImpl implements PacienteRepository {
     @Override
     public List<PacienteModel> findAll() {
         String sql = "SELECT u.*, p.* FROM usuario u LEFT JOIN paciente p ON u.id_usuario = p.id_usuario_fk WHERE p.id_paciente != 0";
-        return jdbcTemplate.query(sql, new RowMapper<PacienteModel>() {
-            @Override
-            public PacienteModel mapRow(ResultSet rs, int rowNum) throws SQLException {
-                PacienteModel paciente = new PacienteModel();
-                UsuarioModel usuario = new UsuarioModel();
-
-                usuario.setIdUsuario(rs.getInt("id_usuario"));
-                usuario.setNome(rs.getString("nome"));
-                usuario.setSobrenome(rs.getString("sobrenome"));
-                usuario.setCpf(rs.getString("cpf"));
-                usuario.setEmail(rs.getString("email"));
-                usuario.setSenha(rs.getString("senha"));
-                usuario.setDataNascimento(rs.getDate("data_nascimento").toLocalDate());
-                usuario.setSexo(rs.getString("sexo"));
-                usuario.setTipo(rs.getString("tipo"));
-                usuario.setDataCriacao(rs.getTimestamp("data_criacao").toLocalDateTime());
-
-                List<TelefoneModel> telefoneModels = new ArrayList<>();
-
-                for (Integer phoneId : telefoneRepository.findByUserId(usuario.getIdUsuario())){
-                    TelefoneModel telefoneModel = telefoneRepository.findByPhoneId(phoneId)
-                            .orElseThrow();
-
-                    telefoneModels.add(telefoneModel);
-                }
-
-                usuario.setTelefoneUsuario(telefoneModels);
-
-                paciente.setUsuario(usuario);
-
-                paciente.setIdPaciente(rs.getInt("id_paciente"));
-                paciente.setIdUsuarioFK(rs.getInt("id_usuario"));
-                paciente.setNumeroProntuario(rs.getInt("id_numero_prontuario_fk"));
-
-                return paciente;
-            }
-        });
+        return jdbcTemplate.query(sql, rowMapper);
     }
 
     @Override
     public Optional<PacienteModel> findById(int id) {
         String sql = "SELECT u.*, p.* FROM usuario u LEFT JOIN paciente p ON u.id_usuario = p.id_usuario_fk WHERE p.id_paciente = ?";
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new Object[]{id}, new RowMapper<PacienteModel>() {
-                @Override
-                public PacienteModel mapRow(ResultSet rs, int rowNum) throws SQLException {
-                    PacienteModel paciente = new PacienteModel();
-                    UsuarioModel usuario = new UsuarioModel();
-
-                    usuario.setIdUsuario(rs.getInt("id_usuario"));
-                    usuario.setNome(rs.getString("nome"));
-                    usuario.setSobrenome(rs.getString("sobrenome"));
-                    usuario.setCpf(rs.getString("cpf"));
-                    usuario.setEmail(rs.getString("email"));
-                    usuario.setSenha(rs.getString("senha"));
-                    usuario.setDataNascimento(rs.getDate("data_nascimento").toLocalDate());
-                    usuario.setSexo(rs.getString("sexo"));
-                    usuario.setTipo(rs.getString("tipo"));
-                    usuario.setDataCriacao(rs.getTimestamp("data_criacao").toLocalDateTime());
-
-                    List<TelefoneModel> telefoneModels = new ArrayList<>();
-
-                    for (Integer phoneId : telefoneRepository.findByUserId(usuario.getIdUsuario())){
-                        TelefoneModel telefoneModel = telefoneRepository.findByPhoneId(phoneId)
-                                .orElseThrow();
-
-                        telefoneModels.add(telefoneModel);
-                    }
-
-                    usuario.setTelefoneUsuario(telefoneModels);
-
-                    paciente.setUsuario(usuario);
-
-                    paciente.setIdPaciente(rs.getInt("id_paciente"));
-                    paciente.setIdUsuarioFK(rs.getInt("id_usuario"));
-                    paciente.setNumeroProntuario(rs.getInt("id_numero_prontuario_fk"));
-
-                    return paciente;
-                }
-            }));
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new Object[]{id}, rowMapper));
         } catch (Exception e) {
             return Optional.empty();
         }
