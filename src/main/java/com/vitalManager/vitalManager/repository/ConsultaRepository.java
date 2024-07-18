@@ -12,4 +12,5 @@ public interface ConsultaRepository {
     int update(ConsultaModel consulta);
     int deleteById(int id);
     boolean existsById(int id);
+    List<ConsultaModel> getConsultasByProntuarioId(int id);
 }
