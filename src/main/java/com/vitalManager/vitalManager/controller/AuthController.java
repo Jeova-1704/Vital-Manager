@@ -2,6 +2,7 @@ package com.vitalManager.vitalManager.controller;
 
 import com.vitalManager.vitalManager.DTO.LoginDTO;
 import com.vitalManager.vitalManager.DTO.ResponseDTO;
+import com.vitalManager.vitalManager.DTO.ResponseDTOLogin;
 import com.vitalManager.vitalManager.DTO.UsuarioDTO;
 import com.vitalManager.vitalManager.exception.EmailNotFoundException;
 import com.vitalManager.vitalManager.exception.EmailRegisteredSystemException;
@@ -29,7 +30,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginDTO body) {
         try {
-            ResponseDTO response = service.login(body);
+            ResponseDTOLogin response = service.login(body);
             return ResponseEntity.ok(response);
         } catch (EmailNotFoundException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
