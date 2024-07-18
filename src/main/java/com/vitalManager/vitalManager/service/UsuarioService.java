@@ -29,6 +29,11 @@ public class UsuarioService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + id));
     }
 
+    public UsuarioModel getUserByEmail(String email) {
+        return usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email " + email));
+    }
+
     public UsuarioModel createUsuario(UsuarioDTO usuarioDTO) {
         UsuarioModel usuario = convertDtoToModel(usuarioDTO);
         usuarioRepository.save(usuario);
