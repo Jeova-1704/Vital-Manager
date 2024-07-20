@@ -128,6 +128,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
         deleteExameByPacienteId(id);
 
         // Passo 1: Excluir prontuários, removendo referências primeiro
+        removeProntuarioReferencesByUsuarioId(id);
         deleteProntuarioByUsuarioId(id);
 
         // Passo 2: Excluir pacientes
