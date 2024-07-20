@@ -12,4 +12,6 @@ public interface FornecedorRepository {
     int update(FornecedorModel fornecedor);
     int deleteById(int id);
     boolean existsById(int id);
+
+    void deleteAll();
 }

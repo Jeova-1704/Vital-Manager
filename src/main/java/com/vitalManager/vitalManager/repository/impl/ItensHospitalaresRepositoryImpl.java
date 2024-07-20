@@ -39,8 +39,6 @@ public class ItensHospitalaresRepositoryImpl implements ItensHospitalaresReposit
     public ItensHospitalaresModel create(ItensHospitalaresModel item) {
         String sql = "INSERT INTO Itens_Hospitalares (Nome, Preco, Descricao, Data_Validade, Quantidade, ID_Precricao_FK, ID_Estoque, ID_Fornecedor_FK) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, item.getNome(), item.getPreco(), item.getDescricao(), item.getDataValidade(), item.getQuantidade(), item.getIdPrescricao(), item.getIdEstoque(), item.getIDFornecedorFK());
-        Integer id = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
-        item.setIdItensHospitalares(id);
         return item;
     }
 

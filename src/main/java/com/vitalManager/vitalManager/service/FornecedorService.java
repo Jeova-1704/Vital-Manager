@@ -57,4 +57,8 @@ public class FornecedorService {
         fornecedor.setCnpj(fornecedorDTO.cnpj());
         return fornecedor;
     }
+
+    public void deleteAllFornecedores() {
+        fornecedorRepository.deleteAll();
+    }
 }

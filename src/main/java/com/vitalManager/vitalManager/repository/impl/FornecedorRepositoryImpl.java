@@ -91,4 +91,9 @@ public class FornecedorRepositoryImpl implements FornecedorRepository {
         Integer count = jdbcTemplate.queryForObject(sql, new Object[]{id}, Integer.class);
         return count != null && count > 0;
     }
+
+    @Override
+    public void deleteAll() {
+        jdbcTemplate.update("DELETE FROM Fornecedor");
+    }
 }
